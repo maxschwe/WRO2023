@@ -4,7 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/**/**"
+                "~/Dokumente/ev3/ev3rt-hrp3/sdk/common/ev3api/**",
+                "/usr/include/linux",
+                "~/Dokumente/ev3/ev3rt-hrp3/**",
+                "~/Dokumente/ev3/ev3rt-hrp2/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

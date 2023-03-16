@@ -1,8 +1,5 @@
 #pragma once
 
-#include "ev3api.h"
-#include "target_test.h"
-
 #define MAIN_PRIORITY 5
 
 #define HIGH_PRIORITY 9
@@ -13,9 +10,16 @@
 #define STACK_SIZE 4096
 #endif
 
+#ifndef LOOP_REF
+#define LOOP_REF ULONG_C(1000000)
+#endif
+
 #ifndef TOPPERS_MACRO_ONLY
 
-#include <stdio.h>
+#include "config.h"
+#include "ev3api.h"
+#include "helpers.h"
+#include "target_test.h"
 
 extern void main_task(intptr_t exinf);
 

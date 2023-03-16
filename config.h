@@ -2,15 +2,28 @@
 #define CONFIG_H
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
-#define A EV3_PORT_A
-#define B EV3_PORT_B
-#define C EV3_PORT_C
-#define D EV3_PORT_D
-#define S1 EV3_PORT_1
-#define S2 EV3_PORT_2
-#define S3 EV3_PORT_3
-#define S4 EV3_PORT_4
+#include "color_sensor.h"
+#include "ev3api.h"
+#include "helpers.h"
+#include "motor.h"
+
+#define A_COUNTERCLOCKWISE false
+#define B_COUNTERCLOCKWISE true
+#define C_COUNTERCLOCKWISE false
+#define D_COUNTERCLOCKWISE false
+
+extern Motor a;
+extern Motor b;
+extern Motor c;
+extern Motor d;
+
+extern ColorSensor s1;
+extern ColorSensor s2;
+extern ColorSensor s3;
+extern ColorSensor s4;
 
 void init();
 
