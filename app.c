@@ -4,6 +4,8 @@
 #include "run.h"
 #include "test.h"
 
+#include "platform.h"
+
 void main_task(intptr_t unused)
 {
     init();

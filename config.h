@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "color_sensor.h"
+#include "drive.h"
 #include "ev3api.h"
 #include "helpers.h"
 #include "motor.h"
@@ -14,6 +15,13 @@
 #define B_COUNTERCLOCKWISE true
 #define C_COUNTERCLOCKWISE false
 #define D_COUNTERCLOCKWISE false
+
+#define BLACK_REF 30
+#define WHITE_REF 60
+#define GREY_REF 50
+
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
 extern Motor a;
 extern Motor b;

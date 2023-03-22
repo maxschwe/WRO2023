@@ -19,10 +19,15 @@ void print_values()
         display_set_spot(1, "B", m_get_deg(b));
         display_set_spot(2, "C", m_get_deg(c));
         display_set_spot(3, "D", m_get_deg(d));
-        display_set_spot(6, "1", col_get_ref(s1));
-        display_set_spot(7, "2", col_get_ref(s2));
-        display_set_spot(8, "3", col_get_ref(s3));
-        display_set_spot(9, "4", col_get_ref(s4));
+        display_set_spot(4, "1", col_get_ref(s1));
+        display_set_spot(5, "2", col_get_ref(s2));
+        display_set_spot(6, "3", col_get_ref(s3));
+        display_set_spot(7, "4", col_get_amb(s4));
+        rgb rgb_val = col_get_rgb(s4);
+        display_set_spot(8, "R", rgb_val.r);
+        display_set_spot(9, "G", rgb_val.g);
+        display_set_spot(10, "B", rgb_val.b);
+        display_set_spot(11, "rel", 1.0 * rgb_val.b / (rgb_val.r + rgb_val.g + rgb_val.b));
         wait(0.1);
     }
 }

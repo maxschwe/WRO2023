@@ -25,3 +25,10 @@ void m_reset(Motor m)
 {
     ev3_motor_reset_counts(m.port);
 }
+
+void m_wait_deg(Motor m, int deg)
+{
+    m_reset(m);
+    while (abs(m_get_deg(m)) < deg) {
+    }
+}

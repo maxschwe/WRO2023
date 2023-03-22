@@ -1,7 +1,15 @@
 {
   "files.associations": {
     "config.h": "c",
-    "test.h": "c"
+    "test.h": "c",
+    "platform_interface_layer.h": "c",
+    "kernel.h": "c",
+    "*.tcc": "c",
+    "cmath": "c",
+    "numeric": "c",
+    "cinttypes": "c",
+    "cstdlib": "c",
+    "random": "c"
   },
   "C_Cpp.errorSquiggles": "enabled",
   "C_Cpp.default.includePath": [

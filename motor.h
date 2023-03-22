@@ -3,6 +3,7 @@
 
 #include "ev3api.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct {
     motor_port_t port;
@@ -15,5 +16,6 @@ void m_on(Motor m, int speed);
 void m_off(Motor m, bool brake);
 void m_reset(Motor m);
 int m_get_deg(Motor m);
+void m_wait_deg(Motor m, int deg);
 
 #endif

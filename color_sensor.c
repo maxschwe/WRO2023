@@ -24,3 +24,49 @@ int col_get_col(ColorSensor s)
     // TODO: calculate every color from rgb val
     return 0;
 }
+
+void col_wait_until_block()
+{
+    rgb rgb_val = col_get_rgb(s4);
+    float rgb_rel;
+    int i = 0;
+    int count = 0;
+    while (true) {
+        rgb_val = col_get_rgb(s4);
+        rgb_rel = 1.0 * rgb_val.b / (rgb_val.r + rgb_val.g + rgb_val.b + 1);
+        if (rgb_rel < 0.3) {
+            if (++count >= 20) {
+                break;
+            }
+        } else {
+            count = 0;
+        }
+    }
+}
+
+void col_wait_ref(ColorSensor s, char col)
+{
+    int compare_val;
+    bool compare_lower;
+    switch (col) {
+    case 'b':
+        compare_val = BLACK_REF;
+        compare_lower = true;
+        break;
+    case 'w':
+        compare_val = WHITE_REF;
+        compare_lower = false;
+        break;
+    case 'g':
+        compare_val = GREY_REF;
+        compare_lower = true;
+    default:
+        compare_val = BLACK_REF;
+        compare_lower = true;
+    }
+    if (compare_lower) {
+        while (col_get_ref(s) > compare_val) { }
+    } else {
+        while (col_get_ref(s) < compare_val) { }
+    }
+}
