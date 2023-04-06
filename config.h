@@ -20,6 +20,12 @@
 #define WHITE_REF 60
 #define GREY_REF 50
 
+#define BLACK 'b'
+#define WHITE 'w'
+#define GREY 'g'
+
+#define PRINT_DRIVE_DEBUG false
+
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 

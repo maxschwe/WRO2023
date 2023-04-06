@@ -24,23 +24,33 @@ void on(int speed, int steering)
 
 void off(bool brake)
 {
-    m_off(b, brake);
-    m_off(c, brake);
+    if (brake) {
+        m_off(b, true);
+        m_off(c, true);
+    }
 }
 
 void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
 {
-    int current_deg_b, current_deg_c, target_deg_b, target_deg_c, current_speed, current_steering;
+    int current_deg_b, current_deg_c, target_deg_b, target_deg_c, current_speed;
+    float current_steering;
     int taken_deg_b = 0;
     int taken_deg_c = 0;
-    int b_left_deg, c_left_deg;
+    int b_left_deg, c_left_deg, abs_b_left, abs_c_left;
     int start_deg_b = m_get_deg(b);
     int start_deg_c = m_get_deg(c);
     int speed_diff = target_speed - speed;
+    int loop_count = 0;
     current_deg_b = start_deg_b;
     current_deg_c = start_deg_c;
     deg = abs(deg);
     bool is_b_used;
+    bool is_b_main;
+    if (speed < 0) {
+        deg = -deg;
+        speed = -speed;
+        speed_diff = -speed_diff;
+    }
     if (steering > 0) {
         target_deg_b = deg;
         target_deg_c = deg * (1 - steering / 50.0);
@@ -50,70 +60,53 @@ void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
         target_deg_c = deg;
         is_b_used = false;
     }
-    if (speed < 0) {
-        target_deg_b = -target_deg_b;
-        target_deg_c = -target_deg_c;
+    deg = abs(deg);
+    if (PRINT_DRIVE_DEBUG) {
+        display_set_spot(0, "b-t", target_deg_b);
+        display_set_spot(1, "c-t", target_deg_c);
     }
-    // display_set_spot(0, "Tb", target_deg_b);
-    // display_set_spot(1, "Tc", target_deg_c);
     while (taken_deg_b < deg && taken_deg_c < deg) {
-        // b_left_deg = target_deg_b - current_deg_b + start_deg_b;
-        // c_left_deg = target_deg_c - current_deg_c + start_deg_c;
-        // // TODO: make speed curve x^3, not linear
-        // current_speed = (1.0 * abs(is_b_used ? taken_deg_b : taken_deg_c) / deg) * speed_diff + speed;
-        // int divident = MAX(abs(b_left_deg), abs(c_left_deg)) * 2;
-        // int zaehler = b_left_deg - c_left_deg;
-        // // if (speed < 0) {
-        // //     zaehler = -zaehler;
-        // // }
-        // current_steering = (1.0 * zaehler / divident) * 100;
-        // // current_steering = (1.0 * abs(b_left_deg - c_left_deg) / (MAX(abs(b_left_deg), abs(c_left_deg)) * 2)) * 100;
-        // // if (abs(b_left_deg) > abs(c_left_deg)) {
-        // //     if (b_left_deg < 0) {
-        // //         current_speed = -current_speed;
-        // //     }
-        // // } else {
-        // //     current_steering = -current_steering;
-        // //     if (c_left_deg < 0) {
-        // //         current_speed = -current_speed;
-        // //     }
-        // // }
-        // // if (current_speed < 0) {
-        // //     current_steering = -current_steering;
-        // // }
-        // on(current_speed, current_steering);
-        // display_set_spot(2, "St", current_steering);
-        // display_set_spot(3, "Sp", current_speed);
-        // display_set_spot(6, "b", b_left_deg);
-        // display_set_spot(7, "c", c_left_deg);
-        // current_deg_b = m_get_deg(b);
-        // current_deg_c = m_get_deg(c);
-        // taken_deg_b = abs(current_deg_b - start_deg_b);
-        // taken_deg_c = abs(current_deg_c - start_deg_c);
-        // display_set_spot(8, "b", taken_deg_b);
-        // display_set_spot(9, "c", taken_deg_c);
         b_left_deg = target_deg_b - current_deg_b + start_deg_b;
         c_left_deg = target_deg_c - current_deg_c + start_deg_c;
         // TODO: make speed curve x^3, not linear
         current_speed = (1.0 * abs(is_b_used ? taken_deg_b : taken_deg_c) / deg) * speed_diff + speed;
-        int divident = MAX(abs(b_left_deg), abs(c_left_deg)) * 2;
-        int zaehler = b_left_deg - c_left_deg;
-        current_steering = (1.0 * zaehler / divident) * 100;
+        float zaehler = b_left_deg - c_left_deg;
+        int abs_b_left = abs(b_left_deg);
+        int abs_c_left = abs(c_left_deg);
+        float nenner = MAX(abs_b_left, abs_c_left);
+        current_steering = (zaehler / nenner) * 50.0;
+        is_b_main = abs_b_left > abs_c_left;
+        if ((is_b_main ? b_left_deg : c_left_deg) < 0) {
+            current_speed = -current_speed;
+            current_steering = -current_steering;
+        }
+
         on(current_speed, current_steering);
-        // display_set_spot(2, "St", current_steering);
-        // display_set_spot(3, "Sp", current_speed);
-        // display_set_spot(6, "b", b_left_deg);
-        // display_set_spot(7, "c", c_left_deg);
         current_deg_b = m_get_deg(b);
         current_deg_c = m_get_deg(c);
         taken_deg_b = abs(current_deg_b - start_deg_b);
         taken_deg_c = abs(current_deg_c - start_deg_c);
-        // display_set_spot(8, "b", taken_deg_b);
-        // display_set_spot(9, "c", taken_deg_c);
+        loop_count++;
     }
 
-    m_off(b, brake);
-    m_off(c, brake);
+    off(brake);
+
+    if (PRINT_DRIVE_DEBUG) {
+        display_set_spot(2, "b-c", current_deg_b);
+        display_set_spot(3, "c-c", current_deg_c);
+        display_set_spot(4, "b-l", b_left_deg);
+        display_set_spot(5, "c-l", c_left_deg);
+        display_set_spot(6, "sp", current_speed);
+        display_set_spot(7, "st", current_steering);
+        display_set_spot(8, "", loop_count);
+    }
+}
+
+void drive_col(int speed, int steering, ColorSensor sensor, char col, bool brake)
+{
+    on(speed, steering);
+    col_wait_ref(sensor, col);
+    off(brake);
 }
 
 void drive_smooth(int steering, int deg, bool deacc, bool brake)
@@ -192,7 +185,7 @@ void drive_deg2(int initial_speed, int target_speed, int steering, int deg, bool
     }
 }
 
-void linefollow(int speed, int deg)
+void linefollow_slow(int speed, int deg, bool brake)
 {
     float kp = 0.5;
     float kd = 0.2;
@@ -203,20 +196,15 @@ void linefollow(int speed, int deg)
     while (abs(ev3_motor_get_counts(B) - initial_b) < deg) {
         int ref_s2 = col_get_ref(s2);
         int ref_s3 = col_get_ref(s3);
-        error = (ref_s2 - ref_s3);
-        // error = (50 - ref_s3);
-        error *= kp;
+        error = (ref_s2 - ref_s3) * kp;
         error += (error - last_error) * kd;
-        // current_speed = speed - abs(error * error * error) * 0.01;
-        // display_set_spot(2, "Sp", current_speed);
-        // display_set_spot(3, "St", error);
-        // display_set_spot(4, "diff", error * error * error);
         on(speed, error);
         last_error = error;
     }
+    off(brake);
 }
 
-void linefollow_intersection(int speed, bool_t brake)
+void linefollow_intersection(int speed, bool brake)
 {
     int power_b;
     int power_c;
@@ -233,7 +221,6 @@ void linefollow_intersection(int speed, bool_t brake)
         error = (ref_s2 - ref_s3) / 25;
         error *= error * error * error * error * kp;
         error += (error - last_error) * kd;
-        // error = error + 0.3 * (100 - speed) * error;
         last_error
             = error;
 
@@ -248,8 +235,7 @@ void linefollow_intersection(int speed, bool_t brake)
         ev3_motor_set_power(EV3_PORT_C, power_c);
     }
     if (brake) {
-        ev3_motor_stop(EV3_PORT_B, true);
-        ev3_motor_stop(EV3_PORT_C, true);
+        linefollow_slow(40, 100, true);
     }
 }
 
@@ -329,9 +315,26 @@ void linefollow_col_1(int speed, int ref_light_s1, bool_t brake)
     }
 }
 
+void turn_line(bool turn_left, bool brake)
+{
+    int steering = turn_left ? -100 : 100;
+    ColorSensor sensor = turn_left ? s2 : s3;
+    drive_deg(30, 30, steering, 150, false);
+    drive_col(30, steering, sensor, WHITE, false);
+    drive_col(30, steering, sensor, BLACK, false);
+    drive_deg(30, 20, steering, 75, true);
+}
+
+void turn_90(bool turn_left, bool brake)
+{
+    int steering = turn_left ? -100 : 100;
+    drive_deg(10, 40, steering, 140, false);
+    drive_deg(40, 10, steering, 172, true);
+}
+
 void move_up(bool_t block)
 {
-    ev3_motor_rotate(D, -120, 10, block);
+    ev3_motor_rotate(D, -120, 25, block);
 }
 
 void move_down(bool_t block)

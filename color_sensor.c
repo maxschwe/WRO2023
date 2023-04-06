@@ -49,15 +49,15 @@ void col_wait_ref(ColorSensor s, char col)
     int compare_val;
     bool compare_lower;
     switch (col) {
-    case 'b':
+    case BLACK:
         compare_val = BLACK_REF;
         compare_lower = true;
         break;
-    case 'w':
+    case WHITE:
         compare_val = WHITE_REF;
         compare_lower = false;
         break;
-    case 'g':
+    case GREY:
         compare_val = GREY_REF;
         compare_lower = true;
     default:

@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 #define MAX_SPOTS 12
-#define MAX_LENGTH 10
+#define MAX_LENGTH 11
 
 void display_clear();
 void display_append(char title[MAX_LENGTH], float value);
