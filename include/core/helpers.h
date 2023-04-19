@@ -1,9 +1,11 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-#include "config.h"
+#include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+
+#include "ev3api.h"
 
 #define MAX_SPOTS 12
 #define MAX_LENGTH 11

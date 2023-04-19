@@ -1,4 +1,4 @@
-#include "run.h"
+#include "../../include/programs/run.h"
 
 #define SCAN_VAL_COUNT 2
 #define NOT_TAKEN_POSITIONS 2
@@ -38,7 +38,7 @@ void run()
     val[0] = scan(10);
     drive_deg(-30, -10, 0, 100, true);
     val[1] = scan(30);
-    drive_deg(10, 40, 0, 170, true);
+    drive_deg(10, 40, 0, 150, true);
     turn_line(true, true);
     wait(0.2);
     linefollow_slow(20, 300, false);
@@ -51,7 +51,7 @@ void run()
     linefollow_slow(20, 500, false);
     beep();
     linefollow_col_1(10, 18, false);
-    drive_deg(10, 10, 0, 5, true);
+    drive_deg(10, 10, 0, 15, true);
 
     beep();
 
@@ -198,40 +198,44 @@ void run()
     drive_deg(20, 20, 50, 150, true);
 
     ev3_motor_rotate(d.port, -120, 20, true);
-    drive_deg(-20, -40, 0, 300, true);
+    drive_deg(-20, -40, 0, 150, false);
+    on(-40, 0);
+    while (col_get_ref(s2) < 35) {
+    }
+    drive_deg(-40, -10, 0, 330, true);
     wait(0.3);
-    drive_deg(-20, -20, 70, 400, true);
-    drive_deg(20, 80, 0, 200, true);
-    drive_col(80, 0, s3, WHITE, false);
-    drive_deg(80, 80, 0, 30, false);
-    drive_col(60, 30, s3, BLACK, false);
-    drive_deg(60, 30, 0, 100, true);
-    wait(0.3);
-    turn_line(true, true);
+    turn_90(true, true);
     wait(0.3);
     linefollow_slow(20, 300, false);
-    linefollow_intersection(90, true);
+    linefollow_col_1_greater(10, 40, false);
+    linefollow_col_1(10, 30, false);
+    linefollow_slow(10, 350, true);
     wait(0.3);
-    turn_line(true, true);
+    turn_90(true, false);
+    turn_90(true, true);
+
+    ev3_motor_rotate(d.port, 120, 20, true);
     wait(0.3);
-    linefollow_slow(20, 300, true);
-    ev3_motor_rotate(d.port, 50, 20, false);
-    wait(0.3);
-    drive_deg(-10, -40, 0, 300, false);
-    drive_deg(-40, -40, 0, 300, false);
-    drive_deg(-40, -10, 0, 300, true);
-    ev3_motor_rotate(d.port, -45, 40, true);
+    drive_deg(-10, -30, 0, 100, false);
+    drive_deg(-30, -30, 0, 250, false);
+    ev3_motor_rotate(d.port, -80, 50, false);
+    drive_deg(-30, -10, 0, 70, true);
+    wait(0.5);
+    // drive_deg(-20, -20, 50, 100, true);
+    // drive_deg(-20, -20, -50, 100, true);
     linefollow_slow(20, 300, false);
     linefollow_intersection(100, true);
+    ev3_motor_rotate(d.port, -45, 80, true);
     wait(0.5);
-    turn_line(false, true);
-    linefollow_slow(20, 600, false);
+    turn_90(false, true);
+    wait(0.3);
+    linefollow_slow(20, 500, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
     wait(0.3);
     turn_line(false, true);
     wait(0.3);
-    linefollow_slow(30, 800, true);
+    linefollow_slow(30, 800, false);
     drive_deg(-10, -60, 0, 300, false);
     drive_deg(-60, -10, 0, 500, true);
     wait(0.3);
@@ -249,7 +253,7 @@ void run()
     drive_deg(-40, -10, -50, 150, true);
     drive_deg(-30, -30, 0, 50, true);
     drive_deg(-10, -40, -50, 150, false);
-    drive_deg(-40, -40, -50, 360, false);
+    drive_deg(-40, -40, -50, 380, false);
     drive_deg(-40, -10, -50, 150, true);
     ev3_motor_rotate(d.port, 150, 60, false);
     drive_deg(-20, -20, 0, 330, true);
@@ -272,7 +276,7 @@ void run()
     ev3_motor_rotate(a.port, 130, 20, true);
     wait(0.2);
     ev3_motor_rotate(a.port, -130, 20, true);
-    drive_deg(-15, -15, 0, 380, true);
+    drive_deg(-15, -15, 0, 360, true);
     ev3_motor_rotate(a.port, 130, 20, true);
     wait(0.2);
     ev3_motor_rotate(a.port, -130, 20, true);

@@ -1,4 +1,4 @@
-#include "config.h"
+#include "../include/config.h"
 
 Motor a = { EV3_PORT_A, LARGE_MOTOR, A_COUNTERCLOCKWISE };
 Motor b = { EV3_PORT_B, MEDIUM_MOTOR, B_COUNTERCLOCKWISE };
@@ -33,4 +33,8 @@ void init()
     ev3_color_sensor_get_reflect(EV3_PORT_2);
     ev3_color_sensor_get_reflect(EV3_PORT_3);
     ev3_color_sensor_get_reflect(EV3_PORT_4);
+    m_get_deg(a);
+    m_get_deg(b);
+    m_get_deg(c);
+    m_get_deg(d);
 }

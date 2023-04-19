@@ -1,7 +1,9 @@
 #ifndef RUN_H
 #define RUN_H
 
-#include "config.h"
+#include "../all.h"
+#include "../config.h"
+
 void run();
 
 #endif

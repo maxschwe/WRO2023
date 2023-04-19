@@ -1,4 +1,5 @@
-#include "motor.h"
+#include "../../include/core/motor.h"
+#include "../../include/config.h"
 
 void m_init(Motor m)
 {

@@ -1,4 +1,5 @@
-#include "drive.h"
+#include "../../include/robot/drive.h"
+#include "../../include/config.h"
 
 #define B EV3_PORT_B
 #define C EV3_PORT_C
@@ -201,16 +202,49 @@ void linefollow_slow(int speed, int deg, bool brake)
         on(speed, error);
         last_error = error;
     }
-    off(brake);
+    if (brake) {
+        off(brake);
+    }
+}
+
+void linefollow_test(int speed, int deg, float kp, float kd, bool brake)
+{
+    FILE* bt = ev3_serial_open_file(EV3_SERIAL_BT);
+    assert(bt != NULL);
+    float error = 0.0;
+    float pid_value = 0.0;
+    float last_error = 0;
+    int current_speed = 0;
+    int power_b, power_c;
+    int initial_b = ev3_motor_get_counts(B);
+    int counter = 0;
+    while (abs(ev3_motor_get_counts(B) - initial_b) < deg) {
+        error = col_get_ref(s2) - col_get_ref(s3);
+
+        pid_value = error * kp + (error - last_error) * kd;
+
+        on(speed, pid_value);
+
+        // fprintf(bt, "%f,%f; ", error, scan_diff);
+        last_error = error;
+        counter++;
+    }
+    display_append("+", counter);
+    // fprintf(bt, "\n");
+    if (brake) {
+        off(brake);
+    }
 }
 
 void linefollow_intersection(int speed, bool brake)
 {
+
+    FILE* bt = ev3_serial_open_file(EV3_SERIAL_BT);
     int power_b;
     int power_c;
     float kp = 1.5;
     float kd = 0.9;
-    int error = 0;
+    float error = 0;
     int last_error = 0;
     int ref_s2 = ev3_color_sensor_get_reflect(EV3_PORT_2);
     int ref_s3 = ev3_color_sensor_get_reflect(EV3_PORT_3);
@@ -218,9 +252,10 @@ void linefollow_intersection(int speed, bool brake)
     while (ref_s2 + ref_s3 > 30 || abs(ev3_motor_get_counts(EV3_PORT_B) - initial_b) < 200) {
         ref_s2 = ev3_color_sensor_get_reflect(EV3_PORT_2);
         ref_s3 = ev3_color_sensor_get_reflect(EV3_PORT_3);
-        error = (ref_s2 - ref_s3) / 25;
+        error = (ref_s2 - ref_s3) / 25.0;
         error *= error * error * error * error * kp;
         error += (error - last_error) * kd;
+        fprintf(bt, "%i; ", error);
         last_error
             = error;
 
@@ -234,8 +269,9 @@ void linefollow_intersection(int speed, bool brake)
         ev3_motor_set_power(EV3_PORT_B, power_b);
         ev3_motor_set_power(EV3_PORT_C, power_c);
     }
+    fprintf(bt, "\n");
     if (brake) {
-        linefollow_slow(40, 100, true);
+        linefollow_slow(40, 70, true);
     }
 }
 
@@ -315,6 +351,43 @@ void linefollow_col_1(int speed, int ref_light_s1, bool_t brake)
     }
 }
 
+void linefollow_col_1_greater(int speed, int ref_light_s1, bool_t brake)
+{
+    char output[100];
+    int power_b;
+    int power_c;
+    float kp = 0.5;
+    float kd = 0.2;
+    int error = 0;
+    int last_error = 0;
+    int ref_s2 = ev3_color_sensor_get_reflect(S2);
+    int ref_s3 = ev3_color_sensor_get_reflect(S3);
+    while (ev3_color_sensor_get_reflect(S1) > ref_light_s1) {
+        // sprintf(output, "Val: %i", ev3_color_sensor_get_reflect(S1));
+        // ev3_lcd_draw_string(output, 10, 20);
+        ref_s2 = ev3_color_sensor_get_reflect(S2);
+        ref_s3 = ev3_color_sensor_get_reflect(S3);
+        error = (ref_s2 - ref_s3);
+        error *= kp;
+        error += (error - last_error) * kd;
+
+        last_error = error;
+        if (error > 0) {
+            power_b = -1 * speed;
+            power_c = speed - error;
+        } else {
+            power_b = -1 * speed - error;
+            power_c = speed;
+        }
+        ev3_motor_set_power(B, power_b);
+        ev3_motor_set_power(C, power_c);
+    }
+    if (brake) {
+        ev3_motor_stop(B, true);
+        ev3_motor_stop(C, true);
+    }
+}
+
 void turn_line(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
@@ -329,7 +402,7 @@ void turn_90(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
     drive_deg(10, 40, steering, 140, false);
-    drive_deg(40, 10, steering, 172, true);
+    drive_deg(40, 10, steering, 170, true);
 }
 
 void move_up(bool_t block)
@@ -345,8 +418,7 @@ void move_down(bool_t block)
 char scan(int output_y)
 {
     char output[100];
-    rgb_raw_t val;
-    ev3_color_sensor_get_rgb_raw(S4, &val);
+    rgb_t val = col_get_rgb(s4);
     float lowest_r = 0.0;
     float lowest_g = 0.0;
     float lowest_b = 0.0;

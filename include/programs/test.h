@@ -1,7 +1,9 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "config.h"
+#include "../all.h"
+#include "../config.h"
+
 void test();
 
 #endif

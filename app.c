@@ -1,10 +1,4 @@
 #include "app.h"
-#include "config.h"
-#include "debug.h"
-#include "run.h"
-#include "test.h"
-
-#include "platform.h"
 
 void main_task(intptr_t unused)
 {

@@ -1,6 +1,9 @@
-#include "helpers.h"
+#include "../../include/core/helpers.h"
+#include "../../include/config.h"
 
 int filled_spots = 0;
+clock_t start_time;
+bool timer_reseted = false;
 char texts[MAX_SPOTS][MAX_LENGTH];
 
 void display_clear()

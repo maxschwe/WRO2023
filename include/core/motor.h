@@ -2,8 +2,11 @@
 #define MOTOR_H
 
 #include "ev3api.h"
+#include "helpers.h"
+
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     motor_port_t port;
