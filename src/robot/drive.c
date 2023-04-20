@@ -9,6 +9,8 @@
 #define S3 EV3_PORT_3
 #define S4 EV3_PORT_4
 
+int current_speed = 0;
+
 void on(int speed, int steering)
 {
     int speed_b, speed_c;
@@ -21,6 +23,7 @@ void on(int speed, int steering)
     }
     m_on(b, speed_b);
     m_on(c, speed_c);
+    current_speed = speed;
 }
 
 void off(bool brake)
@@ -29,6 +32,7 @@ void off(bool brake)
         m_off(b, true);
         m_off(c, true);
     }
+    current_speed = 0;
 }
 
 void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
@@ -89,8 +93,11 @@ void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
         taken_deg_c = abs(current_deg_c - start_deg_c);
         loop_count++;
     }
-
-    off(brake);
+    current_speed = target_speed;
+    if (brake) {
+        off(brake);
+        current_speed = 0;
+    }
 
     if (PRINT_DRIVE_DEBUG) {
         display_set_spot(2, "b-c", current_deg_b);
@@ -107,83 +114,20 @@ void drive_col(int speed, int steering, ColorSensor sensor, char col, bool brake
 {
     on(speed, steering);
     col_wait_ref(sensor, col);
-    off(brake);
-}
-
-void drive_smooth(int steering, int deg, bool deacc, bool brake)
-{
-    int max_acc_per_100_deg = 20;
-    int min_speed = 10;
-    int max_speed;
-    if (deacc) {
-        max_speed = MIN(100, min_speed + deg / (2 * 100 * max_acc_per_100_deg));
-        if (max_speed < 100) {
-            drive_deg(min_speed, max_speed, steering, deg / 2, true);
-        }
-    } else {
-        max_speed = MIN(100, min_speed + deg / (100 * max_acc_per_100_deg));
-    }
-}
-
-void drive_deg2(int initial_speed, int target_speed, int steering, int deg, bool_t brake)
-{
-    int initial_deg;
-    int difference = 0;
-    int current_speed = 0;
-    char output[100];
-    // ev3_lcd_draw_string(output, 10, 10);
-    if (initial_speed > 0) {
-        int power_b;
-        int power_c;
-        initial_deg = ev3_motor_get_counts(steering < 0 ? C : B);
-        initial_speed = abs(initial_speed);
-        target_speed = abs(target_speed);
-        deg = abs(deg);
-        while ((difference = abs(ev3_motor_get_counts(steering < 0 ? C : B) - initial_deg)) < deg) {
-            current_speed = (difference * 1.0 / deg) * abs(initial_speed - target_speed) + initial_speed;
-            // sprintf(output, "S: %i, D: %i", current_speed, difference);
-            // ev3_lcd_draw_string(output, 10, 30);
-
-            if (steering < 0) {
-                power_b = -1 * (current_speed + (steering / 50.0) * current_speed);
-                power_c = current_speed;
-            } else {
-                power_b = -1 * current_speed;
-                power_c = current_speed - (steering / 50.0) * current_speed;
-            }
-            ev3_motor_set_power(B, power_b);
-            ev3_motor_set_power(C, power_c);
-            // ev3_lcd_draw_string()
-        }
-    } else {
-        int power_b;
-        int power_c;
-        initial_deg = ev3_motor_get_counts(steering < 0 ? B : C);
-        initial_speed = abs(initial_speed);
-        target_speed = abs(target_speed);
-        deg = abs(deg);
-        while ((difference = abs(ev3_motor_get_counts(steering < 0 ? B : C) - initial_deg)) < deg) {
-            current_speed = (difference * 1.0 / deg) * abs(initial_speed - target_speed) + initial_speed;
-            // sprintf(output, "S: %i, D: %i", current_speed, difference);
-            // ev3_lcd_draw_string(output, 10, 30);
-
-            if (steering > 0) {
-                power_b = current_speed - (steering / 50.0) * current_speed;
-                power_c = -1 * current_speed;
-            } else {
-                power_b = current_speed;
-                power_c = -1 * (current_speed + (steering / 50.0) * current_speed);
-            }
-            ev3_motor_set_power(B, power_b);
-            ev3_motor_set_power(C, power_c);
-            // ev3_lcd_draw_string()
-        }
-    }
-    // ev3_lcd_draw_string("Beendet", 10, 30);
+    current_speed = speed;
     if (brake) {
-        ev3_motor_stop(B, true);
-        ev3_motor_stop(C, true);
+        off(brake);
+        current_speed = 0;
     }
+}
+
+void drive_smooth(int target_speed, int deg, bool brake)
+{
+
+    int delta_speed = target_speed - abs(current_speed);
+    float delta_speed_deg_needed = delta_speed * ACC_PER_100_DEG;
+
+    current_speed = target_speed;
 }
 
 void linefollow_slow(int speed, int deg, bool brake)
@@ -205,8 +149,10 @@ void linefollow_slow(int speed, int deg, bool brake)
         // fprintf(bt, "%f,%f; ", error, scan_diff);
         last_error = error;
     }
+    current_speed = speed;
     if (brake) {
         off(brake);
+        current_speed = 0;
     }
 }
 
@@ -230,10 +176,12 @@ void linefollow_test(int speed, int deg, float kp, float kd, bool brake)
         last_error = error;
         counter++;
     }
+    current_speed = speed;
     display_append("+", counter);
     // fprintf(bt, "\n");
     if (brake) {
         off(brake);
+        current_speed = 0;
     }
 }
 
@@ -266,8 +214,10 @@ void linefollow_intersection(int speed, bool brake)
         // fprintf(bt, "%f,%f; ", error, scan_diff);
         last_error = error;
     }
+    current_speed = speed;
     if (brake) {
-        linefollow_slow(40, 70, true);
+        linefollow_slow(40, 90, true);
+        current_speed = 0;
     }
 }
 
@@ -304,9 +254,11 @@ void linefollow_deg(int speed, int deg, bool_t brake)
         ev3_motor_set_power(B, power_b);
         ev3_motor_set_power(C, power_c);
     }
+    current_speed = speed;
     if (brake) {
         ev3_motor_stop(B, true);
         ev3_motor_stop(C, true);
+        current_speed = 0;
     }
 }
 
@@ -332,9 +284,11 @@ void linefollow_col_1(int speed, int ref_light_s1, bool_t brake)
         // fprintf(bt, "%f,%f; ", error, scan_diff);
         last_error = error;
     }
+    current_speed = speed;
     if (brake) {
         ev3_motor_stop(B, true);
         ev3_motor_stop(C, true);
+        current_speed = 0;
     }
 }
 
@@ -360,9 +314,11 @@ void linefollow_col_1_greater(int speed, int ref_light_s1, bool_t brake)
         // fprintf(bt, "%f,%f; ", error, scan_diff);
         last_error = error;
     }
+    current_speed = speed;
     if (brake) {
         ev3_motor_stop(B, true);
         ev3_motor_stop(C, true);
+        current_speed = 0;
     }
 }
 
@@ -386,13 +342,11 @@ void turn_90(bool turn_left, bool brake)
 void move_up(bool_t block)
 {
     act_move(lifter, LIFTER_UP, true);
-    wait(0.1);
 }
 
 void move_down(bool_t block)
 {
     act_move(lifter, LIFTER_INIT, true);
-    wait(0);
 }
 
 char scan(int output_y)
