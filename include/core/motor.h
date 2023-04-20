@@ -19,6 +19,8 @@ void m_on(Motor m, int speed);
 void m_off(Motor m, bool brake);
 void m_reset(Motor m);
 int m_get_deg(Motor m);
+int m_get_speed(Motor m);
 void m_wait_deg(Motor m, int deg);
+void m_on_deg(Motor m, int speed, int deg, bool brake, bool block);
 
 #endif

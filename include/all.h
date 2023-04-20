@@ -13,6 +13,7 @@
 #include "programs/debug.h"
 #include "programs/run.h"
 #include "programs/test.h"
+#include "robot/actuator.h"
 #include "robot/drive.h"
 
 #endif

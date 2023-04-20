@@ -2,6 +2,18 @@
 
 void test()
 {
-    linefollow_test(20, 200, 0.8, 50, false);
-    linefollow_test(100, 1300, 0.4, 50, true);
+    m_on(a, -1);
+    m_on(d, -1);
+    wait(1);
+    act_init(lifter);
+    act_init(dropper);
+    m_off(a, true);
+    m_off(d, true);
+
+    for (int i = 0; i < 20; ++i) {
+        move_up(true);
+        wait(1);
+        move_down(true);
+        wait(1);
+    }
 }
