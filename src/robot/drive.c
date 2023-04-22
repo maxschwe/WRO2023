@@ -1,16 +1,6 @@
 #include "../../include/robot/drive.h"
 #include "../../include/config.h"
 
-#define B EV3_PORT_B
-#define C EV3_PORT_C
-#define D EV3_PORT_D
-#define S1 EV3_PORT_1
-#define S2 EV3_PORT_2
-#define S3 EV3_PORT_3
-#define S4 EV3_PORT_4
-
-int current_speed = 0;
-
 void on(int speed, int steering)
 {
     int speed_b, speed_c;
@@ -41,7 +31,7 @@ void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
     float current_steering;
     int taken_deg_b = 0;
     int taken_deg_c = 0;
-    int b_left_deg, c_left_deg, abs_b_left, abs_c_left;
+    int b_left_deg, c_left_deg;
     int start_deg_b = m_get_deg(b);
     int start_deg_c = m_get_deg(c);
     int speed_diff = target_speed - speed;
@@ -130,198 +120,6 @@ void drive_smooth(int target_speed, int deg, bool brake)
     current_speed = target_speed;
 }
 
-void linefollow_slow(int speed, int deg, bool brake)
-{
-    float kp = 0.4;
-    float kd = 50;
-    float error = 0;
-    float pid_value = 0.0;
-    float last_error = 0;
-    int current_speed = 0;
-    int initial_b = ev3_motor_get_counts(B);
-    while (abs(ev3_motor_get_counts(B) - initial_b) < deg) {
-        error = col_get_ref(s2) - col_get_ref(s3);
-
-        pid_value = error * kp + (error - last_error) * kd;
-
-        on(speed, pid_value);
-
-        // fprintf(bt, "%f,%f; ", error, scan_diff);
-        last_error = error;
-    }
-    current_speed = speed;
-    if (brake) {
-        off(brake);
-        current_speed = 0;
-    }
-}
-
-void linefollow_test(int speed, int deg, float kp, float kd, bool brake)
-{
-    int error = 0;
-    float pid_value = 0.0;
-    float last_error = 0;
-    int current_speed = 0;
-    int power_b, power_c;
-    int initial_b = ev3_motor_get_counts(B);
-    int counter = 0;
-    while (abs(ev3_motor_get_counts(B) - initial_b) < deg) {
-        error = col_get_ref(s2) - col_get_ref(s3);
-
-        pid_value = error * kp + (error - last_error) * kd;
-
-        on(speed, pid_value);
-
-        // fprintf(bt, "%f,%f; ", error, scan_diff);
-        last_error = error;
-        counter++;
-    }
-    current_speed = speed;
-    display_append("+", counter);
-    // fprintf(bt, "\n");
-    if (brake) {
-        off(brake);
-        current_speed = 0;
-    }
-}
-
-void linefollow_intersection(int speed, bool brake)
-{
-
-    FILE* bt = ev3_serial_open_file(EV3_SERIAL_BT);
-    int power_b;
-    int power_c;
-    float kp = 0.4;
-    if (speed == 20) {
-        kp = 0.5;
-    }
-    float kd = 50;
-    float error = 0;
-    float pid_value;
-    int last_error = 0;
-    int ref_s2 = ev3_color_sensor_get_reflect(EV3_PORT_2);
-    int ref_s3 = ev3_color_sensor_get_reflect(EV3_PORT_3);
-    int initial_b = ev3_motor_get_counts(EV3_PORT_B);
-    while (ref_s2 + ref_s3 > 30 || abs(ev3_motor_get_counts(EV3_PORT_B) - initial_b) < 200) {
-        ref_s2 = col_get_ref(s2);
-        ref_s3 = col_get_ref(s3);
-        error = ref_s2 - ref_s3;
-
-        pid_value = error * kp + (error - last_error) * kd;
-
-        on(speed, pid_value);
-
-        // fprintf(bt, "%f,%f; ", error, scan_diff);
-        last_error = error;
-    }
-    current_speed = speed;
-    if (brake) {
-        linefollow_slow(40, 90, true);
-        current_speed = 0;
-    }
-}
-
-#define SCAN_COUNT 10
-
-void linefollow_deg(int speed, int deg, bool_t brake)
-{
-    int power_b;
-    int power_c;
-    float kp = 0.5;
-    float kd = 0.2;
-    // kp = kp + 0.1 * ((100 - speed) / 100) * kp;
-    // kd = kd - 0.8 * ((100 - speed) / 100) * kd;
-    int error = 0;
-    int last_error = 0;
-    int ref_s2 = ev3_color_sensor_get_reflect(S2);
-    int ref_s3 = ev3_color_sensor_get_reflect(S3);
-    int initial_b = ev3_motor_get_counts(B);
-    while (abs(ev3_motor_get_counts(B) - initial_b) < deg) {
-        ref_s2 = ev3_color_sensor_get_reflect(S2);
-        ref_s3 = ev3_color_sensor_get_reflect(S3);
-        error = (ref_s2 - ref_s3) / 20;
-        error *= kp;
-        error += (error - last_error) * kd;
-
-        last_error = error;
-        if (error > 0) {
-            power_b = -1 * speed;
-            power_c = speed - error;
-        } else {
-            power_b = -1 * speed - error;
-            power_c = speed;
-        }
-        ev3_motor_set_power(B, power_b);
-        ev3_motor_set_power(C, power_c);
-    }
-    current_speed = speed;
-    if (brake) {
-        ev3_motor_stop(B, true);
-        ev3_motor_stop(C, true);
-        current_speed = 0;
-    }
-}
-
-void linefollow_col_1(int speed, int ref_light_s1, bool_t brake)
-{
-    char output[100];
-    int power_b;
-    int power_c;
-    float kp = 0.5;
-    float kd = 50;
-    int error = 0;
-    float pid_value;
-    int last_error = 0;
-    int ref_s2 = ev3_color_sensor_get_reflect(S2);
-    int ref_s3 = ev3_color_sensor_get_reflect(S3);
-    while (ev3_color_sensor_get_reflect(S1) < ref_light_s1) {
-        error = col_get_ref(s2) - col_get_ref(s3);
-
-        pid_value = error * kp + (error - last_error) * kd;
-
-        on(speed, pid_value);
-
-        // fprintf(bt, "%f,%f; ", error, scan_diff);
-        last_error = error;
-    }
-    current_speed = speed;
-    if (brake) {
-        ev3_motor_stop(B, true);
-        ev3_motor_stop(C, true);
-        current_speed = 0;
-    }
-}
-
-void linefollow_col_1_greater(int speed, int ref_light_s1, bool_t brake)
-{
-    char output[100];
-    int power_b;
-    int power_c;
-    float kp = 0.5;
-    float kd = 0.2;
-    float error = 0;
-    float last_error = 0;
-    float pid_value = 0.0;
-    int ref_s2 = ev3_color_sensor_get_reflect(S2);
-    int ref_s3 = ev3_color_sensor_get_reflect(S3);
-    while (ev3_color_sensor_get_reflect(S1) > ref_light_s1) {
-        error = col_get_ref(s2) - col_get_ref(s3);
-
-        pid_value = error * kp + (error - last_error) * kd;
-
-        on(speed, pid_value);
-
-        // fprintf(bt, "%f,%f; ", error, scan_diff);
-        last_error = error;
-    }
-    current_speed = speed;
-    if (brake) {
-        ev3_motor_stop(B, true);
-        ev3_motor_stop(C, true);
-        current_speed = 0;
-    }
-}
-
 void turn_line(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
@@ -335,19 +133,21 @@ void turn_line(bool turn_left, bool brake)
 void turn_90(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
-    drive_deg(10, 30, steering, 140, false);
-    drive_deg(30, 10, steering, 172, true);
+    drive_deg(10, 20, steering, 140, false);
+    drive_deg(20, 10, steering, 174, true);
 }
 
-void move_up(bool_t block)
+void move_up(bool block)
 {
-    act_move(lifter, LIFTER_UP, true);
+    act_move(lifter, LIFTER_UP, block);
 }
 
-void move_down(bool_t block)
+void move_down(bool block)
 {
-    act_move(lifter, LIFTER_INIT, true);
+    act_move(lifter, LIFTER_INIT, block);
 }
+
+#define SCAN_COUNT 10
 
 char scan(int output_y)
 {
@@ -357,7 +157,7 @@ char scan(int output_y)
     float lowest_g = 0.0;
     float lowest_b = 0.0;
     for (int i = 0; i < SCAN_COUNT; ++i) {
-        ev3_color_sensor_get_rgb_raw(S4, &val);
+        val = col_get_rgb(s4);
         lowest_r += val.r;
         lowest_g += val.g;
         lowest_b += val.b;

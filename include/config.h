@@ -26,7 +26,7 @@
 #define GREY 'g'
 
 // LIFTER Positions
-#define LIFTER_INIT 0
+#define LIFTER_INIT -5
 #define LIFTER_GRABBED 40
 #define LIFTER_BACK_BOAT_GRABBED 85
 #define LIFTER_UP 130
@@ -53,6 +53,8 @@ extern ColorSensor s4;
 
 extern Actuator lifter;
 extern Actuator dropper;
+
+extern int current_speed;
 
 void init();
 

@@ -36,6 +36,7 @@ void drop_off()
 
 void run()
 {
+    col_get_rgb(s4);
     // init actuators
     m_on(a, -1);
     m_on(d, -1);
@@ -51,13 +52,13 @@ void run()
     m_off(a, true);
     m_off(d, true);
 
-    drive_deg(-30, -30, 0, 160, false);
+    drive_deg(-30, -30, 0, 170, true);
     // wait_center_press();
-    beep();
     val[0] = scan(10);
-    drive_deg(-30, -10, 0, 130, false);
-    // wait_center_press();
+    beep();
+    drive_deg(-30, -10, 0, 110, true);
     val[1] = scan(30);
+    // wait_center_press();
 
     // drive backwards and drive to white containers
     drive_deg(10, 40, 0, 150, true);
@@ -75,7 +76,7 @@ void run()
     linefollow_slow(20, 500, false);
     beep();
     linefollow_col_1(10, 18, false);
-    drive_deg(10, 10, 0, 10, true);
+    drive_deg(10, 10, 0, 20, true);
     beep();
     wait(0.4);
 
@@ -111,7 +112,7 @@ void run()
     on(10, 0);
 
     char pos2 = scan(70);
-    drive_deg(10, 10, 0, 125, false);
+    drive_deg(10, 10, 0, 130, false);
     if (check_if_in_array(pos2)) {
         off(true);
         beep();
@@ -134,7 +135,7 @@ void run()
 
     on(10, 0);
     char pos3 = scan(90);
-    drive_deg(10, 10, 0, 130, false);
+    drive_deg(10, 10, 0, 120, false);
     if (check_if_in_array(pos3) || taken_blocks == 2) {
         off(true);
         rm_from_array(pos3);
@@ -156,7 +157,7 @@ void run()
 
     on(10, 0);
     char pos4 = scan(110);
-    drive_deg(10, 10, 0, 130, false);
+    drive_deg(10, 10, 0, 130, true);
     int last_position = 4;
     if (check_if_in_array(pos4) || taken_blocks >= 2) {
         off(true);
@@ -175,6 +176,7 @@ void run()
 
     // collect missing containers
     if (not_taken_positions[0] == 1) {
+        off(true);
         drive_deg(-10, -10, 0, -450, true);
         move_up(true);
         move_down(true);
@@ -236,26 +238,26 @@ void run()
     drive_deg(20, 20, 1, 140, false);
     drive_deg(20, 20, 1, 190, false);
     drive_deg(20, 20, 1, 110, true);
-    drive_deg(20, 20, -50, 150, true);
+    drive_deg(20, 20, -50, 180, true);
     drive_deg(20, 5, 50, 100, false);
-    drive_deg(20, 5, 50, 50, true);
+    drive_deg(20, 5, 50, 80, true);
     act_move(lifter, LIFTER_UP, false);
     drive_deg(20, 5, 0, 50, false);
 
     wait(0.5);
 
     // move backwards and drive to small ship
-    drive_deg(-20, -40, 0, 150, false);
+    drive_deg(-20, -40, 0, 250, false);
     on(-40, 0);
-    while (col_get_ref(s2) < 28) {
+    while (col_get_ref(s2) < 35) {
     }
     drive_deg(-40, -10, 0, 330, true);
     wait(0.3);
     turn_90(true, true);
     wait(0.3);
-    linefollow_slow(30, 300, false);
-    linefollow_col_1_greater(30, 40, false);
-    linefollow_col_1(20, 30, false);
+    linefollow_slow(20, 300, false);
+    linefollow_col_1_greater(20, 40, false);
+    linefollow_col_1(10, 30, false);
     linefollow_slow(10, 350, true);
     wait(0.3);
     drive_deg(10, 30, -100, 140, false);
@@ -313,6 +315,7 @@ void run()
     drive_deg(-30, -30, 0, 150, true);
 
     // place small ship
+    wait(0.3);
     drive_deg(-10, -40, -50, 150, false);
     drive_deg(-40, -40, -50, 320, false);
     drive_deg(-40, -10, -50, 150, true);
@@ -328,8 +331,9 @@ void run()
     wait(0.5);
     off(true);
     drive_deg(20, 20, 0, 320, true);
+    wait(0.3);
     drive_deg(-10, -30, 50, 150, false);
-    drive_deg(-30, -30, 50, 330, false);
+    drive_deg(-30, -30, 50, 320, false);
     drive_deg(-30, -10, 50, 150, true);
     drive_deg(10, 40, 0, 150, false);
     drive_deg(40, 40, 0, 450, false);
@@ -344,5 +348,5 @@ void run()
     drive_deg(-15, -15, 0, 285, true);
     drop_off();
     drive_deg(-15, -15, 0, 110, true);
-    drop_off();
+    act_move(dropper, DROPPER_DROPPED, true);
 }

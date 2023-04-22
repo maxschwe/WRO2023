@@ -15,5 +15,6 @@
 #include "programs/test.h"
 #include "robot/actuator.h"
 #include "robot/drive.h"
+#include "robot/linefollow.h"
 
 #endif
