@@ -25,6 +25,10 @@
 #define WHITE 'w'
 #define GREY 'g'
 
+// Run Config
+#define BLOCK_COL_COUNT 2
+#define COLOURED_CONTAINER_COUNT 4
+
 // LIFTER Positions
 #define LIFTER_INIT -5
 #define LIFTER_GRABBED 40
@@ -35,6 +39,11 @@
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 30
 #define DROPPER_DROPPED 150
+
+// Ship Drop off positions
+#define POS_COUNT 6
+#define POS_SMALL_BOAT_COUNT 2
+#define POS_BIG_BOAT_COUNT 4
 
 #define PRINT_DRIVE_DEBUG false
 
@@ -55,6 +64,7 @@ extern Actuator lifter;
 extern Actuator dropper;
 
 extern int current_speed;
+extern int pos_ship_values[POS_COUNT];
 
 void init();
 

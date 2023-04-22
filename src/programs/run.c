@@ -1,41 +1,22 @@
 #include "../../include/programs/run.h"
 
-#define SCAN_VAL_COUNT 2
-#define NOT_TAKEN_POSITIONS 2
+int scans_blocks[BLOCK_COL_COUNT];
+char scans_container[COLOURED_CONTAINER_COUNT];
 
-int taken_blocks = 0;
-char val[SCAN_VAL_COUNT] = { 'n', 'n' };
-int not_taken_positions[NOT_TAKEN_POSITIONS] = { 0, 0 };
-
-bool check_if_in_array(char c)
+void init_arrays()
 {
-    for (int i = 0; i < SCAN_VAL_COUNT; ++i) {
-        if (val[i] == c) {
-            return true;
-        }
+    for (int i = 0; i < BLOCK_COL_COUNT; ++i) {
+        scans_blocks[i] = 0;
     }
-    return false;
-}
 
-void rm_from_array(char c)
-{
-    for (int i = SCAN_VAL_COUNT - 1; i >= 0; --i) {
-        if (val[i] == c) {
-            val[i] = 'n';
-            break;
-        }
+    for (int i = 0; i < COLOURED_CONTAINER_COUNT; ++i) {
+        scans_container[i] = 'n';
     }
-}
-
-void drop_off()
-{
-    act_move(dropper, DROPPER_DROPPED, true);
-    wait(0.2);
-    act_move(dropper, DROPPER_NORMAL, true);
 }
 
 void run()
 {
+    init_arrays();
     col_get_rgb(s4);
     // init actuators
     m_on(a, -1);
@@ -54,10 +35,19 @@ void run()
 
     drive_deg(-30, -30, 0, 170, true);
     // wait_center_press();
-    val[0] = scan(10);
-    beep();
+    char scan_1 = scan(10);
+    if (scan_1 == 'b') {
+        scans_blocks[0] += 1;
+    } else {
+        scans_blocks[1] += 1;
+    }
     drive_deg(-30, -10, 0, 110, true);
-    val[1] = scan(30);
+    char scan_2 = scan(30);
+    if (scan_2 == 'b') {
+        scans_blocks[0] += 1;
+    } else {
+        scans_blocks[1] += 1;
+    }
     // wait_center_press();
 
     // drive backwards and drive to white containers
@@ -76,7 +66,7 @@ void run()
     linefollow_slow(20, 500, false);
     beep();
     linefollow_col_1(10, 18, false);
-    drive_deg(10, 10, 0, 20, true);
+    drive_deg(10, 10, 0, 30, true);
     beep();
     wait(0.4);
 
@@ -93,146 +83,47 @@ void run()
     // wait_center_press();
 
     // scan 1. coloured container
-    char pos1 = scan(50);
-    drive_deg(10, 10, 0, 120, false);
-    if (check_if_in_array(pos1)) {
-        off(true);
-        rm_from_array(pos1);
-        move_up(true);
-        move_down(true);
-        wait(0.5);
-        ++taken_blocks;
-    } else {
-        not_taken_positions[0] = 1;
-    }
+    scans_container[0] = scan(50);
+    drive_deg(10, 10, 0, 120, true);
+    move_up(true);
+    move_down(true);
+    wait(0.5);
 
     // scan 2. coloured container
     drive_deg(10, 10, 0, 20, false);
     // wait_center_press();
     on(10, 0);
 
-    char pos2 = scan(70);
-    drive_deg(10, 10, 0, 130, false);
-    if (check_if_in_array(pos2)) {
-        off(true);
-        beep();
-        rm_from_array(pos2);
-        move_up(true);
-        move_down(true);
-        wait(0.5);
-        ++taken_blocks;
-    } else {
-        if (not_taken_positions[0] == 0) {
-            not_taken_positions[0] = 2;
-        } else {
-            not_taken_positions[1] = 2;
-        }
-    }
+    scans_container[1] = scan(70);
+    drive_deg(10, 10, 0, 130, true);
+    move_up(true);
+    move_down(true);
+    wait(0.5);
 
     // scan 3. coloured container
     drive_deg(10, 10, 0, 20, false);
     // wait_center_press();
 
-    on(10, 0);
-    char pos3 = scan(90);
-    drive_deg(10, 10, 0, 120, false);
-    if (check_if_in_array(pos3) || taken_blocks == 2) {
-        off(true);
-        rm_from_array(pos3);
-        move_up(true);
-        move_down(true);
-        wait(0.5);
-        ++taken_blocks;
-    } else {
-        if (not_taken_positions[0] == 0) {
-            not_taken_positions[0] = 3;
-        } else {
-            not_taken_positions[1] = 3;
-        }
-    }
+    scans_container[2] = scan(90);
+    drive_deg(10, 10, 0, 120, true);
+    move_up(true);
+    move_down(true);
+    wait(0.5);
 
     // scan 4. coloured container
     drive_deg(10, 10, 0, 20, false);
     // wait_center_press();
 
     on(10, 0);
-    char pos4 = scan(110);
+    scans_container[3] = scan(110);
     drive_deg(10, 10, 0, 130, true);
-    int last_position = 4;
-    if (check_if_in_array(pos4) || taken_blocks >= 2) {
-        off(true);
-        rm_from_array(pos4);
-        move_up(true);
-        move_down(true);
-        wait(0.5);
-        ++taken_blocks;
-    } else {
-        if (not_taken_positions[0] == 0) {
-            not_taken_positions[0] = 4;
-        } else {
-            not_taken_positions[1] = 4;
-        }
-    }
-
-    // collect missing containers
-    if (not_taken_positions[0] == 1) {
-        off(true);
-        drive_deg(-10, -10, 0, -450, true);
-        move_up(true);
-        move_down(true);
-        last_position = 1;
-        if (not_taken_positions[1] == 2) {
-            drive_deg(10, 10, 0, 150, true);
-            move_up(true);
-            move_down(true);
-            last_position = 2;
-        } else if (not_taken_positions[1] == 3) {
-            drive_deg(10, 10, 0, 300, true);
-            move_up(true);
-            move_down(true);
-            last_position = 3;
-        } else if (not_taken_positions[1] == 4) {
-            drive_deg(10, 10, 0, 450, true);
-            move_up(true);
-            move_down(true);
-            last_position = 4;
-        }
-    } else if (not_taken_positions[0] == 2) {
-        drive_deg(-10, -10, 0, 300, true);
-        move_up(true);
-        move_down(true);
-        last_position = 2;
-        if (not_taken_positions[1] == 3) {
-            drive_deg(10, 10, 0, 150, true);
-            move_up(true);
-            move_down(true);
-            last_position = 3;
-        } else if (not_taken_positions[1] == 4) {
-            drive_deg(10, 10, 0, 300, true);
-            move_up(true);
-            move_down(true);
-            last_position = 4;
-        }
-    } else if (not_taken_positions[0] == 3) {
-        drive_deg(-10, -10, 0, 150, true);
-        move_up(true);
-        move_down(true);
-        last_position = 3;
-        if (not_taken_positions[1] == 4) {
-            drive_deg(10, 10, 0, 150, true);
-            move_up(true);
-            move_down(true);
-            last_position = 4;
-        }
-    }
-    if (last_position == 1) {
-        drive_deg(10, 20, 0, 270, false);
-    } else if (last_position == 2) {
-        drive_deg(10, 20, 0, 120, false);
-    }
+    move_up(true);
+    move_down(true);
+    wait(0.5);
 
     // drive forward and take big ship
-    act_move(lifter, LIFTER_GRABBED, false);
+    act_move(lifter, LIFTER_GRABBED, false); // collect missing containers
+
     on(20, 0);
     col_wait_ref(s1, 'b');
     drive_deg(20, 20, 1, 140, false);
@@ -335,18 +226,6 @@ void run()
     drive_deg(-10, -30, 50, 150, false);
     drive_deg(-30, -30, 50, 320, false);
     drive_deg(-30, -10, 50, 150, true);
-    drive_deg(10, 40, 0, 150, false);
-    drive_deg(40, 40, 0, 450, false);
-    drive_deg(40, 10, 0, 150, true);
 
-    // drop of the containers
-    drop_off();
-    drive_deg(-15, -15, 0, 110, true);
-    drop_off();
-    drive_deg(-15, -15, 0, 110, true);
-    drop_off();
-    drive_deg(-15, -15, 0, 285, true);
-    drop_off();
-    drive_deg(-15, -15, 0, 110, true);
-    act_move(dropper, DROPPER_DROPPED, true);
+    place_containers_on_ships(scans_blocks, scans_container);
 }

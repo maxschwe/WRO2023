@@ -134,7 +134,7 @@ void turn_90(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
     drive_deg(10, 20, steering, 140, false);
-    drive_deg(20, 10, steering, 174, true);
+    drive_deg(20, 10, steering, 172, true);
 }
 
 void move_up(bool block)
@@ -147,7 +147,7 @@ void move_down(bool block)
     act_move(lifter, LIFTER_INIT, block);
 }
 
-#define SCAN_COUNT 10
+#define SCAN_COUNT 2
 
 char scan(int output_y)
 {
