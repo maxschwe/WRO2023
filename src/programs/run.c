@@ -95,7 +95,7 @@ void run()
     on(10, 0);
 
     scans_container[1] = scan(70);
-    drive_deg(10, 10, 0, 130, true);
+    drive_deg(10, 10, 0, 120, true);
     move_up(true);
     move_down(true);
     wait(0.5);
@@ -127,13 +127,13 @@ void run()
     on(20, 0);
     col_wait_ref(s1, 'b');
     drive_deg(20, 20, 1, 140, false);
-    drive_deg(20, 20, 1, 190, false);
+    drive_deg(20, 20, 1, 150, false);
     drive_deg(20, 20, 1, 110, true);
-    drive_deg(20, 20, -50, 180, true);
-    drive_deg(20, 5, 50, 100, false);
+    drive_deg(20, 20, -50, 210, true);
+    drive_deg(20, 5, 50, 130, false);
     drive_deg(20, 5, 50, 80, true);
     act_move(lifter, LIFTER_UP, false);
-    drive_deg(20, 5, 0, 50, false);
+    drive_deg(20, 5, 0, 70, false);
 
     wait(0.5);
 
@@ -172,7 +172,7 @@ void run()
     linefollow_slow(20, 200, false);
     linefollow_intersection(20, false);
     act_move_speed(lifter, 80, LIFTER_UP, false);
-    on(10, 20);
+    on(10, 30);
     m_wait_deg(b, 100);
     off(true);
     wait(0.5);

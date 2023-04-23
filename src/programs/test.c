@@ -2,5 +2,5 @@
 
 void test()
 {
-    drive_deg(20, 100, 0, 1000, true);
+    linefollow_slow(10, 3000, true);
 }

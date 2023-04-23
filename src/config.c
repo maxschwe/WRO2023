@@ -14,7 +14,9 @@ Actuator lifter = { .motor = { EV3_PORT_D, LARGE_MOTOR, D_COUNTERCLOCKWISE }, .m
 Actuator dropper = { .motor = { EV3_PORT_A, LARGE_MOTOR, A_COUNTERCLOCKWISE }, .max_neg_speed = 60, .max_pos_speed = 20 };
 
 int current_speed = 0;
-int pos_ship_values[POS_COUNT] = { 110, 220, 460, 560, 650, 750 };
+
+// pos1, pos2, pos3, pos4, pos5, pos6, finish
+int pos_ship_values[POS_COUNT] = { 120, 230, 470, 570, 660, 760, 320 };
 
 void init()
 {

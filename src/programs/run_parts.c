@@ -15,12 +15,18 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
     m_reset(b);
 
     // drop off white container
-    drive_to_ship_position(5);
-    drop_off(true, 5, occupied);
+    int target_pos = get_free_pos_ship(true, occupied);
+    drive_to_ship_position(target_pos);
+    drop_off(true, target_pos, occupied);
 
     // drop off coloured containers
     for (int i = 0; i < COLOURED_CONTAINER_COUNT; i++) {
         bool is_big_ship = false;
+
+        // move lifter up and grabber down on 3. drop off
+        if (i == 2) {
+            act_move(lifter, LIFTER_UP, false);
+        }
 
         // colour container is blue and big ship needs blue container
         if (scans_containers[i] == 'b' && scans_blocks_copy[0] > 0) {
@@ -41,14 +47,16 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
             }
         }
 
-        int target_pos = get_free_pos_ship(is_big_ship, occupied);
+        target_pos = get_free_pos_ship(is_big_ship, occupied);
         drive_to_ship_position(target_pos);
-        bool is_last_container_and_on_last_position = COLOURED_CONTAINER_COUNT == i + 1 && target_pos == 1;
-        drop_off(!is_last_container_and_on_last_position, target_pos, occupied);
+        bool is_last_container_and_on_first_or_second_position = COLOURED_CONTAINER_COUNT == i + 1 && target_pos <= 2;
+        drop_off(!is_last_container_and_on_first_or_second_position, target_pos, occupied);
     }
 
     // drive in finish
-    drive_to_ship_position(1);
+    if (target_pos > 2) {
+        drive_to_ship_position(7);
+    }
 }
 
 void drive_to_ship_position(int target_pos)
@@ -63,13 +71,17 @@ void drive_to_ship_position(int target_pos)
 
 int get_free_pos_ship(bool big_ship, bool* occupied)
 {
-    int initial_pos_check = 1;
     if (big_ship) {
-        initial_pos_check += POS_SMALL_BOAT_COUNT;
-    }
-    for (int i = initial_pos_check; i <= POS_COUNT; ++i) {
-        if (!occupied[i - 1]) {
-            return i;
+        for (int i = BIG_SHIP_LAST_POSITION_TO_CHECK; i > POS_SMALL_BOAT_COUNT; --i) {
+            if (!occupied[i - 1]) {
+                return i;
+            }
+        }
+    } else {
+        for (int i = POS_SMALL_BOAT_COUNT; i > 0; --i) {
+            if (!occupied[i - 1]) {
+                return i;
+            }
         }
     }
     return POS_COUNT;

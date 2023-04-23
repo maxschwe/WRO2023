@@ -45,6 +45,9 @@
 #define POS_SMALL_BOAT_COUNT 2
 #define POS_BIG_BOAT_COUNT 4
 
+// change to 6 if you also want last position on big ship to be placed
+#define BIG_SHIP_LAST_POSITION_TO_CHECK 5
+
 #define PRINT_DRIVE_DEBUG false
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
