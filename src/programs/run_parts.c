@@ -11,7 +11,7 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
     for (int i = 0; i < POS_COUNT; ++i) {
         occupied[i] = false;
     }
-    wait(0.2);
+    wait(0.3);
     m_reset(b);
 
     // drop off white container
@@ -62,7 +62,7 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
 void drive_to_ship_position(int target_pos)
 {
     int delta_deg = pos_ship_values[target_pos - 1] - m_get_deg(b);
-    int speed = 15;
+    int speed = 20;
     if (delta_deg < 0) {
         speed = -speed;
     }
@@ -92,7 +92,7 @@ void drop_off(bool lift_end, int pos, bool* occupied)
     act_move(dropper, DROPPER_DROPPED, true);
     occupied[pos - 1] = true;
     if (lift_end) {
-        wait(0.2);
+        wait(0.3);
         act_move(dropper, DROPPER_NORMAL, true);
     }
 }

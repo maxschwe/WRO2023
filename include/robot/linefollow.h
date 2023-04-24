@@ -15,5 +15,7 @@ void linefollow_intersection(int speed, bool brake);
 void linefollow_col_1(int speed, int ref_light_s1, bool brake);
 void linefollow_col_1_greater(int speed, int ref_light_s1, bool brake);
 void linefollow_deg(int speed, int deg, bool brake);
+void linefollow_deg_custom(int speed, int deg, float kp, float kd, bool brake);
+void linefollow_intersection_custom(int speed, float kp, float kd, bool brake);
 
 #endif

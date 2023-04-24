@@ -38,7 +38,7 @@
 // DROPPER Positions
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 30
-#define DROPPER_DROPPED 150
+#define DROPPER_DROPPED 145
 
 // Ship Drop off positions
 #define POS_COUNT 6
@@ -67,7 +67,7 @@ extern Actuator lifter;
 extern Actuator dropper;
 
 extern int current_speed;
-extern int pos_ship_values[POS_COUNT];
+extern int pos_ship_values[POS_COUNT + 1];
 
 void init();
 

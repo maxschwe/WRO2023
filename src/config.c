@@ -10,13 +10,13 @@ ColorSensor s2 = { EV3_PORT_2 };
 ColorSensor s3 = { EV3_PORT_3 };
 ColorSensor s4 = { EV3_PORT_4 };
 
-Actuator lifter = { .motor = { EV3_PORT_D, LARGE_MOTOR, D_COUNTERCLOCKWISE }, .max_neg_speed = 30, .max_pos_speed = 25 };
+Actuator lifter = { .motor = { EV3_PORT_D, LARGE_MOTOR, D_COUNTERCLOCKWISE }, .max_neg_speed = 30, .max_pos_speed = 30 };
 Actuator dropper = { .motor = { EV3_PORT_A, LARGE_MOTOR, A_COUNTERCLOCKWISE }, .max_neg_speed = 60, .max_pos_speed = 20 };
 
 int current_speed = 0;
 
 // pos1, pos2, pos3, pos4, pos5, pos6, finish
-int pos_ship_values[POS_COUNT] = { 120, 230, 470, 570, 660, 760, 320 };
+int pos_ship_values[POS_COUNT + 1] = { 170, 270, 490, 590, 690, 790, 320 };
 
 void init()
 {

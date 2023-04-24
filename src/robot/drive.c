@@ -124,8 +124,9 @@ void turn_line(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
     ColorSensor sensor = turn_left ? s2 : s3;
-    drive_deg(30, 30, steering, 150, false);
+    drive_deg(20, 30, steering, 100, false);
     drive_col(30, steering, sensor, WHITE, false);
+    drive_deg(30, 30, steering, 30, false);
     drive_col(30, steering, sensor, BLACK, false);
     drive_deg(30, 20, steering, 75, true);
 }
@@ -147,7 +148,7 @@ void move_down(bool block)
     act_move(lifter, LIFTER_INIT, block);
 }
 
-#define SCAN_COUNT 2
+#define SCAN_COUNT 5
 
 char scan(int output_y)
 {
