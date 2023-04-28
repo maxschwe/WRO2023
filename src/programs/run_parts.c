@@ -62,7 +62,7 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
 void drive_to_ship_position(int target_pos)
 {
     int delta_deg = pos_ship_values[target_pos - 1] - m_get_deg(b);
-    int speed = 20;
+    int speed = 15;
     if (delta_deg < 0) {
         speed = -speed;
     }

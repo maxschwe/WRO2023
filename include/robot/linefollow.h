@@ -10,12 +10,13 @@
 #include "../robot/drive.h"
 #include "ev3api.h"
 
-void linefollow_slow(int speed, int deg, bool brake);
+float linefollow_get_kp(int speed);
+float linefollow_get_kd(int speed);
 void linefollow_intersection(int speed, bool brake);
+void linefollow_intersection_custom(int speed, float kp, float kd, bool brake);
 void linefollow_col_1(int speed, int ref_light_s1, bool brake);
 void linefollow_col_1_greater(int speed, int ref_light_s1, bool brake);
 void linefollow_deg(int speed, int deg, bool brake);
 void linefollow_deg_custom(int speed, int deg, float kp, float kd, bool brake);
-void linefollow_intersection_custom(int speed, float kp, float kd, bool brake);
 
 #endif

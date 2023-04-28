@@ -21,9 +21,9 @@ void run()
     // init actuators
 
     // drive forward and scan
-    drive_deg(-20, -40, 0, 200, false);
-    drive_deg(-40, -40, 0, 440, false);
-    drive_deg(-40, -40, 0, 100, false);
+    drive_deg(-15, -35, 0, 200, false);
+    drive_deg(-35, -35, 0, 450, false);
+    drive_deg(-35, -35, 0, 100, false);
     char scan_1 = scan(10);
     if (scan_1 == 'b') {
         scans_blocks[0] += 1;
@@ -49,18 +49,20 @@ void run()
     act_init(dropper);
     m_off(a, true);
     m_off(d, true);
-    linefollow_slow(20, 150, false);
+    linefollow_deg(20, 150, false);
     // stop actuatuors and init
     linefollow_intersection(100, false);
-    linefollow_deg_custom(100, 720, 0.3, 50, false);
-    linefollow_intersection_custom(60, 0.3, 40, true);
+    linefollow_deg(100, 720, false);
+    linefollow_intersection(50, true);
+    // linefollow_deg_custom(100, 720, 0.3, 50, false);
+    // linefollow_intersection_custom(50, 0.3, 40, true);
     act_move(dropper, DROPPER_NORMAL, false);
     wait(0.2);
     turn_line(true, true);
 
     // slow approach to white containers
     wait(0.2);
-    linefollow_slow(20, 500, false);
+    linefollow_deg(20, 500, false);
     beep();
     linefollow_col_1(10, 18, false);
     drive_deg(10, 10, 0, 20, true);
@@ -103,9 +105,11 @@ void run()
     drive_deg(15, 15, 0, 130, true);
     move_up(true);
     move_down(true);
+    // act_move_speed(lifter, 10, LIFTER_UP, true);
+    // act_move_speed(lifter, 5, LIFTER_INIT, true);
 
     // drive forward and take big ship
-    act_move(lifter, LIFTER_GRABBED, false);
+    act_move_speed(lifter, 5, LIFTER_GRABBED, false);
 
     on(20, 0);
     col_wait_ref(s1, 'b');
@@ -129,10 +133,10 @@ void run()
     wait(0.1);
     turn_90(true, true);
     wait(0.1);
-    linefollow_slow(30, 300, false);
+    linefollow_deg(30, 300, false);
     linefollow_col_1_greater(10, 40, false);
     linefollow_col_1(10, 30, false);
-    linefollow_slow(10, 370, true);
+    linefollow_deg(10, 370, true);
     wait(0.3);
     drive_deg(10, 20, -100, 140, false);
     drive_deg(20, 20, -100, 315, false);
@@ -149,20 +153,20 @@ void run()
     // drive_deg(-20, -20, -50, 100, true);
 
     // drive to open sea and drop read container
-    linefollow_slow(20, 200, false);
+    linefollow_deg(20, 200, false);
     drive_deg(20, 20, 10, 370, true);
     act_move_speed(lifter, 60, LIFTER_UP, false);
     drive_deg(20, 20, 10, 60, true);
     wait(0.5);
     turn_line(false, true);
     wait(0.3);
-    linefollow_slow(20, 500, false);
+    linefollow_deg(20, 500, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
     wait(0.2);
     turn_line(false, true);
     wait(0.1);
-    linefollow_slow(30, 800, false);
+    linefollow_deg(30, 800, false);
 
     // drive again red container
     // drive_deg(-10, -60, 0, 200, false);
@@ -185,24 +189,24 @@ void run()
 
     // place small ship
     wait(0.2);
-    drive_deg(-10, -60, -50, 150, false);
-    drive_deg(-60, -60, -50, 330, false);
-    drive_deg(-60, -10, -50, 150, true);
+    drive_deg(-10, -40, -50, 150, false);
+    drive_deg(-40, -40, -50, 330, false);
+    drive_deg(-40, -10, -50, 150, true);
     wait(0.3);
     drive_deg(-10, -10, 0, 50, true);
     wait(0.3);
-    drive_deg(-10, -60, -50, 150, false);
-    drive_deg(-60, -60, -50, 330, false);
-    drive_deg(-60, -10, -50, 150, true);
+    drive_deg(-10, -40, -50, 150, false);
+    drive_deg(-40, -40, -50, 330, false);
+    drive_deg(-40, -10, -50, 150, true);
     act_move(lifter, LIFTER_INIT, true);
     drive_deg(-30, -30, 0, 100, false);
     on(-30, 0);
     wait(0.5);
     off(true);
-    drive_deg(30, 30, 0, 320, true);
+    drive_deg(30, 30, 0, 310, true);
     wait(0.3);
     drive_deg(-10, -40, 50, 150, false);
-    drive_deg(-40, -40, 50, 310, false);
+    drive_deg(-40, -40, 50, 305, false);
     drive_deg(-40, -10, 50, 150, true);
 
     place_containers_on_ships(scans_blocks, scans_container);
