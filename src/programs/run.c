@@ -64,8 +64,8 @@ void run()
     wait(0.2);
     linefollow_deg(20, 500, false);
     beep();
-    linefollow_col_1(10, 18, false);
-    drive_deg(10, 10, 0, 20, true);
+    linefollow_col_1(10, 22, false);
+    drive_deg(10, 10, 0, 15, true);
     beep();
     wait(0.4);
 
@@ -210,4 +210,38 @@ void run()
     drive_deg(-40, -10, 50, 150, true);
 
     place_containers_on_ships(scans_blocks, scans_container);
+
+    // surprise rule
+    // drive back to line
+    // drive_to_ship_position(8);
+    // drive_deg(10, 40, 50, 150, false);
+    // drive_deg(40, 40, 50, 305, false);
+    // drive_deg(40, 10, 50, 150, true);
+    // linefollow_deg(10, 500, false);
+
+    // linefollow_intersection(70, true);
+    // wait(0.2);
+    // turn_line(false, true);
+
+    // // slow approach to white containers
+    // wait(0.2);
+    // linefollow_deg(20, 500, false);
+    // beep();
+    // linefollow_col_1(10, 18, false);
+    // drive_deg(10, 10, 0, 20, true);
+    // beep();
+    // wait(0.4);
+
+    // // grab white container
+    // turn_90(true, true);
+    // drive_deg(-15, -15, 0, 90, true);
+    // move_up(true);
+    // move_down(true);
+    // drive_deg(15, 15, 0, 90, true);
+    // turn_90(true, true);
+    // linefollow_deg(20, 200, false);
+    // linefollow_intersection(70, true);
+    // turn_90(true, true);
+    // linefollow_deg(20, 200, false);
+    // linefollow_intersection(70, true);
 }

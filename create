@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd ..
+make app=WRO2023
+
+echo "Copying to SD card..."
+cp ../OBJ/app /media/max/EV3_WRO/ev3rt/apps/RUN
+echo "Copying finished..."

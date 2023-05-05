@@ -67,7 +67,7 @@ extern Actuator lifter;
 extern Actuator dropper;
 
 extern int current_speed;
-extern int pos_ship_values[POS_COUNT + 1];
+extern int pos_ship_values[POS_COUNT + 2];
 
 void init();
 

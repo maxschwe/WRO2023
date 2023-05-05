@@ -2,7 +2,11 @@
 
 void test()
 {
-    linefollow_deg_custom(75, 3000, 0.25, 75, true);
+    beep();
+    wait(1);
+    beep();
+    wait(1);
+    beep();
 }
 
 // 10: 0.3, 40
