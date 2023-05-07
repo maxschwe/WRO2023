@@ -31,7 +31,7 @@
 
 // LIFTER Positions
 #define LIFTER_INIT -5
-#define LIFTER_GRABBED 40
+#define LIFTER_GRABBED 36
 #define LIFTER_BACK_BOAT_GRABBED 85
 #define LIFTER_UP 130
 
@@ -39,6 +39,7 @@
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 30
 #define DROPPER_DROPPED 145
+#define DROPPER_BODEN 140
 
 // Ship Drop off positions
 #define POS_COUNT 6

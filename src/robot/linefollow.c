@@ -23,7 +23,7 @@ float linefollow_get_kd(int speed)
     } else if (speed <= 25) {
         return 40;
     } else if (speed <= 50) {
-        return 75;
+        return 60;
     } else if (speed <= 75) {
         return 80;
     } else {

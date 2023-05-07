@@ -30,7 +30,7 @@ void run()
     } else {
         scans_blocks[1] += 1;
     }
-    drive_deg(-40, -10, 0, 120, true);
+    drive_deg(-40, -15, 0, 110, false);
     char scan_2 = scan(30);
     if (scan_2 == 'b') {
         scans_blocks[0] += 1;
@@ -62,10 +62,25 @@ void run()
 
     // slow approach to white containers
     wait(0.2);
-    linefollow_deg(20, 500, false);
+    linefollow_deg(10, 380, true);
+    wait(0.3);
+    drive_deg(10, 20, -100, 140, false);
+    drive_deg(20, 20, -100, 315, false);
+    drive_deg(20, 10, -100, 172, true);
+    act_move(dropper, DROPPER_BODEN, true);
+    wait(0.2);
+    act_move(dropper, DROPPER_NORMAL, true);
+    linefollow_intersection(10, true);
+    wait(0.3);
+    drive_deg(10, 20, -100, 140, false);
+    drive_deg(20, 20, -100, 315, false);
+    drive_deg(20, 10, -100, 172, true);
+    wait(0.3);
+
+    linefollow_deg(10, 500, false);
     beep();
     linefollow_col_1(10, 22, false);
-    drive_deg(10, 10, 0, 15, true);
+    drive_deg(10, 10, 0, 10, true);
     beep();
     wait(0.4);
 
@@ -78,8 +93,8 @@ void run()
     drive_deg(15, 40, 0, 100, false);
     drive_deg(40, 40, 0, 100, false);
     drive_col(40, 0, s3, GREY, false);
-    drive_deg(40, 40, 0, 260, false);
-    drive_deg(40, 20, 0, 200, false);
+    drive_deg(40, 40, 0, 280, false);
+    drive_deg(40, 20, 0, 190, false);
 
     scans_container[0] = scan(50);
     drive_deg(15, 15, 0, 112, true);
@@ -88,14 +103,14 @@ void run()
 
     drive_deg(15, 15, 0, 20, false);
     scans_container[1] = scan(70);
-    drive_deg(15, 15, 0, 120, true);
+    drive_deg(15, 15, 0, 125, true);
     move_up(true);
     move_down(true);
     drive_deg(15, 15, 0, 20, false);
 
     // collect 3. coloured container
     scans_container[2] = scan(90);
-    drive_deg(15, 15, 0, 120, true);
+    drive_deg(15, 15, 0, 125, true);
     move_up(true);
     move_down(true);
     drive_deg(15, 15, 0, 20, false);
@@ -109,14 +124,14 @@ void run()
     // act_move_speed(lifter, 5, LIFTER_INIT, true);
 
     // drive forward and take big ship
-    act_move_speed(lifter, 5, LIFTER_GRABBED, false);
+    act_move_speed(lifter, 15, LIFTER_GRABBED, false);
 
     on(20, 0);
     col_wait_ref(s1, 'b');
-    drive_deg(30, 30, 1, 140, false);
-    drive_deg(30, 30, 1, 150, false);
-    drive_deg(30, 30, 1, 110, true);
-    drive_deg(30, 30, -50, 210, true);
+    drive_deg(30, 30, -2, 140, false);
+    drive_deg(30, 30, -2, 135, false);
+    drive_deg(30, 30, -1, 110, true);
+    drive_deg(30, 30, -50, 190, true);
     drive_deg(30, 5, 50, 130, false);
     drive_deg(30, 5, 50, 80, true);
     act_move(lifter, LIFTER_UP, false);
@@ -162,7 +177,7 @@ void run()
     wait(0.3);
     linefollow_deg(20, 500, false);
     linefollow_intersection(100, false);
-    linefollow_intersection(100, true);
+    linefollow_intersection(80, true);
     wait(0.2);
     turn_line(false, true);
     wait(0.1);
@@ -198,12 +213,12 @@ void run()
     drive_deg(-10, -40, -50, 150, false);
     drive_deg(-40, -40, -50, 330, false);
     drive_deg(-40, -10, -50, 150, true);
-    act_move(lifter, LIFTER_INIT, true);
+    act_move_speed(lifter, 30, LIFTER_INIT, true);
     drive_deg(-30, -30, 0, 100, false);
     on(-30, 0);
     wait(0.5);
     off(true);
-    drive_deg(30, 30, 0, 310, true);
+    drive_deg(30, 30, 0, 300, true);
     wait(0.3);
     drive_deg(-10, -40, 50, 150, false);
     drive_deg(-40, -40, 50, 305, false);
