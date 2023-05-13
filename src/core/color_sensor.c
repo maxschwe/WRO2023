@@ -52,3 +52,44 @@ void col_wait_ref(ColorSensor s, char col)
         while (col_get_ref(s) < compare_val) { }
     }
 }
+
+double col_get_rel_rgb(ColorSensor s, char col)
+{
+    rgb_t rgb_value = col_get_rgb(s);
+    long sum = rgb_value.r + rgb_value.b + 1;
+    if (col == 'b') {
+        return (1.0 * rgb_value.b) / sum;
+    } else if (col == 'g') {
+        return (1.0 * rgb_value.g) / sum;
+    } else {
+        return (1.0 * rgb_value.r) / sum;
+    }
+}
+
+char scan(int output_y)
+{
+    char output[100];
+    rgb_t val = col_get_rgb(s4);
+    float lowest_r = 0.0;
+    float lowest_g = 0.0;
+    float lowest_b = 0.0;
+    for (int i = 0; i < SCAN_COUNT; ++i) {
+        val = col_get_rgb(s4);
+        lowest_r += val.r;
+        lowest_g += val.g;
+        lowest_b += val.b;
+    }
+    lowest_r /= SCAN_COUNT;
+    lowest_g /= SCAN_COUNT;
+    lowest_b /= SCAN_COUNT;
+    // sprintf(output, "R: %f", lowest_r);
+    // ev3_lcd_draw_string(output, 10, 30);
+    // sprintf(output, "G: %f", lowest_g);
+    // ev3_lcd_draw_string(output, 10, 50);
+    // sprintf(output, "B: %f", lowest_b);
+    // ev3_lcd_draw_string(output, 10, 70);
+    float blue_rel = lowest_b / (lowest_b + lowest_r + lowest_g + 1);
+    sprintf(output, "%f, %c", blue_rel, (blue_rel < BLUE_GREEN_SWITCH_VALUE) ? 'g' : 'b');
+    ev3_lcd_draw_string(output, 10, output_y);
+    return (blue_rel < BLUE_GREEN_SWITCH_VALUE) ? 'g' : 'b';
+}

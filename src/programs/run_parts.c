@@ -62,11 +62,11 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
 void drive_to_ship_position(int target_pos)
 {
     int delta_deg = pos_ship_values[target_pos - 1] - m_get_deg(b);
-    int speed = 15;
+    int speed = 10;
     if (delta_deg < 0) {
         speed = -speed;
     }
-    drive_deg(speed, speed, 0, abs(delta_deg), true);
+    drive_smooth(speed, 0, delta_deg, true);
 }
 
 int get_free_pos_ship(bool big_ship, bool* occupied)
@@ -92,7 +92,7 @@ void drop_off(bool lift_end, int pos, bool* occupied)
     act_move(dropper, DROPPER_DROPPED, true);
     occupied[pos - 1] = true;
     if (lift_end) {
-        wait(0.3);
+        wait(0.2);
         act_move(dropper, DROPPER_NORMAL, true);
     }
 }

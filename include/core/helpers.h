@@ -20,5 +20,6 @@ void wait_button_press(button_t button);
 void wait_center_press();
 void wait(float seconds);
 void beep();
+void error_beep();
 
 #endif

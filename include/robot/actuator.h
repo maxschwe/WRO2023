@@ -19,5 +19,7 @@ typedef struct {
 void act_init(Actuator act);
 void act_move(Actuator act, int new_position, bool block);
 void act_move_speed(Actuator act, int speed, int new_position, bool block);
+void move_lifter_up(bool block);
+void move_lifter_down(bool block);
 
 #endif

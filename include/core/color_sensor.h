@@ -19,5 +19,7 @@ int col_get_ref(ColorSensor s);
 rgb_t col_get_rgb(ColorSensor s);
 int col_get_amb(ColorSensor s);
 void col_wait_ref(ColorSensor s, char col);
+double col_get_rel_rgb(ColorSensor s, char col);
+char scan(int output_y);
 
 #endif

@@ -22,3 +22,13 @@ void act_move_speed(Actuator act, int speed, int new_position, bool block)
     }
     m_on_deg(act.motor, speed, rel_deg, true, block);
 }
+
+void move_lifter_up(bool block)
+{
+    act_move(lifter, LIFTER_UP, block);
+}
+
+void move_lifter_down(bool block)
+{
+    act_move(lifter, LIFTER_INIT, block);
+}

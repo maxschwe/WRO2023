@@ -28,12 +28,20 @@
 // Run Config
 #define BLOCK_COL_COUNT 2
 #define COLOURED_CONTAINER_COUNT 4
+#define SCAN_COUNT 20
+#define BLUE_GREEN_SWITCH_VALUE 0.5
+
+// DRIVE Config
+#define ACC_FACTOR 7
+#define DEACC_FACTOR 10
+#define MAX_SPEED_LIMIT 100
+#define DRIVE_START_SPEED 10
 
 // LIFTER Positions
-#define LIFTER_INIT -5
-#define LIFTER_GRABBED 36
-#define LIFTER_BACK_BOAT_GRABBED 85
-#define LIFTER_UP 130
+#define LIFTER_INIT 5
+#define LIFTER_GRABBED -36
+#define LIFTER_BACK_BOAT_GRABBED -85
+#define LIFTER_UP -130
 
 // DROPPER Positions
 #define DROPPER_INIT 0
@@ -68,6 +76,10 @@ extern Actuator lifter;
 extern Actuator dropper;
 
 extern int current_speed;
+extern int smooth_deg_acc_end;
+extern int smooth_deg_deacc_start;
+extern int smooth_current_max_speed;
+extern int smooth_start_speed;
 extern int pos_ship_values[POS_COUNT + 2];
 
 void init();
