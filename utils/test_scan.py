@@ -6,7 +6,7 @@ import os
 def load_data(path):
     with open(path) as f:
         data = f.read()
-
+    data = data.strip("\n").strip(",")
     data = list(map(float, data.split(",")))
     return data
 
@@ -77,7 +77,9 @@ def get_color(value, color_threshold):
 
 def evaluate(path, moving_average_count, filter_threashold, maxima_count, color_threshold, min_maximum_value):
     print("------------------------------------------")
+    print(path)
     data = load_data(path)
+    print(f"Anzahl Werte: {len(data)}")
 
     # plt.scatter(range(len(data)), data, s=1, color="black")
 

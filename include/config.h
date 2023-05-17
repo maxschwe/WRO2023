@@ -2,15 +2,15 @@
 #define CONFIG_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "core/color_sensor.h"
 #include "core/helpers.h"
 #include "core/motor.h"
-#include "robot/actuator.h"
-
 #include "ev3api.h"
+#include "robot/actuator.h"
 
 #define A_COUNTERCLOCKWISE false
 #define B_COUNTERCLOCKWISE true
