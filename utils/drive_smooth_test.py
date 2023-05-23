@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 
-ACC_FACTOR = 2
-DEACC_FACTOR = 2
+ACC_FACTOR = 5
+DEACC_FACTOR = 10
 
-START_SPEED = -80
-END_SPEED = -20
+START_SPEED = 20
+END_SPEED = 80
 MAX_SPEED = 100
 
 DEG = 300

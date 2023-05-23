@@ -25,40 +25,42 @@ void off(bool brake)
     current_speed = 0;
 }
 
-void init_smooth_speed(int start_speed, int end_speed, int max_speed_limit, int deg)
+void init_smooth_speed(int start_speed, int end_speed, int max_speed_limit, float acc_factor, float deacc_factor, int deg)
 {
     deg = abs(deg);
     if (end_speed < 0) {
         deg = -deg;
     }
     // throw error: changing drive direction not supported
-    if (start_speed >= 0 != end_speed >= 0) {
+    if ((start_speed >= 0) != (end_speed >= 0)) {
         error_beep();
         exit(1);
         return;
     }
     // calc max speed (with using limit)
-    smooth_current_max_speed = (deg + current_speed * ACC_FACTOR + end_speed * DEACC_FACTOR) / (ACC_FACTOR + DEACC_FACTOR);
+    smooth_current_max_speed = (deg + current_speed * acc_factor + end_speed * deacc_factor) / (acc_factor + deacc_factor);
     if (end_speed >= 0) {
         smooth_current_max_speed = MIN(smooth_current_max_speed, max_speed_limit);
     } else {
         smooth_current_max_speed = MAX(smooth_current_max_speed, -max_speed_limit);
     }
 
-    smooth_deg_acc_end = ACC_FACTOR * (smooth_current_max_speed - current_speed);
-    smooth_deg_deacc_start = deg - DEACC_FACTOR * (smooth_current_max_speed - end_speed);
+    smooth_deg_acc_end = acc_factor * (smooth_current_max_speed - current_speed);
+    smooth_deg_deacc_start = deg - deacc_factor * (smooth_current_max_speed - end_speed);
     smooth_start_speed = start_speed;
+    smooth_current_acc_factor = acc_factor;
+    smooth_current_deacc_factor = deacc_factor;
 }
 
 int get_smooth_speed(int deg)
 {
     int cur_speed;
     if (abs(deg) < abs(smooth_deg_acc_end)) {
-        cur_speed = deg / ACC_FACTOR + smooth_start_speed;
+        cur_speed = deg / smooth_current_acc_factor + smooth_start_speed;
     } else if (abs(deg) < abs(smooth_deg_deacc_start)) {
         cur_speed = smooth_current_max_speed;
     } else {
-        cur_speed = -(deg - smooth_deg_deacc_start) / DEACC_FACTOR + smooth_current_max_speed;
+        cur_speed = -(deg - smooth_deg_deacc_start) / smooth_current_deacc_factor + smooth_current_max_speed;
     }
     return cur_speed;
 }
@@ -91,7 +93,7 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
 
 void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake, float_array* data)
 {
-    init_smooth_speed(start_speed, end_speed, max_speed_limit, deg);
+    init_smooth_speed(start_speed, end_speed, max_speed_limit, ACC_FACTOR, DEACC_FACTOR, deg);
     int current_deg_b, current_deg_c, target_deg_b, target_deg_c;
     float current_steering;
     int taken_deg_b = 0;
@@ -247,6 +249,22 @@ void turn_line(bool turn_left, bool brake)
 
 void turn_90(bool turn_left, bool brake)
 {
+    wait_stand();
     int steering = turn_left ? -100 : 100;
     drive_smooth(10, steering, 312, true);
+}
+
+void turn_180(bool turn_left, bool brake)
+{
+    wait_stand();
+    int steering = turn_left ? -100 : 100;
+    drive_smooth(10, steering, 625, true);
+}
+
+void wait_stand()
+{
+    while (m_get_speed(b) != 0 || m_get_speed(c) != 0) {
+
+    }
+    wait(0.1);
 }

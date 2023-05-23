@@ -18,6 +18,8 @@ int smooth_deg_acc_end = 0;
 int smooth_deg_deacc_start = 0;
 int smooth_current_max_speed = 0;
 int smooth_start_speed = 0;
+float smooth_current_acc_factor = 0.0;
+float smooth_current_deacc_factor = 0.0;
 
 // pos1, pos2, pos3, pos4, pos5, pos6, finish,, surprise_rule drive back
 int pos_ship_values[POS_COUNT + 2] = { 135, 235, 480, 580, 680, 780, 280, 370 };

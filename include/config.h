@@ -42,10 +42,14 @@
 #define OUTPUT_PATH "scan1.txt"
 
 // DRIVE Config
-#define ACC_FACTOR 7
-#define DEACC_FACTOR 10
+#define ACC_FACTOR 5 // 1 Speed change per x degree
+#define DEACC_FACTOR 8 // 1 Speed change per x degree
 #define MAX_SPEED_LIMIT 100
 #define DRIVE_START_SPEED 10
+
+#define MAX_SPEED_LINEFOLLOW 100
+#define LINEFOLLOW_ACC 4 // 1 Speed change per x degree
+#define LINEFOLLOW_DEACC 5 // 1 Speed change per x degree
 
 // LIFTER Positions
 #define LIFTER_INIT 5
@@ -89,6 +93,8 @@ extern int current_speed;
 extern int smooth_deg_acc_end;
 extern int smooth_deg_deacc_start;
 extern int smooth_current_max_speed;
+extern float smooth_current_acc_factor;
+extern float smooth_current_deacc_factor;
 extern int smooth_start_speed;
 extern int pos_ship_values[POS_COUNT + 2];
 

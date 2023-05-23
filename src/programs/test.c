@@ -2,6 +2,44 @@
 
 void test()
 {
+    linefollow_smooth(100, 100, false);
+    linefollow_intersection(100, false);
+    linefollow_intersection(100, false);
+    linefollow_intersection(100, true);
+    turn_90(false, true);
+    linefollow_smooth(100, 100, false);
+    for (int i =  0; i < 100; i++) {
+        linefollow_intersection(100, true);
+        turn_90(true, true);
+        linefollow_smooth(100, 100, false);
+        linefollow_intersection(100, false);
+        linefollow_intersection(100, true);
+        turn_90(true, true);
+        linefollow_smooth(100, 100, false);
+        linefollow_intersection(100, false);
+        linefollow_intersection(100, true);
+        turn_90(true, true);
+        linefollow_smooth(100, 100, false);
+        linefollow_intersection(100, false);
+        linefollow_intersection(100, true);
+        turn_90(true, true);
+        linefollow_intersection(100, false);
+    }
+    linefollow_intersection(100, true);
+    turn_180(true, true);
+    linefollow_smooth(100, 100, false);
+    linefollow_intersection(100, true);
+    turn_90(true, true);
+    linefollow_smooth(100, 100, false);
+    linefollow_intersection(100, false);
+    linefollow_intersection(100, true);
+    turn_180(true, true);
+    
+    // drive_smooth(20, 0, 1000, true);
+}
+
+void scan_test()
+{
     // on(-20, 0);
     // FILE* fp = fopen("blau_blau5.txt", "w");
     // while (abs(m_get_deg(b)) < 850) {

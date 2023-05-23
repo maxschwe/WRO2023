@@ -26,13 +26,14 @@ void display_append(char title[MAX_LENGTH], float value)
 
 void display_set_spot(int spot_num, char title[MAX_LENGTH], float value)
 {
-    snprintf(texts[spot_num], MAX_LENGTH - 1, "%s:%f", title, value);
+    snprintf(texts[spot_num], MAX_LENGTH - 1, "%s:%.2f", title, value);
     display_redraw();
 }
 
 void display_set_text(int spot_num, char text[MAX_LENGTH])
 {
     strncpy(texts[spot_num], text, MAX_LENGTH);
+    display_redraw();
 }
 
 void display_redraw()

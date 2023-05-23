@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+cd ..
+
+make app=WRO2023
+if [ $? -eq 0 ]; then
+    echo "Created app successfully"
+else
+    echo "Creating app failed"
+    exit 1
+fi
+
+TRYS=10
+
+for i in $(seq 1 $TRYS); do
+    make upload
+    if [ $? -eq 0 ]; then
+        echo "Upload success"
+        exit 0
+    else
+        echo "Upload failed"
+    fi
+    sleep 1
+done

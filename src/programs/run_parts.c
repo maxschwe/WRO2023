@@ -49,7 +49,7 @@ void place_containers_on_ships(int* scans_blocks, char* scans_containers)
 
         target_pos = get_free_pos_ship(is_big_ship, occupied);
         drive_to_ship_position(target_pos);
-        bool is_last_container_and_on_first_or_second_position = COLOURED_CONTAINER_COUNT == i + 1 && target_pos <= 2;
+        // bool is_last_container_and_on_first_or_second_position = COLOURED_CONTAINER_COUNT == i + 1 && target_pos <= 2;
         drop_off(true, target_pos, occupied);
     }
 
