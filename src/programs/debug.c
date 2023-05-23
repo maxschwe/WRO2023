@@ -36,7 +36,7 @@ void print_values()
         display_set_spot(8, "R", rgb_val.r);
         display_set_spot(9, "G", rgb_val.g);
         display_set_spot(10, "B", rgb_val.b);
-        display_set_spot(11, "rel", 1.0 * rgb_val.b / (rgb_val.r + rgb_val.g + rgb_val.b));
+        display_set_spot(11, "rel", col_get_rel_rgb(s4, 'b'));
         wait(0.1);
     }
 }

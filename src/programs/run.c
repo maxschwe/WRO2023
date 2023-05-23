@@ -1,4 +1,5 @@
 #include "../../include/programs/run.h"
+#include "../../include/all.h"
 
 int scans_blocks[BLOCK_COL_COUNT];
 char scans_container[COLOURED_CONTAINER_COUNT];
@@ -18,30 +19,53 @@ void run()
 {
     init_arrays();
     col_get_rgb(s4);
-    // init actuators
 
+    float_array block_data = create_float_array(INITIAL_ARRAY_SIZE);
+    drive_smooth_custom(-10, -30, 30, 0, 600, false, NULL);
     // drive forward and scan
-    drive_smooth_custom(-10, -35, 35, 0, 750, false);
-    char scan_1 = scan(10);
-    if (scan_1 == 'b') {
-        scans_blocks[0] += 1;
-    } else {
-        scans_blocks[1] += 1;
-    }
-    drive_smooth(-15, 0, 110, false);
-    char scan_2 = scan(30);
-    if (scan_2 == 'b') {
-        scans_blocks[0] += 1;
-    } else {
-        scans_blocks[1] += 1;
-    }
+    drive_smooth_custom(-30, -10, 35, 0, 270, true, &block_data);
+
+    beep();
+    // finish_array(&block_data);
+
     m_on(a, -1);
     m_on(d, 1);
-    // wait_center_press();
+
+    // char col1, col2;
+    // char block_array[4];
+    // block_array = evaluate(&block_data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, OUTPUT_PATH);
+
+    // block_array[0] = 'g';
+    // block_array[1] = 'g';
+    // block_array[2] = 'g';
+    // block_array[3] = 'g';
+    // if (block_array[0] == block_array[1] && block_array[2] == block_array[3] && block_array[0] == block_array[2]) {
+    //     scans_blocks[(block_array[0] == 'b') ? 0 : 1] = 2;
+    //     col1 = block_array[0];
+    //     col2 = col1;
+
+    // } else {
+    //     scans_blocks[0] = 1;
+    //     scans_blocks[1] = 1;
+    //     col1 = 'b';
+    //     col2 = 'g';
+    // }
+
+    // char text[20] = "Cols: ";
+    // char tmpstr[2];
+    // tmpstr[0] = col1;
+    // tmpstr[1] = 0;
+    // strcat(text, tmpstr);
+    // strcat(text, ", ");
+    // tmpstr[0] = col2;
+    // tmpstr[1] = 0;
+    // strcat(text, tmpstr);
+    scans_blocks[0] = 0;
+    scans_blocks[1] = 2;
 
     // drive backwards and drive to white containers
-    off(true);
     drive_smooth(15, 0, 150, true);
+    wait(0.2);
     turn_line(true, true);
     wait(0.2);
     act_init(lifter);
@@ -56,7 +80,7 @@ void run()
     // linefollow_deg_custom(100, 720, 0.3, 50, false);
     // linefollow_intersection_custom(50, 0.3, 40, true);
     act_move(dropper, DROPPER_NORMAL, false);
-    wait(0.2);
+    wait(0.3);
     turn_line(true, true);
 
     // surprise rule: drop off boje in untiefe
@@ -77,20 +101,20 @@ void run()
     // drive_deg(20, 10, -100, 172, true);
     // wait(0.3);
 
-    linefollow_deg(10, 500, false);
+    linefollow_deg(15, 400, false);
     beep();
     linefollow_col_1(10, 22, false);
-    drive_smooth_custom(10, 10, 10, 0, 10, true);
+    drive_smooth_custom(10, 10, 10, 0, 25, true, NULL);
     beep();
     wait(0.4);
 
     // grab white container
     turn_90(true, true);
     wait(0.4);
-    drive_smooth_custom(10, 10, 10, 0, 90, true);
+    drive_smooth_custom(10, 10, 10, 0, 90, true, NULL);
     move_lifter_up(true);
     move_lifter_down(false);
-    drive_smooth(30, 0, 200, false);
+    drive_smooth_custom(10, 30, 30, 0, 200, false, NULL);
     drive_col(30, 0, s3, GREY, false);
     drive_smooth(10, 0, 470, false);
 
@@ -111,11 +135,11 @@ void run()
     drive_smooth(10, 0, 125, true);
     move_lifter_up(true);
     move_lifter_down(true);
-    drive_deg(15, 15, 0, 20, false);
+    drive_smooth(10, 0, 20, false);
 
     // scan 4. coloured container
     scans_container[3] = scan(110);
-    drive_deg(15, 15, 0, 130, true);
+    drive_smooth(10, 0, 130, true);
     move_lifter_up(true);
     move_lifter_down(true);
     // act_move_speed(lifter, 10, LIFTER_UP, true);
@@ -126,19 +150,18 @@ void run()
 
     on(20, 0);
     col_wait_ref(s1, 'b');
-    drive_smooth(20, 0, 385, true);
-    drive_smooth(10, -50, 300, true);
-    drive_smooth(10, 50, 300, true);
-    drive_smooth(10, 0, 50, false);
-    act_move(lifter, LIFTER_UP, false);
-    drive_smooth(10, 0, 100, true);
+    drive_smooth(20, 0, 100, true);
+    drive_smooth(10, -50, 220, true);
+    drive_smooth(10, 50, 220, true);
+    drive_smooth(10, 0, 250, true);
+    act_move(lifter, LIFTER_UP, true);
 
-    wait(0.5);
+    wait(0.3);
 
     // move backwards and drive to small ship
     drive_deg(-20, -40, 0, 300, false);
     on(-40, 0);
-    while (col_get_ref(s3) < 35) {
+    while (col_get_ref(s2) < 35) {
     }
     drive_deg(-40, -10, 0, 330, true);
     wait(0.1);
@@ -156,11 +179,12 @@ void run()
     drive_smooth(-5, 0, 430, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, true);
     off(true);
+
     wait(0.5);
 
     // drive to open sea and drop read container
     linefollow_deg(20, 200, false);
-    drive_smooth(15, 10, 430, true);
+    drive_smooth(15, 10, 410, true);
     act_move_speed(lifter, 60, LIFTER_UP, false);
     drive_smooth(15, 10, 60, true);
     wait(0.5);
@@ -172,7 +196,7 @@ void run()
     wait(0.2);
     turn_line(false, true);
     wait(0.1);
-    linefollow_deg(30, 800, true);
+    linefollow_deg(30, 770, true);
 
     // drive again red container
     // drive_deg(-10, -60, 0, 200, false);
@@ -182,27 +206,25 @@ void run()
     // drive_deg(40, 10, 0, 150, true);
 
     // place big ship
-    drive_smooth(-10, 0, 800, true);
     wait(0.2);
-    drive_smooth(10, -50, 630, true);
+    drive_smooth(-15, 0, 800, true);
+    wait(0.2);
+    drive_smooth(15, -50, 630, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
     drive_smooth(20, 0, 150, true);
     drive_smooth(-20, 0, 200, true);
 
     // place small ship
-    wait(0.2);
-    drive_smooth(-10, -50, 630, true);
-    wait(0.3);
-    drive_smooth(-10, 0, 50, true);
-    wait(0.3);
-    drive_smooth(-10, -50, 630, true);
+    drive_smooth(-15, -50, 630, true);
+    drive_smooth(-15, 0, 30, true);
+    drive_smooth(-15, -50, 630, true);
     act_move_speed(lifter, 30, LIFTER_INIT, true);
     drive_smooth(-30, 0, 100, false);
     on(-30, 0);
     wait(0.5);
     off(true);
-    drive_smooth(20, 0, 300, true);
-    wait(0.3);
+    drive_smooth(10, 0, 300, true);
+    wait(0.2);
     drive_smooth(-10, 50, 605, true);
 
     place_containers_on_ships(scans_blocks, scans_container);

@@ -27,6 +27,14 @@ def filter_bottom_part(data, threashold_point):
 
 def find_maximas(data, min_maximum_value):
     maximas = {}
+    if (data[0] >= data[1]):
+        maximas[0] = {"value":  data[0],
+                      "down_significance": len(data), "up_significance": len(data)}
+
+    if (data[len(data)-1] > data[len(data) - 2]):
+        maximas[len(data)-1] = {"value":  data[len(data)-1],
+                                "down_significance": len(data), "up_significance": len(data)}
+
     for i in range(1, len(data) - 1):
         if data[i-1] < data[i] and data[i] >= data[i+1] and (min_maximum_value is None or data[i] > min_maximum_value):
             maximas[i] = ({"value":  data[i],
@@ -59,7 +67,6 @@ def calc_significance_of_maximas(data, maximas):
 
 def find_most_significant_maximas(maximas, count=2):
     most_significant_maximas_ids = [0 for _ in range(count)]
-
     for i in range(count):
         current_maximum_significance = 0
         for id, maxima_data in maximas.items():
@@ -79,6 +86,9 @@ def evaluate(path, moving_average_count, filter_threashold, maxima_count, color_
     print("------------------------------------------")
     print(path)
     data = load_data(path)
+    x_values = range(len(data))
+    # plt.scatter(x_values, data, s=1)
+    # plt.show()
     print(f"Anzahl Werte: {len(data)}")
 
     # plt.scatter(range(len(data)), data, s=1, color="black")
@@ -103,7 +113,6 @@ def evaluate(path, moving_average_count, filter_threashold, maxima_count, color_
     print(f"Average: {summed_values/len(wanted_values):.3f}")
 
     x_values = range(len(data))
-
     plt.scatter(x_values, data, s=1)
     plt.scatter(wanted_ids, wanted_values, s=100, color="green")
     plt.scatter(maximas.keys(), [maxima_data["value"]
@@ -119,4 +128,4 @@ def evaluate_all(path, moving_average_count, filter_threashold, maxima_count, co
 
 
 if __name__ == "__main__":
-    evaluate_all("data", 200, 0.2, 2, 0.48, 0.25)
+    evaluate_all("data", 800, 0.2, 2, 0.45, 0.2)

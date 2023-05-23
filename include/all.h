@@ -8,6 +8,7 @@
 #include "ev3api.h"
 
 #include "core/color_sensor.h"
+#include "core/float_array.h"
 #include "core/helpers.h"
 #include "core/motor.h"
 #include "programs/debug.h"

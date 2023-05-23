@@ -10,6 +10,10 @@
 #define MAX_SPOTS 12
 #define MAX_LENGTH 11
 
+typedef struct {
+    SYSTIM start_time;
+} Timer;
+
 void display_clear();
 void display_append(char title[MAX_LENGTH], float value);
 void display_set_spot(int spot_num, char title[MAX_LENGTH], float value);
@@ -21,5 +25,7 @@ void wait_center_press();
 void wait(float seconds);
 void beep();
 void error_beep();
+Timer start_timer();
+float get_time();
 
 #endif

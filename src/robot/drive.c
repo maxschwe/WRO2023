@@ -86,10 +86,10 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
     } else {
         start_speed = current_speed;
     }
-    drive_smooth_custom(start_speed, end_speed, MAX_SPEED_LIMIT, steering, deg, brake);
+    drive_smooth_custom(start_speed, end_speed, MAX_SPEED_LIMIT, steering, deg, brake, NULL);
 }
 
-void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake)
+void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake, float_array* data)
 {
     init_smooth_speed(start_speed, end_speed, max_speed_limit, deg);
     int current_deg_b, current_deg_c, target_deg_b, target_deg_c;
@@ -119,7 +119,6 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         b_left_deg = target_deg_b - current_deg_b + start_deg_b;
         c_left_deg = target_deg_c - current_deg_c + start_deg_c;
         current_speed = get_smooth_speed(is_b_used ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
-        display_set_spot(0, "s", current_speed);
 
         float zaehler = b_left_deg - c_left_deg;
         int abs_b_left = abs(b_left_deg);
@@ -138,6 +137,10 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         taken_deg_b = abs(current_deg_b - start_deg_b);
         taken_deg_c = abs(current_deg_c - start_deg_c);
         loop_count++;
+        if (data != NULL) {
+            // append_array(data, col_get_rel_rgb(s4, 'b'));
+            wait(0.0001);
+        }
     }
     if (brake) {
         off(brake);
