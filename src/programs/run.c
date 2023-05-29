@@ -23,7 +23,7 @@ void run()
     float_array block_data = create_float_array(INITIAL_ARRAY_SIZE);
     drive_smooth_custom(-10, -30, 30, 0, 600, false, NULL);
     // drive forward and scan
-    drive_smooth_custom(-30, -10, 35, 0, 270, true, &block_data);
+    drive_smooth_custom(-30, -10, 35, 0, 270, true, NULL);
 
     beep();
     // finish_array(&block_data);
@@ -116,7 +116,7 @@ void run()
     move_lifter_down(false);
     drive_smooth_custom(10, 30, 30, 0, 200, false, NULL);
     drive_col(30, 0, s3, GREY, false);
-    drive_smooth(10, 0, 470, false);
+    drive_smooth(10, 0, 460, false);
 
     scans_container[0] = scan(50);
     drive_smooth(10, 0, 112, true);
@@ -151,8 +151,8 @@ void run()
     on(20, 0);
     col_wait_ref(s1, 'b');
     drive_smooth(20, 0, 100, true);
-    drive_smooth(10, -50, 220, true);
-    drive_smooth(10, 50, 220, true);
+    drive_smooth(10, -50, 200, true);
+    drive_smooth(10, 50, 200, true);
     drive_smooth(10, 0, 250, true);
     act_move(lifter, LIFTER_UP, true);
 
@@ -171,8 +171,7 @@ void run()
     linefollow_col_1_greater(30, 40, false);
     linefollow_col_1(30, 30, false);
     linefollow_deg(10, 370, true);
-    wait(0.3);
-    drive_smooth(10, -100, 627, true);
+    turn_180(true, true);
 
     // collect small ship
     act_move(lifter, LIFTER_INIT, true);

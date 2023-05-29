@@ -251,20 +251,19 @@ void turn_90(bool turn_left, bool brake)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
-    drive_smooth(10, steering, 312, true);
+    drive_smooth(15, steering, TURN_90_DEG, true);
 }
 
 void turn_180(bool turn_left, bool brake)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
-    drive_smooth(10, steering, 625, true);
+    drive_smooth(15, steering, TURN_180_DEG, true);
 }
 
 void wait_stand()
 {
     while (m_get_speed(b) != 0 || m_get_speed(c) != 0) {
-
     }
-    wait(0.1);
+    wait(0.2);
 }

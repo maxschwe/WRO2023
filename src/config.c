@@ -10,8 +10,8 @@ ColorSensor s2 = { EV3_PORT_2 };
 ColorSensor s3 = { EV3_PORT_3 };
 ColorSensor s4 = { EV3_PORT_4 };
 
-Actuator lifter = { .motor = { EV3_PORT_D, LARGE_MOTOR, D_COUNTERCLOCKWISE }, .max_neg_speed = 30, .max_pos_speed = 30 };
-Actuator dropper = { .motor = { EV3_PORT_A, LARGE_MOTOR, A_COUNTERCLOCKWISE }, .max_neg_speed = 80, .max_pos_speed = 20 };
+Actuator lifter = { .motor = { EV3_PORT_D, LARGE_MOTOR, D_COUNTERCLOCKWISE }, .max_neg_speed = 40, .max_pos_speed = 60 };
+Actuator dropper = { .motor = { EV3_PORT_A, LARGE_MOTOR, A_COUNTERCLOCKWISE }, .max_neg_speed = 40, .max_pos_speed = 20 };
 
 int current_speed = 0;
 int smooth_deg_acc_end = 0;

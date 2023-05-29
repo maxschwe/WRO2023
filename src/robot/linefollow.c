@@ -51,8 +51,8 @@ void linefollow_intersection(int speed, bool brake)
     float kp = linefollow_get_kp(speed);
     float kd = linefollow_get_kd(speed);
     int initial_b = m_get_deg(b);
-    while (col_get_ref(s1) > 15 || abs(m_get_deg(b) - initial_b) < 100) {
-    // while (col_get_ref(s2) + col_get_ref(s3) > 90 || abs(m_get_deg(b) - initial_b) < 100) {
+    // while (col_get_ref(s1) > 15 || abs(m_get_deg(b) - initial_b) < 100) {
+    while (col_get_ref(s2) + col_get_ref(s3) > 30 || abs(m_get_deg(b) - initial_b) < 100) {
         on(speed, linefollow_control(kp, kd));
     }
     current_speed = speed;
@@ -65,7 +65,7 @@ void linefollow_intersection(int speed, bool brake)
 void linefollow_intersection_custom(int speed, float kp, float kd, bool brake)
 {
     int initial_b = m_get_deg(b);
-    
+
     while (col_get_ref(s2) + col_get_ref(s3) > 30 || abs(m_get_deg(b) - initial_b) < 100) {
         on(speed, linefollow_control(kp, kd));
     }
@@ -83,7 +83,6 @@ void linefollow_deg(int speed, int deg, bool brake)
     int initial_b = m_get_deg(b);
     while (abs(m_get_deg(b) - initial_b) < deg) {
         on(speed, linefollow_control(kp, kd));
-        tslp_tsk(1);
     }
     current_speed = speed;
     if (brake) {
