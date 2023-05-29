@@ -22,7 +22,7 @@ float smooth_current_acc_factor = 0.0;
 float smooth_current_deacc_factor = 0.0;
 
 // pos1, pos2, pos3, pos4, pos5, pos6, finish,, surprise_rule drive back
-int pos_ship_values[POS_COUNT + 2] = { 135, 235, 480, 580, 680, 780, 280, 370 };
+int pos_ship_values[POS_COUNT + 2] = { 135, 235, 460, 570, 680, 780, 280, 370 };
 
 void init()
 {

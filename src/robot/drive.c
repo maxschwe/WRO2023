@@ -265,5 +265,5 @@ void wait_stand()
 {
     while (m_get_speed(b) != 0 || m_get_speed(c) != 0) {
     }
-    wait(0.2);
+    wait(0.1);
 }

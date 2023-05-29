@@ -52,7 +52,7 @@
 #define LINEFOLLOW_DEACC 5 // 1 Speed change per x degree
 
 // LIFTER Positions
-#define LIFTER_INIT 15
+#define LIFTER_INIT 5
 #define LIFTER_GRABBED -60
 #define LIFTER_BACK_BOAT_GRABBED -115
 #define LIFTER_UP -190
@@ -60,7 +60,7 @@
 // DROPPER Positions
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 30
-#define DROPPER_DROPPED 145
+#define DROPPER_DROPPED 140
 #define DROPPER_BODEN 140
 
 #define TURN_90_DEG 310
