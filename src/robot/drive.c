@@ -16,12 +16,10 @@ void on(int speed, int steering)
     current_speed = speed;
 }
 
-void off(bool brake)
+void off()
 {
-    if (brake) {
-        m_off(b, true);
-        m_off(c, true);
-    }
+    m_off(b, true);
+    m_off(c, true);
     current_speed = 0;
 }
 
@@ -71,7 +69,7 @@ void drive_col(int speed, int steering, ColorSensor sensor, char col, bool brake
     col_wait_ref(sensor, col);
     current_speed = speed;
     if (brake) {
-        off(brake);
+        off();
         current_speed = 0;
     }
 }
@@ -93,15 +91,19 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
 
 void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake, float_array* data)
 {
+    float_array temp_scanned_values = create_float_array(INITIAL_ARRAY_SIZE);
     init_smooth_speed(start_speed, end_speed, max_speed_limit, ACC_FACTOR, DEACC_FACTOR, deg);
     int current_deg_b, current_deg_c, target_deg_b, target_deg_c;
     float current_steering;
+    int scan_count = -MOVING_AVERAGE_COUNT;
     int taken_deg_b = 0;
     int taken_deg_c = 0;
     int b_left_deg, c_left_deg;
     int start_deg_b = m_get_deg(b);
     int start_deg_c = m_get_deg(c);
     int loop_count = 0;
+    float sum_rolled_average = 0.0;
+    float needs_to_be_subtracted = 0.0;
     current_deg_b = start_deg_b;
     current_deg_c = start_deg_c;
     deg = abs(deg);
@@ -140,12 +142,26 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         taken_deg_c = abs(current_deg_c - start_deg_c);
         loop_count++;
         if (data != NULL) {
-            // append_array(data, col_get_rel_rgb(s4, 'b'));
-            wait(0.0001);
+            float value = col_get_rel_rgb(s4, 'b') / MOVING_AVERAGE_COUNT;
+            sum_rolled_average += value;
+            ++scan_count;
+            append_array(&temp_scanned_values, value);
+            if (scan_count >= 0) {
+                sum_rolled_average -= needs_to_be_subtracted;
+                needs_to_be_subtracted = temp_scanned_values.pointer[scan_count];
+                append_array(data, sum_rolled_average);
+                // if (sum_rolled_average > HIGH_PASS_THRESHOLD) {
+                // }
+            }
+            display_set_spot(11, "val", value);
         }
     }
+    if (data != NULL) {
+        finish_array(&temp_scanned_values);
+        save_array(&temp_scanned_values, "data.txt", "w");
+    }
     if (brake) {
-        off(brake);
+        off();
     } else {
         on(current_speed, steering);
     }
@@ -221,7 +237,7 @@ void drive_deg(int speed, int target_speed, int steering, int deg, bool brake)
     }
     current_speed = target_speed;
     if (brake) {
-        off(brake);
+        off();
         current_speed = 0;
     }
 
@@ -247,18 +263,32 @@ void turn_line(bool turn_left, bool brake)
     drive_smooth(10, steering, 75, true);
 }
 
-void turn_90(bool turn_left, bool brake)
+void turn_90(bool turn_left)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
     drive_smooth(15, steering, TURN_90_DEG, true);
 }
 
-void turn_180(bool turn_left, bool brake)
+void turn_180(bool turn_left)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
     drive_smooth(15, steering, TURN_180_DEG, true);
+}
+
+void turnsing_90(bool turn_left, bool drive_forward)
+{
+    wait_stand();
+    int steering = turn_left ? -50 : 50;
+    drive_smooth(15, steering, TURNSING_90_DEG, true);
+}
+
+void turnsing_180(bool turn_left, bool drive_forward)
+{
+    wait_stand();
+    int steering = turn_left ? -50 : 50;
+    drive_smooth(15, steering, TURNSING_180_DEG, true);
 }
 
 void wait_stand()

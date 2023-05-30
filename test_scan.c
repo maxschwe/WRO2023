@@ -5,10 +5,12 @@
 
 #define MOVING_AVERAGE_COUNT 200
 #define HIGH_PASS_THRESHOLD 0.1
-#define MAXIMA_THRESHOLD 0.3
+#define MAXIMA_THRESHOLD 0.2
 #define MAXIMA_COUNT 2
 #define COLOR_THRESHOLD 0.48
 #define OUTPUT_PATH "utils/output/scan1.txt"
+
+#define DOWNLOAD 1
 
 float_array load_file(const char* filename)
 {
@@ -24,7 +26,14 @@ float_array load_file(const char* filename)
 
 int main()
 {
+    if (DOWNLOAD) {
+        system("cp /media/max/EV3_WRO/scan1.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
+        system("cp /media/max/EV3_WRO/data.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/data.txt");
+
+        printf("Copyied files from robot\n");
+    }
     DIR* dir;
+
     struct dirent* subdir;
     char full_path[1000];
     char dir_path[100] = "utils/data";
@@ -42,11 +51,14 @@ int main()
         float_array data = load_file(full_path);
         printf("-------------------------------------\n");
         printf("%s\n", subdir->d_name);
-        char* colors = evaluate(&data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, OUTPUT_PATH);
-        for (int i = 0; i < MAXIMA_COUNT; ++i) {
-            printf("Color %i: %s\n", i, colors[i] == 'b' ? "blau" : "green");
+        if (strcmp(subdir->d_name, "data.txt") != 0) {
+            char* colors = evaluate(&data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, OUTPUT_PATH);
+            for (int i = 0; i < MAXIMA_COUNT; ++i) {
+                printf("Color %i: %s\n", i, colors[i] == 'b' ? "blau" : "green");
+            }
+        } else {
+            save_array(&data, OUTPUT_PATH, "w");
         }
-
         system(python_exec_path);
     }
     closedir(dir);

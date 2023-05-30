@@ -23,10 +23,14 @@ void run()
     float_array block_data = create_float_array(INITIAL_ARRAY_SIZE);
     drive_smooth_custom(-10, -30, 30, 0, 600, false, NULL);
     // drive forward and scan
-    drive_smooth_custom(-30, -10, 35, 0, 260, true, NULL);
+    drive_smooth_custom(-30, -10, 35, 0, 260, true, &block_data);
+    error_beep();
 
+    finish_array(&block_data);
+    save_array(&block_data, OUTPUT_PATH, "w");
+    // evaluate(&block_data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, NULL);
     beep();
-    // finish_array(&block_data);
+    // wait_center_press();
 
     m_on(a, -1);
     m_on(d, 2);
@@ -64,10 +68,8 @@ void run()
     scans_blocks[1] = 2;
 
     // drive backwards and drive to white containers
-    drive_smooth(25, 0, 160, true);
-    wait(0.1);
-    turn_line(true, true);
-    wait(0.1);
+    drive_smooth(15, 0, 160, true);
+    turn_90(true);
     act_init(lifter);
     act_init(dropper);
     m_off(a, true);
@@ -81,7 +83,7 @@ void run()
     // linefollow_intersection_custom(50, 0.3, 40, true);
     act_move(dropper, DROPPER_NORMAL, false);
     wait(0.3);
-    turn_line(true, true);
+    turn_90(true);
 
     // surprise rule: drop off boje in untiefe
     // slow approach to white containers
@@ -100,16 +102,16 @@ void run()
     // drive_deg(20, 20, -100, 315, false);
     // drive_deg(20, 10, -100, 172, true);
     // wait(0.3);
-
-    linefollow_deg(25, 400, false);
+    linefollow_smooth(35, 100, false);
+    linefollow_deg(30, 300, false);
     beep();
-    linefollow_col_1(10, 22, false);
-    drive_smooth_custom(10, 10, 10, 0, 20, true, NULL);
+    linefollow_col_1(15, 22, false);
+    linefollow_smooth(10, 26, true);
     beep();
 
     // collect white container
     wait(0.2);
-    turn_90(true, true);
+    turn_90(true);
     wait_stand();
     wait(0.1);
     drive_smooth_custom(10, 10, 10, 0, 90, true, NULL);
@@ -117,30 +119,34 @@ void run()
     move_lifter_down(false);
     drive_smooth_custom(10, 30, 30, 0, 200, false, NULL);
     drive_col(30, 0, s3, GREY, false);
-    drive_smooth(10, 0, 450, false);
 
     // collect 1. coloured container
+    drive_smooth(10, 0, 460, false);
+    // wait_center_press();
     scans_container[0] = scan(50);
-    drive_smooth(10, 0, 112, true);
+    drive_smooth(10, 0, 105, true);
     move_lifter_up(true);
     move_lifter_down(true);
 
     // collect 2. coloured container
-    drive_smooth(10, 0, 20, false);
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
     scans_container[1] = scan(70);
-    drive_smooth(10, 0, 125, true);
+    drive_smooth(10, 0, 105, true);
     move_lifter_up(true);
     move_lifter_down(true);
-    drive_smooth(10, 0, 20, false);
 
     // collect 3. coloured container
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
     scans_container[2] = scan(90);
-    drive_smooth(10, 0, 125, true);
+    drive_smooth(10, 0, 105, true);
     move_lifter_up(true);
     move_lifter_down(true);
-    drive_smooth(10, 0, 20, false);
 
     // scan 4. coloured container
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
     scans_container[3] = scan(110);
     drive_smooth(10, 0, 130, true);
     move_lifter_up(true);
@@ -156,13 +162,13 @@ void run()
     // drive_smooth(10, 0, 100, true);
 
     drive_smooth(10, 0, 300, true);
-    turn_90(true, true);
+    turn_90(true);
     on(-30, 0);
     wait(0.8);
-    off(true);
-    drive_smooth(10, 0, 350, true);
-    turn_90(false, true);
-    drive_smooth(10, 0, 250, true);
+    off();
+    drive_smooth(10, 0, 360, true);
+    turn_90(false);
+    drive_smooth(10, 0, 220, true);
     // drive_smooth(10, -50, 220, true);
     // drive_smooth(10, 50, 220, true);
     // drive_smooth(10, 0, 245, true);
@@ -171,23 +177,24 @@ void run()
     wait(0.3);
 
     // move backwards and drive to small ship
-    drive_deg(-40, -40, 0, 300, false);
-    on(-40, 0);
+    drive_smooth(-60, 0, 300, false);
+    on(-60, 0);
     while (col_get_ref(s2) < 35) {
     }
-    drive_deg(-40, -10, 0, 330, true);
-    turn_90(true, true);
+    drive_smooth(-10, 0, 330, true);
+    turn_90(true);
     linefollow_deg(40, 300, false);
     linefollow_col_1_greater(40, 40, false);
     linefollow_col_1(40, 30, false);
-    linefollow_deg(15, 370, true);
-    turn_180(true, true);
+    linefollow_deg(40, 220, false);
+    linefollow_smooth(10, 150, true);
+    turn_180(true);
 
     // collect small ship
     act_move(lifter, LIFTER_INIT, true);
     drive_smooth(-15, 0, 430, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, true);
-    off(true);
+    off();
 
     wait(0.3);
 
@@ -202,7 +209,7 @@ void run()
     linefollow_smooth(100, 200, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
-    turn_90(false, true);
+    turn_90(false);
     linefollow_smooth(50, 770, true);
 
     // drive again red container
@@ -214,9 +221,9 @@ void run()
 
     // place big ship
     wait_stand();
-    drive_smooth(-15, 0, 800, true);
+    drive_smooth(-10, 0, 800, true);
     wait_stand();
-    drive_smooth(15, -50, 630, true);
+    drive_smooth(10, -50, 630, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
     drive_smooth(20, 0, 150, true);
     drive_smooth(-20, 0, 200, true);
@@ -225,11 +232,11 @@ void run()
     drive_smooth(-15, -50, 630, true);
     drive_smooth(-15, 0, 30, true);
     drive_smooth(-15, -50, 630, true);
-    act_move_speed(lifter, 30, LIFTER_INIT, true);
+    act_move_speed(lifter, 80, LIFTER_INIT, false);
     drive_smooth(-30, 0, 100, false);
     on(-30, 0);
     wait(0.5);
-    off(true);
+    off();
     drive_smooth(10, 0, 310, true);
     wait_stand();
     drive_smooth(-10, 50, 630, true);
@@ -258,15 +265,15 @@ void run()
     // wait(0.4);
 
     // // grab white container
-    // turn_90(true, true);
+    // turn_90(true);
     // drive_deg(-15, -15, 0, 90, true);
     // move_lifter_up(true);
     // move_lifter_down(true);
     // drive_deg(15, 15, 0, 90, true);
-    // turn_90(true, true);
+    // turn_90(true);
     // linefollow_deg(20, 200, false);
     // linefollow_intersection(70, true);
-    // turn_90(true, true);
+    // turn_90(true);
     // linefollow_deg(20, 200, false);
     // linefollow_intersection(70, true);
 }

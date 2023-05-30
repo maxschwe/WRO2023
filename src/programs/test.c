@@ -6,35 +6,35 @@ void test()
     linefollow_intersection(100, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
-    turn_90(false, true);
+    turn_90(false);
     linefollow_smooth(100, 100, false);
-    for (int i =  0; i < 100; i++) {
+    for (int i = 0; i < 100; i++) {
         linefollow_intersection(100, true);
-        turn_90(true, true);
+        turn_90(true);
         linefollow_smooth(100, 100, false);
         linefollow_intersection(100, false);
         linefollow_intersection(100, true);
-        turn_90(true, true);
+        turn_90(true);
         linefollow_smooth(100, 100, false);
         linefollow_intersection(100, false);
         linefollow_intersection(100, true);
-        turn_90(true, true);
+        turn_90(true);
         linefollow_smooth(100, 100, false);
         linefollow_intersection(100, false);
         linefollow_intersection(100, true);
-        turn_90(true, true);
+        turn_90(true);
         linefollow_intersection(100, false);
     }
     linefollow_intersection(100, true);
-    turn_180(true, true);
+    turn_180(true);
     linefollow_smooth(100, 100, false);
     linefollow_intersection(100, true);
-    turn_90(true, true);
+    turn_90(true);
     linefollow_smooth(100, 100, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
-    turn_180(true, true);
-    
+    turn_180(true);
+
     // drive_smooth(20, 0, 1000, true);
 }
 

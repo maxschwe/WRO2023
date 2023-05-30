@@ -34,9 +34,9 @@
 // SCAN Config
 #define SCAN_MAXIMA_COUNT 4
 
-#define MOVING_AVERAGE_COUNT 200
-#define HIGH_PASS_THRESHOLD 0.1
-#define MAXIMA_THRESHOLD 0.3
+#define MOVING_AVERAGE_COUNT 100
+#define HIGH_PASS_THRESHOLD 0.15
+#define MAXIMA_THRESHOLD 0.2
 #define MAXIMA_COUNT 4
 #define COLOR_THRESHOLD 0.48
 #define OUTPUT_PATH "scan1.txt"
@@ -63,8 +63,11 @@
 #define DROPPER_DROPPED 140
 #define DROPPER_BODEN 140
 
-#define TURN_90_DEG 310
+// Turn degrees
+#define TURN_90_DEG 312
 #define TURN_180_DEG 630
+#define TURNSING_90_DEG 630
+#define TURNSING_180_DEG 1260
 
 // Ship Drop off positions
 #define POS_COUNT 6

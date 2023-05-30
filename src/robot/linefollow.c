@@ -86,7 +86,7 @@ void linefollow_deg(int speed, int deg, bool brake)
     }
     current_speed = speed;
     if (brake) {
-        off(true);
+        off();
         current_speed = 0;
     }
 }
@@ -119,7 +119,7 @@ void linefollow_smooth(int end_speed, int deg, bool brake)
     }
     current_speed = end_speed;
     if (brake) {
-        off(true);
+        off();
         current_speed = 0;
     }
 }
@@ -132,7 +132,7 @@ void linefollow_deg_custom(int speed, int deg, float kp, float kd, bool brake)
     }
     current_speed = speed;
     if (brake) {
-        off(true);
+        off();
         current_speed = 0;
     }
 }
@@ -146,7 +146,7 @@ void linefollow_col_1(int speed, int ref_light_s1, bool brake)
     }
     current_speed = speed;
     if (brake) {
-        off(true);
+        off();
         current_speed = 0;
     }
 }
@@ -160,7 +160,7 @@ void linefollow_col_1_greater(int speed, int ref_light_s1, bool brake)
     }
     current_speed = speed;
     if (brake) {
-        off(true);
+        off();
         current_speed = 0;
     }
 }

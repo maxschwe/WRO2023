@@ -1,5 +1,5 @@
 #include "../../include/core/float_array.h"
-#include "../../include/core/helpers.h"
+// #include "../../include/core/helpers.h"
 #include <stdbool.h>
 #include <unistd.h>
 
@@ -84,7 +84,7 @@ float_array filter_high_pass(const float_array* array, float threshold)
     float_array high_pass_filtered = create_float_array(INITIAL_ARRAY_SIZE);
     for (int i = 0; i < array->itemCount; ++i) {
         if (array->pointer[i] > threshold) {
-            display_set_spot(5, "a", i);
+            // display_set_spot(5, "a", i);
             append_array(&high_pass_filtered, array->pointer[i]);
         }
     }
@@ -123,9 +123,9 @@ float_array find_maxima_ids(const float_array* array, float maximaThreshold)
     float current_value = second_value;
     float next_value;
     for (int i = 2; i < array->itemCount - 1; ++i) {
-        display_set_spot(6, "a", i);
+        // display_set_spot(6, "a", i);
         next_value = array->pointer[i + 1];
-        if (prev_value <= current_value && current_value >= next_value && current_value > maximaThreshold) {
+        if (prev_value <= current_value && current_value > next_value && current_value > maximaThreshold) {
             append_array(&maxima_ids, i);
         }
         prev_value = current_value;
@@ -156,7 +156,7 @@ float_array calc_most_signigicant_maximas(const float_array* array, const float_
         float currentValue = array->pointer[currentId];
         int significanceCount = 0;
         for (int i = currentId - 1; i >= 0; --i) {
-            display_set_spot(8, "a", i);
+            // display_set_spot(8, "a", i);
             if (currentValue <= array->pointer[i]) {
                 bottomSignificance = significanceCount;
                 break;
@@ -211,17 +211,13 @@ float_array calc_most_signigicant_maximas(const float_array* array, const float_
 
 char* evaluate(const float_array* data, int moving_average_count, float high_pass_threshold, float maxima_threshold, int maxima_count, float color_threshold, char* output_path)
 {
-    float_array rolled_average = rolling_average(data, moving_average_count);
-    error_beep();
-    float_array high_pass_filtered = filter_high_pass(&rolled_average, high_pass_threshold);
-    beep();
-    float_array maxima_ids = find_maxima_ids(&high_pass_filtered, maxima_threshold);
-    error_beep();
-    float_array selected_maxima_ids = calc_most_signigicant_maximas(&high_pass_filtered, &maxima_ids, maxima_count);
-    beep();
+    // float_array rolled_average = rolling_average(data, moving_average_count);
+    // float_array high_pass_filtered = filter_high_pass(&rolled_average, high_pass_threshold);
+    float_array maxima_ids = find_maxima_ids(data, maxima_threshold);
+    float_array selected_maxima_ids = calc_most_signigicant_maximas(data, &maxima_ids, maxima_count);
 
     if (output_path != NULL) {
-        save_array(&high_pass_filtered, output_path, "w");
+        save_array(data, output_path, "w");
         save_array(&maxima_ids, output_path, "a");
         save_array(&selected_maxima_ids, output_path, "a");
     }
@@ -229,7 +225,7 @@ char* evaluate(const float_array* data, int moving_average_count, float high_pas
     // evaluate to colors
     char* colors = malloc(sizeof(char) * maxima_count);
     for (int i = 0; i < maxima_count; i++) {
-        if (high_pass_filtered.pointer[(int)selected_maxima_ids.pointer[i]] > color_threshold) {
+        if (data->pointer[(int)selected_maxima_ids.pointer[i]] > color_threshold) {
             colors[i] = 'b';
         } else {
             colors[i] = 'g';
