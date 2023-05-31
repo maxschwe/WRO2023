@@ -34,11 +34,22 @@ void run()
     save_array(&temp_scanned_values, OUTPUT_PATH, "w");
     save_array(&block_data, OUTPUT_PATH, "a");
 
-    evaluate(&temp_scanned_values, &block_data, &maxima_ids, SCAN_BLOCK_COUNT, "evaluation.txt");
+    char* block_colors = evaluate(&temp_scanned_values, &block_data, &maxima_ids, SCAN_BLOCK_COUNT, "evaluation.txt");
 
     save_array(&maxima_ids, OUTPUT_PATH, "a");
     finish_array(&maxima_ids);
-    
+
+    display_set_text(0, block_colors[0] == 'b' ? "blue" : "green");
+    display_set_text(1, block_colors[1] == 'b' ? "blue" : "green");
+
+    for (int i = 0; i < SCAN_BLOCK_COUNT; ++i) {
+        if (block_colors[i] == 'b') {
+            ++scans_blocks[0];
+        } else {
+            ++scans_blocks[1];
+        }
+    }
+
     beep();
     wait_center_press();
 

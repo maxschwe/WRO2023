@@ -14,21 +14,21 @@ void load_file(const char* filename, float_array* data_array, float_array* rolle
 {
     FILE* fp = fopen(filename, "r");
     float new_value;
-    fscanf(fp, "%f", &new_value);
+    fscanf(fp, ",%f", &new_value);
     append_array(data_array, new_value);
     while (getc(fp) != '\n') {
         fscanf(fp, "%f", &new_value);
         append_array(data_array, new_value);
     }
     // print_array(data_array);
-    fscanf(fp, "%f", &new_value);
+    fscanf(fp, ",%f", &new_value);
     append_array(rolled_average_array, new_value);
     while (getc(fp) != '\n') {
         fscanf(fp, "%f", &new_value);
         append_array(rolled_average_array, new_value);
     }
     // print_array(rolled_average_array);
-    fscanf(fp, "%f", &new_value);
+    fscanf(fp, ",%f", &new_value);
     append_array(maxima_ids, new_value);
     while (getc(fp) != '\n') {
         fscanf(fp, "%f", &new_value);

@@ -247,7 +247,7 @@ char* evaluate(const float_array* data, const float_array* rolled_average, float
     // evaluate to colors
     char* colors = malloc(sizeof(char) * maxima_count);
     for (int i = 0; i < maxima_count; i++) {
-        if (data->pointer[(int)selected_maxima_ids.pointer[i]] > COLOR_THRESHOLD) {
+        if (rolled_average->pointer[(int)selected_maxima_ids.pointer[i]] > COLOR_THRESHOLD) {
             colors[i] = 'b';
         } else {
             colors[i] = 'g';
