@@ -56,6 +56,7 @@ void wait_button_press(button_t button)
 void wait_center_press()
 {
     wait_button_press(ENTER_BUTTON);
+    display_set_text(3, "Press Center");
 }
 
 void wait(float seconds)
