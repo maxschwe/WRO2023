@@ -1,9 +1,18 @@
 #include "../../include/core/float_array.h"
-#include "../../include/config.h"
 #include <stdbool.h>
 #include <unistd.h>
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+
+
+int scan_count;
+float sum_rolled_average;
+float needs_to_be_subtracted;
+float sum_rolled_average;
+float last_value;
+float second_last_value;
+float_array temp_scanned_values;
+float_array maxima_ids;
 
 float_array create_float_array(int initialSize)
 {
@@ -216,23 +225,24 @@ float_array calc_most_signigicant_maximas(const float_array* array, const float_
     return selected_maxima_ids;
 }
 
-char* evaluate(const float_array* data, int moving_average_count, float high_pass_threshold, float maxima_threshold, int maxima_count, float color_threshold, char* output_path)
+char* evaluate(const float_array* data, const float_array* rolled_average, const float_array* maxima_ids, int maxima_count, char* output_path)
 {
-    // float_array rolled_average = rolling_average(data, moving_average_count);
+    // float_array rolled_average = rolling_average(data, MOVING_AVERAGE_COUNT);
     // float_array high_pass_filtered = filter_high_pass(&rolled_average, high_pass_threshold);
-    float_array maxima_ids = find_maxima_ids(data, maxima_threshold);
-    float_array selected_maxima_ids = calc_most_signigicant_maximas(data, &maxima_ids, maxima_count);
+    // float_array maxima_ids = find_maxima_ids(data, maxima_threshold);
+    float_array selected_maxima_ids = calc_most_signigicant_maximas(rolled_average, maxima_ids, maxima_count);
 
     if (output_path != NULL) {
         save_array(data, output_path, "w");
-        save_array(&maxima_ids, output_path, "a");
+        save_array(rolled_average, output_path, "a");
+        save_array(maxima_ids, output_path, "a");
         save_array(&selected_maxima_ids, output_path, "a");
     }
 
     // evaluate to colors
     char* colors = malloc(sizeof(char) * maxima_count);
     for (int i = 0; i < maxima_count; i++) {
-        if (data->pointer[(int)selected_maxima_ids.pointer[i]] > color_threshold) {
+        if (data->pointer[(int)selected_maxima_ids.pointer[i]] > COLOR_THRESHOLD) {
             colors[i] = 'b';
         } else {
             colors[i] = 'g';

@@ -27,18 +27,13 @@
 
 // Run Config
 #define BLOCK_COL_COUNT 2
+#define SCAN_BLOCK_COUNT 2
 #define COLOURED_CONTAINER_COUNT 4
 #define SCAN_COUNT 20
 #define BLUE_GREEN_SWITCH_VALUE 0.48
 
 // SCAN Config
-#define SCAN_MAXIMA_COUNT 4
-
-#define MOVING_AVERAGE_COUNT 100
-#define MAXIMUM_THRESHOLD 0.2
-#define MAXIMA_COUNT 4
-#define COLOR_THRESHOLD 0.48
-#define OUTPUT_PATH "scan1.txt"
+#define OUTPUT_PATH "scan.txt"
 
 // DRIVE Config
 #define ACC_FACTOR 5 // 1 Speed change per x degree
@@ -102,15 +97,6 @@ extern float smooth_current_acc_factor;
 extern float smooth_current_deacc_factor;
 extern int smooth_start_speed;
 extern int pos_ship_values[POS_COUNT + 2];
-
-extern int scan_count;
-extern float sum_rolled_average;
-extern float needs_to_be_subtracted;
-extern float sum_rolled_average;
-extern float last_value;
-extern float second_last_value;
-extern float_array temp_scanned_values;
-extern float_array maxima_ids;
 
 void init();
 

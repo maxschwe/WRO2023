@@ -1,39 +1,49 @@
+#define LOCAL_TEST
+
 #include "include/core/float_array.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
 
-#define MOVING_AVERAGE_COUNT 200
-#define HIGH_PASS_THRESHOLD 0.1
-#define MAXIMA_THRESHOLD 0.2
 #define MAXIMA_COUNT 2
-#define COLOR_THRESHOLD 0.48
-#define OUTPUT_PATH "utils/output/scan1.txt"
+#define TEMP_DATA_PATH "utils/output/temp_data.txt"
 
 #define DOWNLOAD 1
 
-float_array load_file(const char* filename)
+void load_file(const char* filename, float_array *data_array, float_array *rolled_average_array, float_array *maxima_ids)
 {
     FILE* fp = fopen(filename, "r");
-    float_array array = create_float_array(100);
     float new_value;
     while (fscanf(fp, "%f,", &new_value) == 1) {
-        append_array(&array, new_value);
+        append_array(data_array, new_value);
     }
-    finish_array(&array);
-    return array;
+    fgetc(fp);
+    while (fscanf(fp, "%f,", &new_value) == 1) {
+        append_array(rolled_average_array, new_value);
+    }
+    fgetc(fp);
+    while (fscanf(fp, "%f,", &new_value) == 1) {
+        append_array(maxima_ids, new_value);
+    }
+    fgetc(fp);
+
+    finish_array(data_array);
+    finish_array(rolled_average_array);
+    finish_array(maxima_ids);
 }
 
 int main()
 {
+    // copy files from robot if wanted
     if (DOWNLOAD) {
-        system("cp /media/max/EV3_WRO/scan1.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
-        system("cp /media/max/EV3_WRO/data.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/data.txt");
+        //system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
+        system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
 
         printf("Copyied files from robot\n");
     }
-    DIR* dir;
 
+    // open directory
+    DIR* dir;
     struct dirent* subdir;
     char full_path[1000];
     char dir_path[100] = "utils/data";
@@ -42,24 +52,31 @@ int main()
         return 1;
     }
     char python_exec_path[100];
-    sprintf(python_exec_path, "python3 utils/plot_data.py %s", OUTPUT_PATH);
+    sprintf(python_exec_path, "python3 utils/plot_data.py %s", TEMP_DATA_PATH);
+
     while ((subdir = readdir(dir)) != NULL) {
         if (subdir->d_type != DT_REG) {
             continue;
         }
         sprintf(full_path, "%s/%s", dir_path, subdir->d_name);
-        float_array data = load_file(full_path);
+        float_array data = create_float_array(INITIAL_ARRAY_SIZE);
+        float_array rolled_average = create_float_array(INITIAL_ARRAY_SIZE);
+        float_array maxima_ids = create_float_array(INITIAL_ARRAY_SIZE);
+        load_file(full_path, &data, &rolled_average, &maxima_ids);
+
+        char *colors = evaluate(&data, &rolled_average, &maxima_ids, MAXIMA_COUNT, TEMP_DATA_PATH);
+
         printf("-------------------------------------\n");
         printf("%s\n", subdir->d_name);
-        if (strcmp(subdir->d_name, "data.txt") != 0) {
-            char* colors = evaluate(&data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, OUTPUT_PATH);
-            for (int i = 0; i < MAXIMA_COUNT; ++i) {
-                printf("Color %i: %s\n", i, colors[i] == 'b' ? "blau" : "green");
-            }
-        } else {
-            save_array(&data, OUTPUT_PATH, "w");
+        for (int i = 0; i < selec; ++i) {
+            printf("Color %i: %s\n", i, colors[i] == 'b' ? "blau" : "green");
         }
         system(python_exec_path);
+
+        destroy_array(&data);
+        destroy_array(&rolled_average);
+        destroy_array(&maxima_ids);
+        free(colors);
     }
     closedir(dir);
 

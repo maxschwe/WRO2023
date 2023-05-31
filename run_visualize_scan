@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+gcc test_scan.c src/core/float_array.c -o test_scan
+
+if [ $? -eq 0 ]; then
+    echo "Created app successfully"
+else
+    echo "Creating app failed"
+    exit 1
+fi
+
+./test_scan

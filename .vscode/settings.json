@@ -13,7 +13,8 @@
     "drive.h": "c",
     "motor.h": "c",
     "stdbool.h": "c",
-    "all.h": "c"
+    "all.h": "c",
+    "ev3api.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp.default.includePath": [

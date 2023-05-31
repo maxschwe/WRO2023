@@ -28,15 +28,15 @@ void run()
     drive_smooth_custom(-30, -10, 35, 0, 260, true, &block_data);
     error_beep();
 
+    // save data in file
+    finish_array(&temp_scanned_values);
     finish_array(&block_data);
-    save_array(&block_data, OUTPUT_PATH, "w");
     finish_array(&maxima_ids);
+    save_array(&temp_scanned_values, OUTPUT_PATH, "w");
+    save_array(&block_data, OUTPUT_PATH, "a");
     save_array(&maxima_ids, OUTPUT_PATH, "a");
 
-    finish_array(&temp_scanned_values);
-    save_array(&temp_scanned_values, "data.txt", "w");
-
-    // evaluate(&block_data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, NULL);
+    evaluate(&temp_scanned_values, &block_data, &maxima_ids, SCAN_BLOCK_COUNT, "evaluation.txt");
     beep();
     // wait_center_press();
 

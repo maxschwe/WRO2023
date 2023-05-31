@@ -21,15 +21,6 @@ int smooth_start_speed = 0;
 float smooth_current_acc_factor = 0.0;
 float smooth_current_deacc_factor = 0.0;
 
-int scan_count;
-float sum_rolled_average;
-float needs_to_be_subtracted;
-float sum_rolled_average;
-float last_value;
-float second_last_value;
-float_array temp_scanned_values;
-float_array maxima_ids;
-
 // pos1, pos2, pos3, pos4, pos5, pos6, finish,, surprise_rule drive back
 int pos_ship_values[POS_COUNT + 2] = { 135, 235, 460, 570, 680, 780, 280, 370 };
 

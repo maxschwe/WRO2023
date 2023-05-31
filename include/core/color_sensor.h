@@ -1,10 +1,10 @@
 #ifndef COLOR_SENSOR_H
 #define COLOR_SENSOR_H
 
-#include "ev3api.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ev3api.h"
 
 #include "helpers.h"
 
