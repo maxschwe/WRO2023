@@ -149,8 +149,8 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
                 append_array(data, sum_rolled_average);
 
                 // check if last value was a maximum greater than maximum threshold
-                if (second_last_value <= last_value && sum_rolled_average > last_value && last_value >= MAXIMUM_THRESHOLD) {
-                    append_array(&maxima_ids, scan_count - 2);
+                if (second_last_value <= last_value && sum_rolled_average < last_value && last_value >= MAXIMUM_THRESHOLD) {
+                    append_array(&maxima_ids, scan_count - 1);
                 }
 
                 // save values for next iteration

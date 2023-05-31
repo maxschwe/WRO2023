@@ -10,22 +10,30 @@
 
 #define DOWNLOAD 1
 
-void load_file(const char* filename, float_array *data_array, float_array *rolled_average_array, float_array *maxima_ids)
+void load_file(const char* filename, float_array* data_array, float_array* rolled_average_array, float_array* maxima_ids)
 {
     FILE* fp = fopen(filename, "r");
     float new_value;
-    while (fscanf(fp, "%f,", &new_value) == 1) {
+    fscanf(fp, "%f", &new_value);
+    append_array(data_array, new_value);
+    while (getc(fp) != '\n') {
+        fscanf(fp, "%f", &new_value);
         append_array(data_array, new_value);
     }
-    fgetc(fp);
-    while (fscanf(fp, "%f,", &new_value) == 1) {
+    // print_array(data_array);
+    fscanf(fp, "%f", &new_value);
+    append_array(rolled_average_array, new_value);
+    while (getc(fp) != '\n') {
+        fscanf(fp, "%f", &new_value);
         append_array(rolled_average_array, new_value);
     }
-    fgetc(fp);
-    while (fscanf(fp, "%f,", &new_value) == 1) {
+    // print_array(rolled_average_array);
+    fscanf(fp, "%f", &new_value);
+    append_array(maxima_ids, new_value);
+    while (getc(fp) != '\n') {
+        fscanf(fp, "%f", &new_value);
         append_array(maxima_ids, new_value);
     }
-    fgetc(fp);
 
     finish_array(data_array);
     finish_array(rolled_average_array);
@@ -36,7 +44,7 @@ int main()
 {
     // copy files from robot if wanted
     if (DOWNLOAD) {
-        //system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
+        // system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
         system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
 
         printf("Copyied files from robot\n");
@@ -59,16 +67,16 @@ int main()
             continue;
         }
         sprintf(full_path, "%s/%s", dir_path, subdir->d_name);
+        printf("-------------------------------------\n");
+        printf("%s\n", subdir->d_name);
         float_array data = create_float_array(INITIAL_ARRAY_SIZE);
         float_array rolled_average = create_float_array(INITIAL_ARRAY_SIZE);
         float_array maxima_ids = create_float_array(INITIAL_ARRAY_SIZE);
         load_file(full_path, &data, &rolled_average, &maxima_ids);
 
-        char *colors = evaluate(&data, &rolled_average, &maxima_ids, MAXIMA_COUNT, TEMP_DATA_PATH);
+        char* colors = evaluate(&data, &rolled_average, &maxima_ids, MAXIMA_COUNT, TEMP_DATA_PATH);
 
-        printf("-------------------------------------\n");
-        printf("%s\n", subdir->d_name);
-        for (int i = 0; i < selec; ++i) {
+        for (int i = 0; i < MAXIMA_COUNT; ++i) {
             printf("Color %i: %s\n", i, colors[i] == 'b' ? "blau" : "green");
         }
         system(python_exec_path);

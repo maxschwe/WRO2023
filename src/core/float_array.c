@@ -4,7 +4,6 @@
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-
 int scan_count;
 float sum_rolled_average;
 float needs_to_be_subtracted;
@@ -112,7 +111,7 @@ void save_array(const float_array* array, const char* filepath, const char* mode
 {
     FILE* fp = fopen(filepath, mode);
     for (int i = 0; i < array->itemCount; ++i) {
-        fprintf(fp, "%f,", array->pointer[i]);
+        fprintf(fp, ",%f", array->pointer[i]);
     }
     fprintf(fp, "\n");
     fclose(fp);
