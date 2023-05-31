@@ -1,5 +1,5 @@
 #include "../../include/core/float_array.h"
-// #include "../../include/core/helpers.h"
+#include "../../include/config.h"
 #include <stdbool.h>
 #include <unistd.h>
 
@@ -41,6 +41,13 @@ void finish_array(float_array* array)
         }
         array->pointer = new_pointer;
         array->arraySize = newSize;
+    }
+}
+
+void destroy_array(float_array* array)
+{
+    if (array != NULL) {
+        free(array->pointer);
     }
 }
 
@@ -232,4 +239,18 @@ char* evaluate(const float_array* data, int moving_average_count, float high_pas
         }
     }
     return colors;
+}
+
+void reset_scan()
+{
+    scan_count = -MOVING_AVERAGE_COUNT;
+    last_value = 0.0;
+    second_last_value = 0.0;
+    sum_rolled_average = 0.0;
+    needs_to_be_subtracted = 0.0;
+    sum_rolled_average = 0.0;
+    destroy_array(&temp_scanned_values);
+    destroy_array(&maxima_ids);
+    temp_scanned_values = create_float_array(INITIAL_ARRAY_SIZE);
+    maxima_ids = create_float_array(INITIAL_ARRAY_SIZE);
 }

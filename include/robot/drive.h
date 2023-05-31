@@ -22,6 +22,7 @@ void turnsing_90(bool turn_left, bool turn_forward);
 void turnsing_180(bool turn_left, bool turn_forward);
 
 void drive_smooth(int end_speed, int steering, int deg, bool brake);
+
 void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake, float_array* data);
 void init_smooth_speed(int start_speed, int end_speed, int max_speed_limit, float acc_factor, float deacc_factor, int deg);
 int get_smooth_speed(int deg);

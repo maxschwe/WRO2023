@@ -20,7 +20,9 @@ void run()
     init_arrays();
     col_get_rgb(s4);
 
+    reset_scan();
     float_array block_data = create_float_array(INITIAL_ARRAY_SIZE);
+
     drive_smooth_custom(-10, -30, 30, 0, 600, false, NULL);
     // drive forward and scan
     drive_smooth_custom(-30, -10, 35, 0, 260, true, &block_data);
@@ -28,6 +30,12 @@ void run()
 
     finish_array(&block_data);
     save_array(&block_data, OUTPUT_PATH, "w");
+    finish_array(&maxima_ids);
+    save_array(&maxima_ids, OUTPUT_PATH, "a");
+
+    finish_array(&temp_scanned_values);
+    save_array(&temp_scanned_values, "data.txt", "w");
+
     // evaluate(&block_data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, NULL);
     beep();
     // wait_center_press();
@@ -35,35 +43,6 @@ void run()
     m_on(a, -1);
     m_on(d, 2);
 
-    // char col1, col2;
-    // char block_array[4];
-    // block_array = evaluate(&block_data, MOVING_AVERAGE_COUNT, HIGH_PASS_THRESHOLD, MAXIMA_THRESHOLD, MAXIMA_COUNT, COLOR_THRESHOLD, OUTPUT_PATH);
-
-    // block_array[0] = 'g';
-    // block_array[1] = 'g';
-    // block_array[2] = 'g';
-    // block_array[3] = 'g';
-    // if (block_array[0] == block_array[1] && block_array[2] == block_array[3] && block_array[0] == block_array[2]) {
-    //     scans_blocks[(block_array[0] == 'b') ? 0 : 1] = 2;
-    //     col1 = block_array[0];
-    //     col2 = col1;
-
-    // } else {
-    //     scans_blocks[0] = 1;
-    //     scans_blocks[1] = 1;
-    //     col1 = 'b';
-    //     col2 = 'g';
-    // }
-
-    // char text[20] = "Cols: ";
-    // char tmpstr[2];
-    // tmpstr[0] = col1;
-    // tmpstr[1] = 0;
-    // strcat(text, tmpstr);
-    // strcat(text, ", ");
-    // tmpstr[0] = col2;
-    // tmpstr[1] = 0;
-    // strcat(text, tmpstr);
     scans_blocks[0] = 0;
     scans_blocks[1] = 2;
 
@@ -114,7 +93,7 @@ void run()
     turn_90(true);
     wait_stand();
     wait(0.1);
-    drive_smooth_custom(10, 10, 10, 0, 90, true, NULL);
+    drive_smooth(10, 0, 90, true);
     move_lifter_up(true);
     move_lifter_down(false);
     drive_smooth_custom(10, 30, 30, 0, 200, false, NULL);

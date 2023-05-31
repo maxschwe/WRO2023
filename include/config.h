@@ -7,9 +7,9 @@
 #include <string.h>
 
 #include "core/color_sensor.h"
+#include "core/float_array.h"
 #include "core/helpers.h"
 #include "core/motor.h"
-#include "ev3api.h"
 #include "robot/actuator.h"
 
 #define A_COUNTERCLOCKWISE false
@@ -35,8 +35,7 @@
 #define SCAN_MAXIMA_COUNT 4
 
 #define MOVING_AVERAGE_COUNT 100
-#define HIGH_PASS_THRESHOLD 0.15
-#define MAXIMA_THRESHOLD 0.2
+#define MAXIMUM_THRESHOLD 0.2
 #define MAXIMA_COUNT 4
 #define COLOR_THRESHOLD 0.48
 #define OUTPUT_PATH "scan1.txt"
@@ -103,6 +102,15 @@ extern float smooth_current_acc_factor;
 extern float smooth_current_deacc_factor;
 extern int smooth_start_speed;
 extern int pos_ship_values[POS_COUNT + 2];
+
+extern int scan_count;
+extern float sum_rolled_average;
+extern float needs_to_be_subtracted;
+extern float sum_rolled_average;
+extern float last_value;
+extern float second_last_value;
+extern float_array temp_scanned_values;
+extern float_array maxima_ids;
 
 void init();
 

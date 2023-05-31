@@ -91,19 +91,15 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
 
 void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, bool brake, float_array* data)
 {
-    float_array temp_scanned_values = create_float_array(INITIAL_ARRAY_SIZE);
     init_smooth_speed(start_speed, end_speed, max_speed_limit, ACC_FACTOR, DEACC_FACTOR, deg);
     int current_deg_b, current_deg_c, target_deg_b, target_deg_c;
     float current_steering;
-    int scan_count = -MOVING_AVERAGE_COUNT;
     int taken_deg_b = 0;
     int taken_deg_c = 0;
     int b_left_deg, c_left_deg;
     int start_deg_b = m_get_deg(b);
     int start_deg_c = m_get_deg(c);
     int loop_count = 0;
-    float sum_rolled_average = 0.0;
-    float needs_to_be_subtracted = 0.0;
     current_deg_b = start_deg_b;
     current_deg_c = start_deg_c;
     deg = abs(deg);
@@ -141,6 +137,8 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         taken_deg_b = abs(current_deg_b - start_deg_b);
         taken_deg_c = abs(current_deg_c - start_deg_c);
         loop_count++;
+
+        // scan if wanted
         if (data != NULL) {
             float value = col_get_rel_rgb(s4, 'b') / MOVING_AVERAGE_COUNT;
             sum_rolled_average += value;
@@ -148,17 +146,20 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
             append_array(&temp_scanned_values, value);
             if (scan_count >= 0) {
                 sum_rolled_average -= needs_to_be_subtracted;
-                needs_to_be_subtracted = temp_scanned_values.pointer[scan_count];
                 append_array(data, sum_rolled_average);
-                // if (sum_rolled_average > HIGH_PASS_THRESHOLD) {
-                // }
+
+                // check if last value was a maximum greater than maximum threshold
+                if (second_last_value <= last_value && sum_rolled_average > last_value && last_value >= MAXIMUM_THRESHOLD) {
+                    append_array(&maxima_ids, scan_count - 2);
+                }
+
+                // save values for next iteration
+                needs_to_be_subtracted = temp_scanned_values.pointer[scan_count];
+                second_last_value = last_value;
+                last_value = sum_rolled_average;
             }
             display_set_spot(11, "val", value);
         }
-    }
-    if (data != NULL) {
-        finish_array(&temp_scanned_values);
-        save_array(&temp_scanned_values, "data.txt", "w");
     }
     if (brake) {
         off();
