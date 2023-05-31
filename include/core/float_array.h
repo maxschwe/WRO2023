@@ -39,6 +39,6 @@ float_array filter_high_pass(const float_array* array, float threshold);
 float_array find_maxima_ids(const float_array* array, float maximaThreshold);
 float_array calc_most_signigicant_maximas(const float_array* array, const float_array* maxima_ids, int needed_maximas);
 
-char* evaluate(const float_array* data, const float_array* rolled_average, const float_array* maxima_ids, int maxima_count, char* output_path);
+char* evaluate(const float_array* data, const float_array* rolled_average, float_array* maxima_ids, int maxima_count, char* output_path);
 
 void reset_scan();

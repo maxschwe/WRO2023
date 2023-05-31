@@ -224,11 +224,17 @@ float_array calc_most_signigicant_maximas(const float_array* array, const float_
     return selected_maxima_ids;
 }
 
-char* evaluate(const float_array* data, const float_array* rolled_average, const float_array* maxima_ids, int maxima_count, char* output_path)
+char* evaluate(const float_array* data, const float_array* rolled_average, float_array* maxima_ids, int maxima_count, char* output_path)
 {
     // float_array rolled_average = rolling_average(data, MOVING_AVERAGE_COUNT);
     // float_array high_pass_filtered = filter_high_pass(&rolled_average, high_pass_threshold);
     // float_array maxima_ids = find_maxima_ids(data, maxima_threshold);
+
+    // check if last value is also a maximum and if so add it to the maximas
+    int index_last_value = rolled_average->itemCount - 1;
+    if (rolled_average->pointer[index_last_value] > rolled_average->pointer[index_last_value - 1]) {
+        append_array(maxima_ids, index_last_value);
+    }
     float_array selected_maxima_ids = calc_most_signigicant_maximas(rolled_average, maxima_ids, maxima_count);
 
     if (output_path != NULL) {

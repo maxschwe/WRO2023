@@ -31,14 +31,16 @@ void run()
     // save data in file
     finish_array(&temp_scanned_values);
     finish_array(&block_data);
-    finish_array(&maxima_ids);
     save_array(&temp_scanned_values, OUTPUT_PATH, "w");
     save_array(&block_data, OUTPUT_PATH, "a");
-    save_array(&maxima_ids, OUTPUT_PATH, "a");
 
     evaluate(&temp_scanned_values, &block_data, &maxima_ids, SCAN_BLOCK_COUNT, "evaluation.txt");
+
+    save_array(&maxima_ids, OUTPUT_PATH, "a");
+    finish_array(&maxima_ids);
+    
     beep();
-    // wait_center_press();
+    wait_center_press();
 
     m_on(a, -1);
     m_on(d, 2);

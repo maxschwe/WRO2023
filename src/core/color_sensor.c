@@ -58,17 +58,17 @@ double col_get_rel_rgb(ColorSensor s, char col)
     rgb_t rgb_value = col_get_rgb(s);
     long sum = rgb_value.r + rgb_value.b + rgb_value.g + 1;
     if (col == 'b') {
-        if (rgb_value.b < 2) {
+        if (rgb_value.b < 5) {
             rgb_value.b = 0;
         }
         return (1.0 * rgb_value.b) / sum;
     } else if (col == 'g') {
-        if (rgb_value.g < 2) {
+        if (rgb_value.g < 5) {
             rgb_value.g = 0;
         }
         return (1.0 * rgb_value.g) / sum;
     } else {
-        if (rgb_value.r < 2) {
+        if (rgb_value.r < 5) {
             rgb_value.r = 0;
         }
         return (1.0 * rgb_value.r) / sum;
