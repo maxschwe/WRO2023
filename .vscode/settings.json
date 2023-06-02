@@ -18,7 +18,6 @@
     "globals_programs.h": "c",
     "scan.h": "c"
   },
-  "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp.default.includePath": [
     "/home/max/Dokumente/ev3/ev3rt-hrp3/sdk/common"
   ],

@@ -40,7 +40,7 @@ void run()
     linefollow_intersection(100, true);
 
     act_move(dropper, DROPPER_NORMAL, false);
-    
+
     wait(0.2);
     turn_90(true);
 
@@ -80,42 +80,65 @@ void run()
     drive_smooth_custom(10, 30, 30, 0, 200, false, false);
     drive_col(30, 0, s3, COL_GREY_REF, false, false);
 
+    // collect with complex scan
     // collect 1. coloured container
-    drive_smooth(10, 0, 460, false);
+
+    init_complex_scan();
+    drive_smooth(10, 0, 410, false);
     // wait_center_press();
-    scans_containers[0] = simple_scan();
-    drive_smooth(10, 0, 105, true);
-    move_lifter_up(true);
-    move_lifter_down(true);
+    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
+    collect_lifter(true);
 
     // collect 2. coloured container
-    drive_smooth(10, 0, 40, false);
-    // wait_center_press();
-    scans_containers[1] = simple_scan();
-    drive_smooth(10, 0, 105, true);
-    move_lifter_up(true);
-    move_lifter_down(true);
+    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    collect_lifter(true);
 
     // collect 3. coloured container
-    drive_smooth(10, 0, 40, false);
-    // wait_center_press();
-    scans_containers[2] = simple_scan();
-    drive_smooth(10, 0, 105, true);
-    move_lifter_up(true);
-    move_lifter_down(true);
+    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    collect_lifter(true);
 
     // scan 4. coloured container
-    drive_smooth(10, 0, 40, false);
-    // wait_center_press();
-    scans_containers[3] = simple_scan();
-    drive_smooth(10, 0, 130, true);
-    move_lifter_up(true);
-    move_lifter_down(false);
+    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
+    collect_lifter(false);
+
+    scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
+
+    // collect with simple scan
+    // // collect 1. coloured container
+    // drive_smooth(10, 0, 460, false);
+    // // wait_center_press();
+    // scans_containers[0] = simple_scan();
+    // drive_smooth(10, 0, 105, true);
+    // move_lifter_up(true);
+    // move_lifter_down(true);
+
+    // // collect 2. coloured container
+    // drive_smooth(10, 0, 40, false);
+    // // wait_center_press();
+    // scans_containers[1] = simple_scan();
+    // drive_smooth(10, 0, 105, true);
+    // move_lifter_up(true);
+    // move_lifter_down(true);
+
+    // // collect 3. coloured container
+    // drive_smooth(10, 0, 40, false);
+    // // wait_center_press();
+    // scans_containers[2] = simple_scan();
+    // drive_smooth(10, 0, 105, true);
+    // move_lifter_up(true);
+    // move_lifter_down(true);
+
+    // // scan 4. coloured container
+    // drive_smooth(10, 0, 40, false);
+    // // wait_center_press();
+    // scans_containers[3] = simple_scan();
+    // drive_smooth(10, 0, 130, true);
+    // move_lifter_up(true);
+    // move_lifter_down(false);
     // act_move_speed(lifter, 10, LIFTER_UP, true);
     // act_move_speed(lifter, 5, LIFTER_INIT, true);
 
     // drive forward and take big ship
-    act_move_speed(lifter, 15, LIFTER_INIT, false);
 
     drive_col(20, 0, s1, COL_BLACK_REF, true, false);
     // drive_smooth(10, 0, 100, true);

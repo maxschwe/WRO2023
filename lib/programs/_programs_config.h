@@ -30,3 +30,11 @@
 #else
 #define SCANS_BLOCKS_FILEPATH NULL
 #endif
+
+#define SAVE_SCANS_CONTAINERS true
+
+#if SAVE_SCANS_CONTAINERS
+#define SCANS_CONTAINERS_FILEPATH "containers.txt"
+#else
+#define SCANS_CONTAINERS_FILEPATH NULL
+#endif

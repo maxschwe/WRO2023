@@ -7,8 +7,8 @@
 #include "lib/programs/_programs_config.h"
 #include "lib/programs/debug.h"
 #include "lib/programs/globals_programs.h"
-#include "lib/programs/run_parts.h"
 #include "lib/programs/run.h"
+#include "lib/programs/run_parts.h"
 #include "lib/programs/shorthands.h"
 #include "lib/programs/test.h"
 
