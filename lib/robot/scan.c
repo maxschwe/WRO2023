@@ -25,7 +25,6 @@ void init_complex_scan()
     second_last_value = 0.0;
     sum_rolled_average = 0.0;
     needs_to_be_subtracted = 0.0;
-    sum_rolled_average = 0.0;
     last_value = 0.0;
     second_last_value = 0.0;
     destroy_array(&scanned_values);
@@ -36,9 +35,10 @@ void init_complex_scan()
     maxima_ids = create_float_array(INITIAL_ARRAY_SIZE);
 }
 
-void complex_scan() {
-    float value = col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR) / MOVING_AVERAGE_COUNT;
-    sum_rolled_average += value;
+void complex_scan()
+{
+    float value = col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR);
+    sum_rolled_average += value / MOVING_AVERAGE_COUNT;
     ++scan_count;
     append_array(&scanned_values, value);
     if (scan_count >= 0) {

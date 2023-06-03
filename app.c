@@ -8,7 +8,7 @@ void main_task(intptr_t unused)
     beep();
 
     while (!button_pressed(ENTER_BUTTON) && !button_pressed(LEFT_BUTTON) && !button_pressed(RIGHT_BUTTON)) { }
-    
+
     if (button_pressed(ENTER_BUTTON)) {
         run();
         // second_day();

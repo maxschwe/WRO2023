@@ -2,11 +2,10 @@
 
 void test()
 {
-    while (1) {
-        on(30, 0);
-        wait(0.00000001);
-        off();
-    }
+    drive_smooth(100, 0, 200, false);
+
+    linefollow_intersection(100, true);
+    // linefollow_smooth(100, 500, true);
 }
 
 void scan_test()

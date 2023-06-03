@@ -177,12 +177,86 @@ float_array calc_most_signigicant_maximas(const float_array* array, const float_
         append_array(&significances, significance);
     }
     finish_array(&significances);
+    print_array(&significances);
 
     // calc most significant maximas
     for (int i = 0; i < needed_maximas; ++i) {
         int hightestSignificance = 0;
         selected_maxima_ids.pointer[i] = array->itemCount - 1;
         for (int j = 0; j < maximaCount; ++j) {
+            if (significances.pointer[j] >= hightestSignificance) {
+                // check if is not already included
+                bool is_included = false;
+                for (int k = 0; k < i; ++k) {
+                    if (maxima_ids->pointer[j] == selected_maxima_ids.pointer[k]) {
+                        is_included = true;
+                        break;
+                    }
+                }
+                if (!is_included) {
+                    hightestSignificance = significances.pointer[j];
+                    selected_maxima_ids.pointer[i] = maxima_ids->pointer[j];
+                }
+            }
+        }
+        selected_maxima_ids.itemCount++;
+    }
+
+    // sort array
+    qsort(selected_maxima_ids.pointer, needed_maximas, sizeof(float), comp);
+    finish_array(&selected_maxima_ids);
+
+    for (int i = 0; i < needed_maximas; ++i) {
+        printf("Id: %i, %f\n", (int)selected_maxima_ids.pointer[i], array->pointer[(int)selected_maxima_ids.pointer[i]]);
+    }
+    return selected_maxima_ids;
+}
+
+float_array calc_most_signigicant_maximas2(const float_array* array, const float_array* maxima_ids, int needed_maximas)
+{
+    float_array significances = create_float_array(maxima_ids->itemCount);
+    float_array selected_maxima_ids = create_float_array(needed_maximas);
+
+    // initialize selected_maxima_ids with default id 0
+    for (int i = 0; i < needed_maximas; ++i) {
+        selected_maxima_ids.pointer[i] = 0.0;
+    }
+
+    int found_maximas_count = maxima_ids->itemCount;
+
+    // calc significances of maximas
+    for (int i = 0; i < found_maximas_count; ++i) {
+        float bottom_significance;
+        float up_significance;
+        int current_id = maxima_ids->pointer[i];
+        float current_value = array->pointer[current_id];
+        float min_value = 0.0;
+        for (int i = current_id - 1; i >= 0; --i) {
+            // display_set_spot(8, "a", i);
+            if (current_value <= array->pointer[i]) {
+                break;
+            }
+            min_value = MIN(min_value, current_value);
+        }
+        bottom_significance = current_value - min_value;
+        min_value = 0.0;
+        for (int i = current_id + 1; i < array->itemCount; ++i) {
+            if (current_value < array->pointer[i]) {
+                break;
+            }
+            min_value = MIN(min_value, current_value);
+        }
+        up_significance = current_value - min_value;
+
+        append_array(&significances, MIN(bottom_significance, up_significance));
+    }
+    finish_array(&significances);
+
+    // calc most significant maximas
+    for (int i = 0; i < needed_maximas; ++i) {
+        int hightestSignificance = 0;
+        selected_maxima_ids.pointer[i] = array->itemCount - 1;
+        for (int j = 0; j < found_maximas_count; ++j) {
             if (significances.pointer[j] >= hightestSignificance) {
                 // check if is not already included
                 bool is_included = false;

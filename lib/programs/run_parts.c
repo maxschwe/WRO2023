@@ -8,8 +8,9 @@ void place_containers_on_ships()
     for (int i = 0; i < BLOCK_COLORS_COUNT; i++) {
         blocks_col_counts_copy[i] = scans_blocks[i];
     }
-    
+
     wait_stand();
+    wait(0.3);
     m_reset(b);
 
     // drop off white container

@@ -15,6 +15,8 @@ void on(int speed, int steering)
     m_on(b, speed_b);
     m_on(c, speed_c);
     current_speed = speed;
+    display_set_spot(2, "sp", speed);
+    display_set_spot(3, "st", steering);
 }
 
 void off()
@@ -60,21 +62,21 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
             complex_scan();
         }
 
-        #if DRIVE_SMOOTH_PRINT_DEBUG
-            display_set_spot(2, "b-s", start_deg_b);
-            display_set_spot(3, "c-s", start_deg_c);
-            display_set_spot(4, "b-c", current_deg_b);
-            display_set_spot(5, "c-c", current_deg_c);
-            
-            display_set_spot(6, "sp", speed);
-            display_set_spot(7, "st", current_steering);
-            display_set_spot(8, "", loop_count);
-        #endif
+#if DRIVE_SMOOTH_PRINT_DEBUG
+        display_set_spot(2, "b-s", start_deg_b);
+        display_set_spot(3, "c-s", start_deg_c);
+        display_set_spot(4, "b-c", current_deg_b);
+        display_set_spot(5, "c-c", current_deg_c);
+
+        display_set_spot(6, "sp", speed);
+        display_set_spot(7, "st", current_steering);
+        display_set_spot(8, "", loop_count);
+#endif
     }
     if (brake) {
         off();
     } else {
-        on(speed, steering);
+        // on(speed, steering);
     }
 }
 
@@ -110,7 +112,8 @@ void drive_col(int speed, int steering, ColorSensor sensor, int compare_value, b
     }
 }
 
-void drive_time(int speed, int steering, float seconds, bool brake) {
+void drive_time(int speed, int steering, float seconds, bool brake)
+{
     on(speed, steering);
     wait(seconds);
     if (brake) {

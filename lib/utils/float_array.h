@@ -1,13 +1,17 @@
 #pragma once
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "lib/utils/utils.h"
 
 #define REALLOC_FACTOR 2.0
 #define INITIAL_ARRAY_SIZE 100
+
+#ifndef NULL
+#define NULL 0
+#endif
 
 typedef struct {
     float* pointer;
@@ -27,3 +31,4 @@ float_array filter_high_pass(const float_array* array, float threshold);
 
 float_array find_maxima_ids(const float_array* array, float maximaThreshold);
 float_array calc_most_signigicant_maximas(const float_array* array, const float_array* maxima_ids, int needed_maximas);
+float_array calc_most_signigicant_maximas2(const float_array* array, const float_array* maxima_ids, int needed_maximas);

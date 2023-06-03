@@ -7,12 +7,12 @@
 #define LOW_PRIORITY 11
 
 #ifndef STACK_SIZE
-#define STACK_SIZE 8192
+#define STACK_SIZE 4096
 #endif
 
-// #ifndef LOOP_REF
-// #define LOOP_REF ULONG_C(10000)
-// #endif
+#ifndef LOOP_REF
+#define LOOP_REF ULONG_C(10000)
+#endif
 
 #ifndef TOPPERS_MACRO_ONLY
 

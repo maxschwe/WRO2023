@@ -3,8 +3,8 @@
 // speed controller
 int smooth_deg_acc_end = 0;
 int smooth_deg_deacc_start = 0;
-int smooth_max_speed = 0;
 int smooth_start_speed = 0;
+int smooth_max_speed = 0;
 float smooth_current_acc_factor = 0.0;
 float smooth_current_deacc_factor = 0.0;
 
@@ -49,17 +49,18 @@ int get_smooth_speed(int deg)
     // accelerating phase
     if (abs(deg) < abs(smooth_deg_acc_end)) {
         cur_speed = deg / smooth_current_acc_factor + smooth_start_speed;
-    // max speed phase
+        // max speed phase
     } else if (abs(deg) < abs(smooth_deg_deacc_start)) {
         cur_speed = smooth_max_speed;
-    // deaccelerating phase
+        // deaccelerating phase
     } else {
         cur_speed = -(deg - smooth_deg_deacc_start) / smooth_current_deacc_factor + smooth_max_speed;
     }
     return cur_speed;
 }
 
-void init_steering_controller(int steering, int deg, int start_b, int start_c) {
+void init_steering_controller(int steering, int deg, int start_b, int start_c)
+{
     start_deg_b = start_b;
     start_deg_c = start_c;
     if (steering > 0) {
@@ -71,15 +72,16 @@ void init_steering_controller(int steering, int deg, int start_b, int start_c) {
     }
 }
 
-void get_steering(int current_deg_b, int current_deg_c, int *speed, int* steering) {
+void get_steering(int current_deg_b, int current_deg_c, int* speed, int* steering)
+{
     int b_left_deg = target_deg_b - current_deg_b + start_deg_b;
     int c_left_deg = target_deg_c - current_deg_c + start_deg_c;
     int abs_b_left = abs(b_left_deg);
     int abs_c_left = abs(c_left_deg);
-    *steering = ((b_left_deg - c_left_deg) / MAX(abs_b_left, abs_c_left)) * STEERING_CORRECTION_FACTOR;
+    *steering = 1.0 * (b_left_deg - c_left_deg) / MAX(abs_b_left, abs_c_left) * STEERING_CORRECTION_FACTOR;
     bool is_b_main = abs_b_left > abs_c_left;
     if ((is_b_main ? b_left_deg : c_left_deg) < 0) {
-        *speed = - *speed;
-        *steering = - *steering;
+        *speed = -*speed;
+        *steering = -*steering;
     }
 }

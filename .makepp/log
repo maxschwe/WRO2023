@@ -1,0 +1,5 @@
+3/usr/bin/makepp test_scan.c -f
+VERSION2.0.98.55.34.0x86_64-linux-gnu-thread-multi
+DEBUG0
+*** /usr/bin/makepp: no argument to -f
+N_FILES000

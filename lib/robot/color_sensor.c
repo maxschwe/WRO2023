@@ -25,7 +25,8 @@ int col_get_col(ColorSensor s)
     return 0;
 }
 
-bool col_check_ref(ColorSensor s, int compare_value, bool check_lower) {
+bool col_check_ref(ColorSensor s, int compare_value, bool check_lower)
+{
     if (check_lower) {
         return col_get_ref(s) < compare_value;
     } else {
@@ -49,13 +50,13 @@ float col_get_rel_rgb(ColorSensor s, char col)
             rgb_value.b = 0;
         }
         return (1.0 * rgb_value.b) / sum;
-    // green relative
+        // green relative
     } else if (col == 'g') {
         if (rgb_value.g <= COL_REL_RGB_THRESHOLD) {
             rgb_value.g = 0;
         }
         return (1.0 * rgb_value.g) / sum;
-    // red relative
+        // red relative
     } else {
         if (rgb_value.r <= COL_REL_RGB_THRESHOLD) {
             rgb_value.r = 0;
@@ -63,4 +64,3 @@ float col_get_rel_rgb(ColorSensor s, char col)
         return (1.0 * rgb_value.r) / sum;
     }
 }
-

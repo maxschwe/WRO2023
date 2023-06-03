@@ -16,7 +16,8 @@
     "all.h": "c",
     "ev3api.h": "c",
     "globals_programs.h": "c",
-    "scan.h": "c"
+    "scan.h": "c",
+    "stdlib.h": "c"
   },
   "C_Cpp.default.includePath": [
     "/home/max/Dokumente/ev3/ev3rt-hrp3/sdk/common"

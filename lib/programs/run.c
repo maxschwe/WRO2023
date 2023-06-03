@@ -2,9 +2,10 @@
 
 void run()
 {
+    init_complex_scan();
     drive_smooth_custom(-10, -30, 30, 0, 600, false, false);
     drive_smooth_custom(-30, -10, 35, 0, 260, true, true);
-    // error_beep();
+    beep();
 
     scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
 
@@ -19,6 +20,7 @@ void run()
         }
     }
 
+    error_beep();
     wait_center_press();
 
     m_on(a, -2);
@@ -74,31 +76,32 @@ void run()
     turn_90(true);
     wait_stand();
     wait(0.1);
+    init_complex_scan();
     drive_smooth(10, 0, 90, true);
     move_lifter_up(true);
     move_lifter_down(false);
     drive_smooth_custom(10, 30, 30, 0, 200, false, false);
-    drive_col(30, 0, s3, COL_GREY_REF, false, false);
+    drive_col(30, 0, s1, COL_GREY_REF, false, false);
+    beep();
 
     // collect with complex scan
     // collect 1. coloured container
 
-    init_complex_scan();
-    drive_smooth(10, 0, 410, false);
+    drive_smooth(10, 0, 140, false);
     // wait_center_press();
-    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
+    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
     collect_lifter(true);
 
     // collect 2. coloured container
-    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
     collect_lifter(true);
 
     // collect 3. coloured container
-    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
     collect_lifter(true);
 
     // scan 4. coloured container
-    drive_smooth_custom(0, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
+    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
     collect_lifter(false);
 
     scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
@@ -140,7 +143,7 @@ void run()
 
     // drive forward and take big ship
 
-    drive_col(20, 0, s1, COL_BLACK_REF, true, false);
+    drive_col(20, 0, s1, COL_GREY_REF, true, false);
     // drive_smooth(10, 0, 100, true);
 
     drive_smooth(10, 0, 300, true);
@@ -165,10 +168,11 @@ void run()
     turn_90(true);
     linefollow_deg(40, 300, false);
     linefollow_col_1(40, COL_BLACK_REF, false, false);
-    linefollow_deg(40, 50, false);
+    linefollow_deg(40, 20, false);
     linefollow_col_1(40, COL_BLACK_REF, true, false);
+    beep();
     linefollow_deg(40, 220, false);
-    linefollow_smooth(10, 150, true);
+    linefollow_smooth(10, 100, true);
     turn_180(true);
 
     // collect small ship

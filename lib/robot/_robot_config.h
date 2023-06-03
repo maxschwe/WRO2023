@@ -6,7 +6,7 @@
 #define A_COUNTERCLOCKWISE false
 #define B_COUNTERCLOCKWISE true
 #define C_COUNTERCLOCKWISE false
-#define D_COUNTERCLOCKWISE true
+#define D_COUNTERCLOCKWISE false
 
 #define A_LARGE_MOTOR true
 #define B_LARGE_MOTOR false
@@ -30,7 +30,7 @@
 #define DROPPER_MAX_NEG_SPEED 40
 
 #define DROPPER_INIT 0
-#define DROPPER_NORMAL 30
+#define DROPPER_NORMAL 25
 #define DROPPER_DROPPED 140
 #define DROPPER_BODEN 140
 
@@ -54,6 +54,7 @@
 // --------------------------------
 #define LINEFOLLOW_ACC 4 // 1 Speed change per x degree
 #define LINEFOLLOW_DEACC 5 // 1 Speed change per x degree
+#define LINEFOLLOW_START_SPEED 15 // 1 Speed change per x degree
 #define LINEFOLLOW_MAX_SPEED 100
 
 #define LINEFOLLOW_INTERSECTION_VALUE 30
@@ -66,7 +67,7 @@
 #define KP_100 0.35
 
 #define KD_10 20
-#define KD_25 20 
+#define KD_25 20
 #define KD_50 10
 #define KD_75 10
 #define KD_100 15
@@ -96,7 +97,7 @@
 // ----------------------------------
 // ---------- debug prints ----------
 // ----------------------------------
-#define DRIVE_SMOOTH_PRINT_DEBUG true
+// #define DRIVE_SMOOTH_PRINT_DEBUG true
 
 // -----------------------------
 // ---------- display ----------
