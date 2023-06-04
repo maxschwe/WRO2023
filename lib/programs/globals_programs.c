@@ -6,6 +6,8 @@ char* scans_containers;
 int blocks_col_counts[BLOCK_COLORS_COUNT];
 bool occupied_ship_pos[SHIP_POS_COUNT];
 
+int pos_ship_values[SHIP_POS_COUNT + ADDITIONAL_POS_COUNT] = { SHIP_POS1, SHIP_POS2, SHIP_POS3, SHIP_POS4, SHIP_POS5, SHIP_POS6, SHIP_POS_FINISH, SHIP_POS_FINISH };
+
 void init_programs_globals()
 {
     for (int i = 0; i < BLOCK_COLORS_COUNT; ++i) {

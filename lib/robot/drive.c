@@ -15,8 +15,6 @@ void on(int speed, int steering)
     m_on(b, speed_b);
     m_on(c, speed_c);
     current_speed = speed;
-    display_set_spot(2, "sp", speed);
-    display_set_spot(3, "st", steering);
 }
 
 void off()
@@ -40,6 +38,7 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     int current_deg_b = start_deg_b;
     int current_deg_c = start_deg_c;
 
+    deg = abs(deg);
     init_smooth_speed_controller(start_speed, end_speed, max_speed_limit, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, deg);
     init_steering_controller(steering, deg, start_deg_b, start_deg_c);
 
@@ -47,7 +46,6 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     int loop_count = 0;
     bool is_b_used_for_speed_control = steering > 0;
 
-    deg = abs(deg);
     while (abs(current_deg_b - start_deg_b) < deg && abs(current_deg_c - start_deg_c) < deg) {
         speed = get_smooth_speed(is_b_used_for_speed_control ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
         get_steering(current_deg_b, current_deg_c, &speed, &current_steering);
@@ -76,7 +74,7 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     if (brake) {
         off();
     } else {
-        // on(speed, steering);
+        on(speed, steering);
     }
 }
 

@@ -21,7 +21,7 @@ void run()
     }
 
     error_beep();
-    wait_center_press();
+    // wait_center_press();
 
     m_on(a, -2);
     m_on(d, -1);
@@ -106,6 +106,10 @@ void run()
 
     scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
 
+    display_set_text(2, scans_containers[0] == 'b' ? "blue" : "green");
+    display_set_text(3, scans_containers[1] == 'b' ? "blue" : "green");
+    display_set_text(4, scans_containers[2] == 'b' ? "blue" : "green");
+    display_set_text(5, scans_containers[3] == 'b' ? "blue" : "green");
     // collect with simple scan
     // // collect 1. coloured container
     // drive_smooth(10, 0, 460, false);

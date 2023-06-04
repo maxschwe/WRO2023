@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "lib/robot/motor.h"
 #include "lib/robot/color_sensor.h"
-#include "lib/robot/helpers.h"
 #include "lib/robot/globals.h"
+#include "lib/robot/helpers.h"
+#include "lib/robot/motor.h"
 #include "lib/robot/scan.h"
 
-#include "lib/utils/float_array.h"
 #include "lib/utils/drive_control.h"
+#include "lib/utils/float_array.h"
 
 void on(int speed, int steering);
 void off();

@@ -59,6 +59,8 @@
 
 #define LINEFOLLOW_INTERSECTION_VALUE 30
 #define LINEFOLLOW_INTERSECTION_INITIAL_DEG 100
+#define LINEFOLLOW_SPEED_AFTER_INTERSECTION 30
+#define LINEFOLLOW_DIST_AFTER_INTERSECTION 100
 
 #define KP_10 0.3
 #define KP_25 0.3
@@ -80,7 +82,7 @@
 #define COL_GREY_REF 35
 #define COL_LIGHT_BLUE_REF 22
 
-#define COL_REL_RGB_THRESHOLD 4 // threshold for relative value to pass (if lower -> result is 0)
+#define COL_REL_RGB_THRESHOLD 2 // threshold for relative value to pass (if lower -> result is 0)
 #define SIMPLE_SCAN_COUNT 20
 #define SCAN_RGB_RELATIVE_COLOR 'b'
 #define COLOR_DECIDE_VALUE 0.48
@@ -90,14 +92,14 @@
 // -----------------------------------------
 // ---------- complex scan config ----------
 // -----------------------------------------
-#define MOVING_AVERAGE_COUNT 100
-#define MAXIMUM_THRESHOLD 0.2
+#define MOVING_AVERAGE_COUNT 50
+#define MAXIMUM_THRESHOLD 0.05
 #define COLOR_THRESHOLD 0.48
 
 // ----------------------------------
 // ---------- debug prints ----------
 // ----------------------------------
-// #define DRIVE_SMOOTH_PRINT_DEBUG true
+#define DRIVE_SMOOTH_PRINT_DEBUG false
 
 // -----------------------------
 // ---------- display ----------

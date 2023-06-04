@@ -7,7 +7,7 @@
 #define LOW_PRIORITY 11
 
 #ifndef STACK_SIZE
-#define STACK_SIZE 4096
+#define STACK_SIZE 16384
 #endif
 
 #ifndef LOOP_REF

@@ -226,35 +226,43 @@ float_array calc_most_signigicant_maximas2(const float_array* array, const float
 
     // calc significances of maximas
     for (int i = 0; i < found_maximas_count; ++i) {
-        float bottom_significance;
-        float up_significance;
         int current_id = maxima_ids->pointer[i];
         float current_value = array->pointer[current_id];
-        float min_value = 0.0;
-        for (int i = current_id - 1; i >= 0; --i) {
+        float min_value = current_value;
+        int j;
+        for (j = current_id - 1; j >= 0; --j) {
             // display_set_spot(8, "a", i);
-            if (current_value <= array->pointer[i]) {
+            float compare_value = array->pointer[j];
+            if (current_value < compare_value) {
                 break;
             }
-            min_value = MIN(min_value, current_value);
+            min_value = MIN(min_value, compare_value);
         }
-        bottom_significance = current_value - min_value;
-        min_value = 0.0;
-        for (int i = current_id + 1; i < array->itemCount; ++i) {
-            if (current_value < array->pointer[i]) {
+        if (j < 0) {
+            min_value = 0.0;
+        }
+        float bottom_significance = current_value - min_value;
+        min_value = current_value;
+        for (j = current_id + 1; j < array->itemCount; ++j) {
+            float compare_value = array->pointer[j];
+            if (current_value <= compare_value) {
                 break;
             }
-            min_value = MIN(min_value, current_value);
+            min_value = MIN(min_value, compare_value);
         }
-        up_significance = current_value - min_value;
-
-        append_array(&significances, MIN(bottom_significance, up_significance));
+        if (j >= array->itemCount) {
+            min_value = 0.0;
+        }
+        float up_significance = current_value - min_value;
+        float significance = MIN(bottom_significance, up_significance);
+        append_array(&significances, significance);
     }
     finish_array(&significances);
+    print_array(&significances);
 
     // calc most significant maximas
     for (int i = 0; i < needed_maximas; ++i) {
-        int hightestSignificance = 0;
+        float hightestSignificance = 0.0;
         selected_maxima_ids.pointer[i] = array->itemCount - 1;
         for (int j = 0; j < found_maximas_count; ++j) {
             if (significances.pointer[j] >= hightestSignificance) {

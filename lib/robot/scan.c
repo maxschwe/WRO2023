@@ -51,7 +51,7 @@ void complex_scan()
         }
 
         // save values for next iteration
-        needs_to_be_subtracted = scanned_values.pointer[scan_count];
+        needs_to_be_subtracted = scanned_values.pointer[scan_count] / MOVING_AVERAGE_COUNT;
         second_last_value = last_value;
         last_value = sum_rolled_average;
     }
@@ -60,12 +60,16 @@ void complex_scan()
 
 char* evaluate_complex_scan(int maxima_count, char* output_path)
 {
+    finish_array(&scanned_values);
+    finish_array(&rolled_average_values);
     // check if last value is also a maximum and if so add it to the maximas
     int index_last_value = rolled_average_values.itemCount - 1;
     if (rolled_average_values.pointer[index_last_value] > rolled_average_values.pointer[index_last_value - 1]) {
         append_array(&maxima_ids, index_last_value);
     }
-    float_array selected_maxima_ids = calc_most_signigicant_maximas(&rolled_average_values, &maxima_ids, maxima_count);
+
+    finish_array(&maxima_ids);
+    float_array selected_maxima_ids = calc_most_signigicant_maximas2(&rolled_average_values, &maxima_ids, maxima_count);
 
     // save data if wanted
     if (output_path != NULL) {

@@ -19,4 +19,3 @@ int m_get_deg(Motor m);
 int m_get_speed(Motor m);
 void m_wait_deg(Motor m, int deg);
 void m_on_deg(Motor m, int speed, int deg, bool brake, bool block);
-

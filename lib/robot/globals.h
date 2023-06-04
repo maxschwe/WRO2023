@@ -4,9 +4,9 @@
 
 #include "lib/robot/_robot_config.h"
 
-#include "lib/robot/motor.h"
 #include "lib/robot/actuator.h"
 #include "lib/robot/color_sensor.h"
+#include "lib/robot/motor.h"
 #include "lib/robot/scan.h"
 
 extern Motor a;

@@ -1,16 +1,12 @@
 #include "lib/programs/run_parts.h"
 
-int pos_ship_values[SHIP_POS_COUNT + ADDITIONAL_POS_COUNT] = { SHIP_POS1, SHIP_POS2, SHIP_POS3, SHIP_POS4, SHIP_POS5, SHIP_POS6, SHIP_POS_FINISH, SHIP_POS_DRIVE_BACK };
-
 void place_containers_on_ships()
 {
     int blocks_col_counts_copy[BLOCK_COLORS_COUNT];
     for (int i = 0; i < BLOCK_COLORS_COUNT; i++) {
-        blocks_col_counts_copy[i] = scans_blocks[i];
+        blocks_col_counts_copy[i] = blocks_col_counts[i];
     }
-
     wait_stand();
-    wait(0.3);
     m_reset(b);
 
     // drop off white container
@@ -65,7 +61,7 @@ void drive_to_ship_position(int target_pos)
     if (delta_deg < 0) {
         speed = -speed;
     }
-    drive_smooth(speed, 0, delta_deg, true);
+    drive_smooth(speed, 0, abs(delta_deg), true);
 }
 
 int get_free_pos_ship(bool big_ship)

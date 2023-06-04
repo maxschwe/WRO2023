@@ -2,9 +2,41 @@
 
 void test()
 {
-    drive_smooth(100, 0, 200, false);
-
+    move_lifter_up(true);
+    m_off(a, true);
+    m_off(d, true);
     linefollow_intersection(100, true);
+    turn_90(false);
+    linefollow_smooth(50, 770, true);
+
+    // drive again red container
+    // drive_deg(-10, -60, 0, 200, false);
+    // drive_deg(-60, -10, 0, 200, true);
+    // wait(0.3);
+    // drive_deg(10, 40, 0, 200, false);
+    // drive_deg(40, 10, 0, 150, true);
+
+    // place big ship
+    wait_stand();
+    drive_smooth(-10, 0, 800, true);
+    wait_stand();
+    drive_smooth(10, -50, 630, true);
+    act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
+    drive_smooth(20, 0, 150, true);
+    drive_smooth(-20, 0, 200, true);
+
+    // place small ship
+    drive_smooth(-15, -50, 630, true);
+    drive_smooth(-15, 0, 30, true);
+    drive_smooth(-15, -50, 630, true);
+    act_move_speed(lifter, 80, LIFTER_INIT, false);
+    drive_smooth(-30, 0, 100, false);
+    drive_time(-30, 0, 0.5, true);
+    drive_smooth(10, 0, 310, true);
+    wait_stand();
+    drive_smooth(-10, 50, 630, true);
+
+    place_containers_on_ships();
     // linefollow_smooth(100, 500, true);
 }
 
