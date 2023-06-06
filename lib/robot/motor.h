@@ -17,7 +17,7 @@ typedef struct {
     motor_port_t port;
     bool is_large_motor;
     bool counterclockwise;
-    StallDetection stall_detection;
+    StallDetection* stall_detection;
 } Motor;
 
 void m_init(Motor m);

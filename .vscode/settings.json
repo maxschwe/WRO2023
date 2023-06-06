@@ -22,6 +22,7 @@
     "typeinfo": "c"
   },
   "C_Cpp.default.includePath": [
+    "/home/max/Dokumente/ev3/ev3rt-hrp3/sdk/common",
     "/home/max/Dokumente/ev3/ev3rt-hrp3/sdk/common"
   ],
   "C_Cpp.clang_format_fallbackStyle": "WebKit"

@@ -61,9 +61,10 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         if (scan) {
             complex_scan();
         }
-
-        // check if stall
-        if (m_check_stall(b) && m_check_stall(c)) {
+        // check if stall: needs to be saved in seperate vars so there is no lazy evaluation
+        bool b_stalled = m_check_stall(b);
+        bool c_stalled = m_check_stall(c);
+        if (b_stalled && c_stalled) {
             error_beep();
             break;
         }
@@ -122,8 +123,10 @@ void drive_col_custom(int speed, int steering, ColorSensor sensor, int compare_v
             complex_scan();
             // display_set_spot(11, "val", 0.0);
         }
-        // check if stall
-        if (m_check_stall(b) && m_check_stall(c)) {
+        // check if stall: needs to be saved in seperate vars so there is no lazy evaluation
+        bool b_stalled = m_check_stall(b);
+        bool c_stalled = m_check_stall(c);
+        if (b_stalled && c_stalled) {
             error_beep();
             break;
         }

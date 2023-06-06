@@ -2,6 +2,7 @@
 
 void test()
 {
+    drive_smooth(10, 0, 10000, true);
     wait(1);
     // move_lifter_up(true);
     // m_off(a, true);
