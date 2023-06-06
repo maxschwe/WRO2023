@@ -4,24 +4,10 @@ void run()
 {
     init_complex_scan();
     drive_smooth_custom(-10, -30, 30, 0, 600, false, false);
-    drive_smooth_custom(-30, -10, 35, 0, 260, true, true);
-    beep();
-
-    scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
-
-    display_set_text(0, scans_blocks[0] == 'b' ? "blue" : "green");
-    display_set_text(1, scans_blocks[1] == 'b' ? "blue" : "green");
-
-    for (int i = 0; i < BLOCKS_COUNT; ++i) {
-        if (scans_blocks[i] == 'b') {
-            ++blocks_col_counts[0];
-        } else {
-            ++blocks_col_counts[1];
-        }
-    }
-
-    error_beep();
-    // wait_center_press();
+    drive_col_custom(-30, 0, s1, COL_WHITE_REF, false, false, true);
+    drive_smooth_custom(-30, -30, 30, 0, 30, false, true);
+    drive_col_custom(-30, 0, s1, COL_BLACK_REF, true, false, true);
+    drive_smooth_custom(-30, -10, 30, 0, 75, true, true);
 
     m_on(a, -2);
     m_on(d, -1);
@@ -38,12 +24,12 @@ void run()
 
     linefollow_smooth(100, 150, false);
     linefollow_intersection(100, false);
-    linefollow_deg(100, 720, false);
+
+    linefollow_deg(100, 620, false);
     linefollow_intersection(100, true);
 
     act_move(dropper, DROPPER_NORMAL, false);
 
-    wait(0.2);
     turn_90(true);
 
     // surprise rule: drop off boje in untiefe
@@ -72,96 +58,106 @@ void run()
     beep();
 
     // collect white container
-    wait(0.2);
+    scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
+    display_set_text(0, scans_blocks[0] == 'b' ? "blue" : "green");
+    display_set_text(1, scans_blocks[1] == 'b' ? "blue" : "green");
+
+    for (int i = 0; i < BLOCKS_COUNT; ++i) {
+        if (scans_blocks[i] == 'b') {
+            ++blocks_col_counts[0];
+        } else {
+            ++blocks_col_counts[1];
+        }
+    }
     turn_90(true);
     wait_stand();
     wait(0.1);
-    init_complex_scan();
+
+    // surprise rule: collect second white container
+    // drive_smooth(-10, 0, 90, true);
+    // collect_lifter(true);
+    // drive_smooth(10, 0, 180, true);
+
     drive_smooth(10, 0, 90, true);
-    move_lifter_up(true);
-    move_lifter_down(false);
-    drive_smooth_custom(10, 30, 30, 0, 200, false, false);
+
+    collect_lifter(false);
+    drive_smooth_custom(10, 30, 30, 0, 50, false, false);
+
     drive_col(30, 0, s1, COL_GREY_REF, false, false);
-    beep();
 
     // collect with complex scan
+    // init_complex_scan();
     // collect 1. coloured container
 
-    drive_smooth(10, 0, 140, false);
-    // wait_center_press();
-    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
+    // drive_smooth(10, 0, 140, false);
+    // // wait_center_press();
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
+    // collect_lifter(true);
+
+    // // collect 2. coloured container
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    // collect_lifter(true);
+
+    // // collect 3. coloured container
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    // collect_lifter(true);
+
+    // // scan 4. coloured container
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
+    // collect_lifter(false);
+
+    // scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
+
+    // collect with simple scan
+    // collect 1. coloured container
+    drive_smooth(10, 0, 190, false);
+
+    scans_containers[0] = simple_scan();
+    drive_smooth(10, 0, 105, true);
     collect_lifter(true);
 
     // collect 2. coloured container
-    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
+    scans_containers[1] = simple_scan();
+    drive_smooth(10, 0, 105, true);
     collect_lifter(true);
 
     // collect 3. coloured container
-    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
+    scans_containers[2] = simple_scan();
+    drive_smooth(10, 0, 105, true);
     collect_lifter(true);
 
     // scan 4. coloured container
-    drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
+    drive_smooth(10, 0, 40, false);
+    // wait_center_press();
+    scans_containers[3] = simple_scan();
+    drive_smooth(10, 0, 130, true);
     collect_lifter(false);
-
-    scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
 
     display_set_text(2, scans_containers[0] == 'b' ? "blue" : "green");
     display_set_text(3, scans_containers[1] == 'b' ? "blue" : "green");
     display_set_text(4, scans_containers[2] == 'b' ? "blue" : "green");
     display_set_text(5, scans_containers[3] == 'b' ? "blue" : "green");
-    // collect with simple scan
-    // // collect 1. coloured container
-    // drive_smooth(10, 0, 460, false);
-    // // wait_center_press();
-    // scans_containers[0] = simple_scan();
-    // drive_smooth(10, 0, 105, true);
-    // move_lifter_up(true);
-    // move_lifter_down(true);
-
-    // // collect 2. coloured container
-    // drive_smooth(10, 0, 40, false);
-    // // wait_center_press();
-    // scans_containers[1] = simple_scan();
-    // drive_smooth(10, 0, 105, true);
-    // move_lifter_up(true);
-    // move_lifter_down(true);
-
-    // // collect 3. coloured container
-    // drive_smooth(10, 0, 40, false);
-    // // wait_center_press();
-    // scans_containers[2] = simple_scan();
-    // drive_smooth(10, 0, 105, true);
-    // move_lifter_up(true);
-    // move_lifter_down(true);
-
-    // // scan 4. coloured container
-    // drive_smooth(10, 0, 40, false);
-    // // wait_center_press();
-    // scans_containers[3] = simple_scan();
-    // drive_smooth(10, 0, 130, true);
-    // move_lifter_up(true);
-    // move_lifter_down(false);
-    // act_move_speed(lifter, 10, LIFTER_UP, true);
-    // act_move_speed(lifter, 5, LIFTER_INIT, true);
 
     // drive forward and take big ship
-
     drive_col(20, 0, s1, COL_GREY_REF, true, false);
     // drive_smooth(10, 0, 100, true);
 
     drive_smooth(10, 0, 300, true);
     turn_90(true);
     drive_time(-30, 0, 0.8, true);
-    drive_smooth(10, 0, 360, true);
+    drive_smooth(15, 0, 360, true);
     turn_90(false);
-    drive_smooth(10, 0, 220, true);
+    drive_smooth(10, 0, 240, true);
     // drive_smooth(10, -50, 220, true);
     // drive_smooth(10, 50, 220, true);
     // drive_smooth(10, 0, 245, true);
     act_move(lifter, LIFTER_UP, true);
 
-    wait(0.3);
+    wait(0.2);
 
     // move backwards and drive to small ship
     drive_smooth(-60, 0, 300, false);
@@ -175,7 +171,7 @@ void run()
     linefollow_deg(40, 20, false);
     linefollow_col_1(40, COL_BLACK_REF, true, false);
     beep();
-    linefollow_deg(40, 220, false);
+    linefollow_deg(40, 200, false);
     linefollow_smooth(10, 100, true);
     turn_180(true);
 
@@ -208,21 +204,27 @@ void run()
 
     // place big ship
     wait_stand();
-    drive_smooth(-10, 0, 800, true);
-    wait_stand();
-    drive_smooth(10, -50, 630, true);
+    drive_smooth(-10, 0, 700, true);
+    wait(0.1);
+    turn_90(true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
-    drive_smooth(20, 0, 150, true);
-    drive_smooth(-20, 0, 200, true);
+    wait(0.2);
+    drive_smooth(20, 0, 300, true);
+    drive_smooth(-10, 0, 300, true);
 
     // place small ship
-    drive_smooth(-15, -50, 630, true);
-    drive_smooth(-15, 0, 30, true);
-    drive_smooth(-15, -50, 630, true);
+    wait(0.1);
+    turn_90(false);
+    wait(0.1);
+    drive_smooth(-10, 0, 400, true);
+    wait(0.1);
+    turn_90(false);
+    wait(0.1);
     act_move_speed(lifter, 80, LIFTER_INIT, false);
-    drive_smooth(-30, 0, 100, false);
+    drive_smooth(-30, 0, 150, false);
     drive_time(-30, 0, 0.5, true);
-    drive_smooth(10, 0, 310, true);
+    wait_stand();
+    drive_smooth(10, 0, 300, true);
     wait_stand();
     drive_smooth(-10, 50, 630, true);
 

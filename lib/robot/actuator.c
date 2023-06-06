@@ -19,5 +19,23 @@ void act_move_speed(Actuator act, int speed, int new_position, bool block)
             speed = act.max_pos_speed;
         }
     }
-    m_on_deg(*act.motor, speed, rel_deg, true, block);
+    if (block) {
+        m_reset_stall(*act.motor);
+        int initial_motor = m_get_deg(*act.motor);
+        if (rel_deg < 0) {
+            speed = -speed;
+        }
+        rel_deg = abs(rel_deg);
+        m_on(*act.motor, speed);
+        while (abs(m_get_deg(*act.motor) - initial_motor) < rel_deg) {
+            if (m_check_stall(*act.motor)) {
+                m_off(*act.motor, true);
+                error_beep();
+                break;
+            }
+        }
+        m_off(*act.motor, true);
+    } else {
+        m_on_deg(*act.motor, speed, rel_deg, true, block);
+    }
 }

@@ -13,6 +13,11 @@
 #define C_LARGE_MOTOR false
 #define D_LARGE_MOTOR true
 
+#define A_STALL_DETECTION_TIMEOUT 2.0 // seconds
+#define B_STALL_DETECTION_TIMEOUT 2.0 // seconds
+#define C_STALL_DETECTION_TIMEOUT 2.0 // seconds
+#define D_STALL_DETECTION_TIMEOUT 2.0 // seconds
+
 // -------------------------------
 // ---------- actuators ----------
 // -------------------------------
@@ -27,7 +32,7 @@
 
 // dropper (port a)
 #define DROPPER_MAX_POS_SPEED 20
-#define DROPPER_MAX_NEG_SPEED 40
+#define DROPPER_MAX_NEG_SPEED 80
 
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 25
@@ -93,7 +98,7 @@
 // ---------- complex scan config ----------
 // -----------------------------------------
 #define MOVING_AVERAGE_COUNT 50
-#define MAXIMUM_THRESHOLD 0.05
+#define MAXIMUM_THRESHOLD 0.0000001
 #define COLOR_THRESHOLD 0.48
 
 // ----------------------------------

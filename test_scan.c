@@ -44,7 +44,7 @@ int main()
     // copy files from robot if wanted
     if (DOWNLOAD) {
         // system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
-        system("cp /media/max/EV3_WRO/scan.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/scan.txt");
+        system("cp /media/max/EV3_WRO/blocks.txt ~/Dokumente/ev3/ev3rt-hrp3/sdk/workspace/WRO2023/utils/data/blocks.txt");
 
         printf("Copyied files from robot\n");
     }
@@ -78,7 +78,7 @@ int main()
 
         // evaluate
         int index_last_value = rolled_average.itemCount - 1;
-        if (rolled_average.pointer[index_last_value] > rolled_average.pointer[index_last_value - 1]) {
+        if (rolled_average.pointer[index_last_value] >= rolled_average.pointer[index_last_value - 1]) {
             append_array(&maxima_ids, index_last_value);
         }
         int maxima_count;

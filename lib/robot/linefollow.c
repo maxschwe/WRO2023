@@ -54,6 +54,8 @@ void linefollow_intersection_custom(int speed, float kp, float kd, bool brake)
     }
     if (brake) {
         linefollow_deg(LINEFOLLOW_SPEED_AFTER_INTERSECTION, LINEFOLLOW_DIST_AFTER_INTERSECTION, true);
+    } else {
+        on(speed, 0);
     }
 }
 
@@ -64,17 +66,24 @@ void linefollow_intersection(int speed, bool brake)
     linefollow_intersection_custom(speed, kp, kd, brake);
 }
 
-void linefollow_deg(int speed, int deg, bool brake)
+void linefollow_deg_custom(int speed, int deg, float kp, float kd, bool brake)
 {
-    float kp = linefollow_get_kp(speed);
-    float kd = linefollow_get_kd(speed);
     int initial_b = m_get_deg(b);
     while (abs(m_get_deg(b) - initial_b) < deg) {
         on(speed, linefollow_control(kp, kd));
     }
     if (brake) {
         off();
+    } else {
+        on(speed, 0);
     }
+}
+
+void linefollow_deg(int speed, int deg, bool brake)
+{
+    float kp = linefollow_get_kp(speed);
+    float kd = linefollow_get_kd(speed);
+    linefollow_deg_custom(speed, deg, kp, kd, brake);
 }
 
 void linefollow_smooth_custom(int start_speed, int end_speed, int max_speed, int deg, bool brake)
@@ -84,7 +93,7 @@ void linefollow_smooth_custom(int start_speed, int end_speed, int max_speed, int
     int initial_b = m_get_deg(b);
     int taken_deg;
     long counter = 0;
-    int speed;
+    int speed = 10;
     while ((taken_deg = abs(m_get_deg(b) - initial_b)) < deg) {
         speed = get_smooth_speed(taken_deg);
         // display_set_spot(2, "sp", speed);
@@ -96,6 +105,8 @@ void linefollow_smooth_custom(int start_speed, int end_speed, int max_speed, int
     }
     if (brake) {
         off();
+    } else {
+        on(speed, 0);
     }
 }
 
@@ -114,17 +125,6 @@ void linefollow_smooth(int end_speed, int deg, bool brake)
     linefollow_smooth_custom(start_speed, end_speed, LINEFOLLOW_MAX_SPEED, deg, brake);
 }
 
-void linefollow_deg_custom(int speed, int deg, float kp, float kd, bool brake)
-{
-    int initial_b = m_get_deg(b);
-    while (abs(m_get_deg(b) - initial_b) < deg) {
-        on(speed, linefollow_control(kp, kd));
-    }
-    if (brake) {
-        off();
-    }
-}
-
 void linefollow_col_1(int speed, int ref_light_s1, bool lower, bool brake)
 {
     float kp = linefollow_get_kp(speed);
@@ -134,5 +134,7 @@ void linefollow_col_1(int speed, int ref_light_s1, bool lower, bool brake)
     }
     if (brake) {
         off();
+    } else {
+        on(speed, 0);
     }
 }

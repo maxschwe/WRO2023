@@ -1,9 +1,9 @@
 #include "lib/robot/globals.h"
 
-Motor a = { .port = EV3_PORT_A, .is_large_motor = A_LARGE_MOTOR, .counterclockwise = A_COUNTERCLOCKWISE };
-Motor b = { .port = EV3_PORT_B, .is_large_motor = B_LARGE_MOTOR, .counterclockwise = B_COUNTERCLOCKWISE };
-Motor c = { .port = EV3_PORT_C, .is_large_motor = C_LARGE_MOTOR, .counterclockwise = C_COUNTERCLOCKWISE };
-Motor d = { .port = EV3_PORT_D, .is_large_motor = D_LARGE_MOTOR, .counterclockwise = D_COUNTERCLOCKWISE };
+Motor a = { .port = EV3_PORT_A, .is_large_motor = A_LARGE_MOTOR, .counterclockwise = A_COUNTERCLOCKWISE, .stall_detection = { .is_currently_stalled = false, .stall_detection_timeout = A_STALL_DETECTION_TIMEOUT } };
+Motor b = { .port = EV3_PORT_B, .is_large_motor = B_LARGE_MOTOR, .counterclockwise = B_COUNTERCLOCKWISE, .stall_detection = { .is_currently_stalled = false, .stall_detection_timeout = B_STALL_DETECTION_TIMEOUT } };
+Motor c = { .port = EV3_PORT_C, .is_large_motor = C_LARGE_MOTOR, .counterclockwise = C_COUNTERCLOCKWISE, .stall_detection = { .is_currently_stalled = false, .stall_detection_timeout = C_STALL_DETECTION_TIMEOUT } };
+Motor d = { .port = EV3_PORT_D, .is_large_motor = D_LARGE_MOTOR, .counterclockwise = D_COUNTERCLOCKWISE, .stall_detection = { .is_currently_stalled = false, .stall_detection_timeout = D_STALL_DETECTION_TIMEOUT } };
 
 ColorSensor s1 = { .port = EV3_PORT_1 };
 ColorSensor s2 = { .port = EV3_PORT_2 };
@@ -11,7 +11,7 @@ ColorSensor s3 = { .port = EV3_PORT_3 };
 ColorSensor s4 = { .port = EV3_PORT_4 };
 
 Actuator lifter = { .motor = &d, .max_neg_speed = LIFTER_MAX_NEG_SPEED, .max_pos_speed = LIFTER_MAX_POS_SPEED };
-Actuator dropper = { .motor = &a, .max_neg_speed = DROPPER_MAX_POS_SPEED, .max_pos_speed = DROPPER_MAX_POS_SPEED };
+Actuator dropper = { .motor = &a, .max_neg_speed = DROPPER_MAX_NEG_SPEED, .max_pos_speed = DROPPER_MAX_POS_SPEED };
 
 void init_robot()
 {

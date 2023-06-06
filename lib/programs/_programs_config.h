@@ -12,13 +12,13 @@
 // change to 6 if you also want last position on big ship to be placed
 #define BIG_SHIP_LAST_POSITION_TO_CHECK 5
 
-// Ship Positions: if new added also increase ADDITIONAL_POS_COUNT
-#define SHIP_POS1 135
-#define SHIP_POS2 235
-#define SHIP_POS3 460
-#define SHIP_POS4 570
-#define SHIP_POS5 680
-#define SHIP_POS6 780
+// Ship Positions: if new position added also increase ADDITIONAL_POS_COUNT
+#define SHIP_POS1 145
+#define SHIP_POS2 245
+#define SHIP_POS3 455
+#define SHIP_POS4 560
+#define SHIP_POS5 660
+#define SHIP_POS6 760
 #define SHIP_POS_FINISH 280
 #define SHIP_POS_DRIVE_BACK 370
 

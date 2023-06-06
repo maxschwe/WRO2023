@@ -43,3 +43,24 @@ int m_get_speed(Motor m)
     int speed = ev3_motor_get_power(m.port);
     return m.counterclockwise ? -speed : speed;
 }
+
+void m_reset_stall(Motor m)
+{
+    m.stall_detection.is_currently_stalled = false;
+}
+
+bool m_check_stall(Motor m)
+{
+    bool is_currently_stalled = m_get_speed(m) == 0;
+    if (is_currently_stalled) {
+        if (!m.stall_detection.is_currently_stalled) {
+            m.stall_detection.is_currently_stalled = true;
+            m.stall_detection.stall_timer = start_timer();
+        } else if (get_time(m.stall_detection.stall_timer) > m.stall_detection.stall_detection_timeout) {
+            return true;
+        }
+    } else {
+        m.stall_detection.is_currently_stalled = false;
+    }
+    return false;
+}

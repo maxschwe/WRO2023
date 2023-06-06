@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 
+#include "lib/robot/helpers.h"
 #include "lib/robot/motor.h"
 
 typedef struct {

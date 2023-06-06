@@ -14,6 +14,11 @@ void place_containers_on_ships()
     drive_to_ship_position(target_pos);
     drop_off(true, target_pos);
 
+    // surpise rule: drop off second white container on big ship
+    // target_pos = get_free_pos_ship(true);
+    // drive_to_ship_position(target_pos);
+    // drop_off(true, target_pos);
+
     // drop off coloured containers
     for (int i = 0; i < COLOURED_CONTAINER_COUNT; i++) {
         bool is_big_ship = false;
@@ -44,9 +49,10 @@ void place_containers_on_ships()
 
         target_pos = get_free_pos_ship(is_big_ship);
         drive_to_ship_position(target_pos);
-        // bool is_last_container_and_on_first_or_second_position = COLOURED_CONTAINER_COUNT == i + 1 && target_pos <= 2;
-        drop_off(true, target_pos);
+        drop_off(i != 3, target_pos);
     }
+    wait(0.2);
+    act_move_speed(dropper, 100, DROPPER_NORMAL, true);
 
     // drive in finish
     if (target_pos > 2) {

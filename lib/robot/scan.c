@@ -64,7 +64,7 @@ char* evaluate_complex_scan(int maxima_count, char* output_path)
     finish_array(&rolled_average_values);
     // check if last value is also a maximum and if so add it to the maximas
     int index_last_value = rolled_average_values.itemCount - 1;
-    if (rolled_average_values.pointer[index_last_value] > rolled_average_values.pointer[index_last_value - 1]) {
+    if (rolled_average_values.pointer[index_last_value] >= rolled_average_values.pointer[index_last_value - 1]) {
         append_array(&maxima_ids, index_last_value);
     }
 

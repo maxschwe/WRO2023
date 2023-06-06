@@ -23,4 +23,4 @@ void wait(float seconds);
 void beep();
 void error_beep();
 Timer start_timer();
-float get_time();
+float get_time(Timer timer);

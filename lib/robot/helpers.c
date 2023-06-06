@@ -1,7 +1,6 @@
 #include "lib/robot/helpers.h"
 
 int filled_spots = 0;
-clock_t start_time;
 bool timer_reseted = false;
 char texts[DISPLAY_MAX_SPOTS][DISPLAY_SPOT_MAX_LENGTH];
 
@@ -71,4 +70,18 @@ void beep()
 void error_beep()
 {
     ev3_speaker_play_tone(NOTE_C6, 500);
+}
+
+Timer start_timer()
+{
+    SYSTIM start_time;
+    get_tim(&start_time);
+    return (Timer) { start_time };
+}
+
+float get_time(Timer timer)
+{
+    SYSTIM current_time;
+    get_tim(&current_time);
+    return 1.0 * (current_time - timer.start_time) / 1000000U;
 }
