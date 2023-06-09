@@ -38,24 +38,22 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     int current_deg_b = start_deg_b;
     int current_deg_c = start_deg_c;
 
+    bool is_b_main = steering > 0;
+
     deg = abs(deg);
     init_smooth_speed_controller(start_speed, end_speed, max_speed_limit, drive_acc_factor, drive_deacc_factor, deg);
-    init_steering_controller(steering, deg, start_deg_b, start_deg_c);
+    init_steering_controller(steering, deg, start_deg_b, start_deg_c, is_b_main);
     m_reset_stall(b);
     m_reset_stall(c);
 
     int speed, current_steering;
     int loop_count = 0;
-    bool is_b_used_for_speed_control = steering > 0;
 
     while (abs(current_deg_b - start_deg_b) < deg && abs(current_deg_c - start_deg_c) < deg) {
-        speed = get_smooth_speed(is_b_used_for_speed_control ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
-        get_steering(current_deg_b, current_deg_c, &speed, &current_steering);
+        speed = get_smooth_speed(is_b_main ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
+        get_steering_old(current_deg_b, current_deg_c, &speed, &current_steering);
 
-        on(speed, current_steering);
-        current_deg_b = m_get_deg(b);
-        current_deg_c = m_get_deg(c);
-        loop_count++;
+        on(speed, steering);
 
         // check if stall : needs to be saved in seperate vars so there is no lazy evaluation
         bool b_stalled = m_check_stall(b);
@@ -69,6 +67,9 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         if (scan && !b.stall_detection->is_currently_stalled && !c.stall_detection->is_currently_stalled) {
             complex_scan();
         }
+        current_deg_b = m_get_deg(b);
+        current_deg_c = m_get_deg(c);
+        loop_count++;
 
 #if DRIVE_SMOOTH_PRINT_DEBUG
         display_set_spot(2, "b-s", start_deg_b);
@@ -184,7 +185,7 @@ void turnsing_90(bool turn_left, bool drive_forward)
         start_speed = -start_speed;
         end_speed = -end_speed;
     }
-    drive_smooth_custom(start_speed, end_speed, TURN_MAX_SPEED, steering, TURNSING_90_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
+    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_90_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
 }
 
 void turnsing_180(bool turn_left, bool drive_forward)
@@ -197,5 +198,5 @@ void turnsing_180(bool turn_left, bool drive_forward)
         start_speed = -start_speed;
         end_speed = -end_speed;
     }
-    drive_smooth_custom(start_speed, end_speed, TURN_MAX_SPEED, steering, TURNSING_180_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
+    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_180_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
 }

@@ -2,8 +2,6 @@
 
 void run()
 {
-    init_complex_scan();
-    scans_blocks = malloc(sizeof(char) * 2);
     drive_smooth_custom(-10, -30, 30, 0, 600, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
     drive_col_custom(-30, 0, s1, COL_WHITE_REF, false, false, false);
     drive_smooth_custom(-30, -30, 30, 0, 30, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
@@ -19,6 +17,16 @@ void run()
 
     // drive backwards and drive to white containers
     drive_smooth(15, 0, 65, true);
+    display_set_text(0, scans_blocks[0] == 'b' ? "blue" : "green");
+    display_set_text(1, scans_blocks[1] == 'b' ? "blue" : "green");
+
+    for (int i = 0; i < BLOCKS_COUNT; ++i) {
+        if (scans_blocks[i] == 'b') {
+            ++blocks_col_counts[0];
+        } else {
+            ++blocks_col_counts[1];
+        }
+    }
     turn_90(true);
 
     // stop actuatuors and init
@@ -63,20 +71,6 @@ void run()
     beep();
 
     // collect white container
-    //
-    // scans_blocks[0] = 'b';
-    // scans_blocks[1] = 'b';
-    // scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
-    display_set_text(0, scans_blocks[0] == 'b' ? "blue" : "green");
-    display_set_text(1, scans_blocks[1] == 'b' ? "blue" : "green");
-
-    for (int i = 0; i < BLOCKS_COUNT; ++i) {
-        if (scans_blocks[i] == 'b') {
-            ++blocks_col_counts[0];
-        } else {
-            ++blocks_col_counts[1];
-        }
-    }
     turn_90(true);
     wait_stand();
     wait(0.1);

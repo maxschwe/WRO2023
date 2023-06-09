@@ -7,7 +7,8 @@
 
 void init_programs_globals();
 
-extern char* scans_blocks;
+// extern char* scans_blocks;
+extern char scans_blocks[BLOCKS_COUNT];
 // extern char* scans_containers;
 extern char scans_containers[COLOURED_CONTAINER_COUNT];
 extern int blocks_col_counts[BLOCK_COLORS_COUNT];

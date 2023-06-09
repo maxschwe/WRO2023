@@ -17,6 +17,8 @@ int start_deg_b = 0;
 int start_deg_c = 0;
 int target_deg_b = 0;
 int target_deg_c = 0;
+int current_steering = 0;
+int is_b_main_motor = true;
 
 void init_smooth_speed_controller(int start_speed, int end_speed, int max_speed_limit, float acc_factor, float deacc_factor, int deg)
 {
@@ -84,10 +86,12 @@ int get_smooth_speed(int deg)
     return cur_speed;
 }
 
-void init_steering_controller(int steering, int deg, int start_b, int start_c)
+void init_steering_controller(int steering, int deg, int start_b, int start_c, bool is_b_main)
 {
     start_deg_b = start_b;
     start_deg_c = start_c;
+    current_steering = steering;
+    is_b_main_motor = is_b_main;
     if (steering > 0) {
         target_deg_b = deg;
         target_deg_c = deg * (1 - steering / 50.0);
@@ -97,7 +101,7 @@ void init_steering_controller(int steering, int deg, int start_b, int start_c)
     }
 }
 
-void get_steering(int current_deg_b, int current_deg_c, int* speed, int* steering)
+void get_steering_old(int current_deg_b, int current_deg_c, int* speed, int* steering)
 {
     int b_left_deg = target_deg_b - current_deg_b + start_deg_b;
     int c_left_deg = target_deg_c - current_deg_c + start_deg_c;
@@ -109,4 +113,25 @@ void get_steering(int current_deg_b, int current_deg_c, int* speed, int* steerin
         *speed = -*speed;
         *steering = -*steering;
     }
+}
+
+void get_steering(int current_deg_b, int current_deg_c, int* speed, int* steering) {
+    static int last_error = 0;
+    int b_left_deg = target_deg_b - current_deg_b + start_deg_b;
+    int c_left_deg = target_deg_c - current_deg_c + start_deg_c;
+    int error;
+    
+    if (is_b_main_motor) {
+        int c_should_be_left_deg = b_left_deg * (1 - current_steering / 50.0);
+        error = c_should_be_left_deg - c_left_deg;
+    } else {
+        int b_should_be_left_deg = c_left_deg * (1 + current_steering / 50.0);
+        error = b_should_be_left_deg - b_left_deg;
+    }
+    display_set_spot(3, "Err", error);
+    // display_set_spot(4, "b-l", b_left_deg);
+    // display_set_spot(5, "c-l", c_left_deg);
+    *steering = current_steering - (error * 1.5 + (error - last_error) * 5);
+    display_set_spot(6, "st", *steering);
+    last_error = error;
 }

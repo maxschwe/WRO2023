@@ -2,8 +2,10 @@
 
 void test()
 {
-    act_move(dropper, DROPPER_BODEN, true);
-    wait(1);
+    drive_smooth(20, -100, 500, true);
+    // drive_time(20, 0, 3, true);
+    display_set_spot(0, "b-c", m_get_deg(b));
+    display_set_spot(1, "c-c", m_get_deg(c));
     // move_lifter_up(true);
     // m_off(a, true);
     // m_off(d, true);

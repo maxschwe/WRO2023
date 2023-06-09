@@ -1,6 +1,6 @@
 #include "lib/programs/run_parts.h"
 
-void place_containers_on_ships()
+void inline place_containers_on_ships()
 {
     int blocks_col_counts_copy[BLOCK_COLORS_COUNT];
     for (int i = 0; i < BLOCK_COLORS_COUNT; i++) {
@@ -24,17 +24,17 @@ void place_containers_on_ships()
     for (int i = 0; i < COLOURED_CONTAINER_COUNT; i++) {
         bool is_big_ship = false;
 
-        // move lifter up and grabber down on 3. drop off
+        // move lifters up and grabber down on 3. drop off
         if (i == 2) {
             act_move(lifter, LIFTER_UP, false);
         }
 
-        // colour container is blue and big ship needs blue container
         if (scans_containers[i] == 'b' && blocks_col_counts_copy[0] > 0) {
+            // colour container is blue and big ship needs blue container
             is_big_ship = true;
 
-            // colour container is green and big ship needs green container
         } else if (scans_containers[i] == 'g' && blocks_col_counts_copy[1] > 0) {
+            // colour container is green and big ship needs green container
             is_big_ship = true;
         }
 
@@ -51,7 +51,7 @@ void place_containers_on_ships()
         target_pos = get_free_pos_ship(is_big_ship);
         drive_to_ship_position(target_pos);
 
-        // if it is the last block dont move dropper up
+        // if it is the last container dont move dropper up
         drop_off(i != 3, target_pos);
     }
     wait(0.2);

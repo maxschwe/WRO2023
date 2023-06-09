@@ -1,6 +1,7 @@
 #include "lib/programs/globals_programs.h"
 
-char* scans_blocks;
+// char* scans_blocks
+char scans_blocks[BLOCKS_COUNT];
 // char* scans_containers;
 char scans_containers[COLOURED_CONTAINER_COUNT];
 
@@ -17,5 +18,4 @@ void init_programs_globals()
     for (int i = 0; i < SHIP_POS_COUNT; ++i) {
         occupied_ship_pos[i] = false;
     }
-    // scans_blocks = malloc(sizeof(char) * BLOCKS_COUNT);
 }
