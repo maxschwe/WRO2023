@@ -3,17 +3,22 @@
 void run()
 {
     init_complex_scan();
-    drive_smooth_custom(-10, -30, 30, 0, 600, false, false);
-    drive_col_custom(-30, 0, s1, COL_WHITE_REF, false, false, true);
-    drive_smooth_custom(-30, -30, 30, 0, 30, false, true);
-    drive_col_custom(-30, 0, s1, COL_BLACK_REF, true, false, true);
-    drive_smooth_custom(-30, -10, 30, 0, 75, true, true);
+    scans_blocks = malloc(sizeof(char) * 2);
+    drive_smooth_custom(-10, -30, 30, 0, 600, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_col_custom(-30, 0, s1, COL_WHITE_REF, false, false, false);
+    drive_smooth_custom(-30, -30, 30, 0, 30, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_col_custom(-30, 0, s1, COL_BLACK_REF, true, false, false);
+    drive_smooth_custom(-30, -10, 30, 0, 85, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, false);
+    wait(0.2);
+    scans_blocks[1] = simple_scan();
+    drive_smooth(10, 0, 95, false);
+    scans_blocks[0] = simple_scan();
 
     m_on(a, -2);
     m_on(d, -1);
 
     // drive backwards and drive to white containers
-    drive_smooth(15, 0, 160, true);
+    drive_smooth(15, 0, 65, true);
     turn_90(true);
 
     // stop actuatuors and init
@@ -58,7 +63,10 @@ void run()
     beep();
 
     // collect white container
-    scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
+    //
+    // scans_blocks[0] = 'b';
+    // scans_blocks[1] = 'b';
+    // scans_blocks = evaluate_complex_scan(BLOCKS_COUNT, SCANS_BLOCKS_FILEPATH);
     display_set_text(0, scans_blocks[0] == 'b' ? "blue" : "green");
     display_set_text(1, scans_blocks[1] == 'b' ? "blue" : "green");
 
@@ -75,13 +83,13 @@ void run()
 
     // surprise rule: collect second white container
     // drive_smooth(-10, 0, 90, true);
-    // collect_lifter(true);
+    // lifter_collect(true);
     // drive_smooth(10, 0, 180, true);
 
     drive_smooth(10, 0, 90, true);
 
-    collect_lifter(false);
-    drive_smooth_custom(10, 30, 30, 0, 50, false, false);
+    lifter_collect(false);
+    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
 
     drive_col(30, 0, s1, COL_GREY_REF, false, false);
 
@@ -91,20 +99,20 @@ void run()
 
     // drive_smooth(10, 0, 140, false);
     // // wait_center_press();
-    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 155, true, true);
-    // collect_lifter(true);
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 155, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, true);
+    // lifter_collect(true);
 
     // // collect 2. coloured container
-    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
-    // collect_lifter(true);
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, true);
+    // lifter_collect(true);
 
     // // collect 3. coloured container
-    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, true, true);
-    // collect_lifter(true);
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 145, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, true);
+    // lifter_collect(true);
 
     // // scan 4. coloured container
-    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 170, true, true);
-    // collect_lifter(false);
+    // drive_smooth_custom(10, 10, DRIVE_MAX_SPEED, 0, 170, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, true);
+    // lifter_collect(false);
 
     // scans_containers = evaluate_complex_scan(COLOURED_CONTAINER_COUNT, SCANS_CONTAINERS_FILEPATH);
 
@@ -114,28 +122,28 @@ void run()
 
     scans_containers[0] = simple_scan();
     drive_smooth(10, 0, 105, true);
-    collect_lifter(true);
+    lifter_collect(true);
 
     // collect 2. coloured container
     drive_smooth(10, 0, 40, false);
     // wait_center_press();
     scans_containers[1] = simple_scan();
     drive_smooth(10, 0, 105, true);
-    collect_lifter(true);
+    lifter_collect(true);
 
     // collect 3. coloured container
     drive_smooth(10, 0, 40, false);
     // wait_center_press();
     scans_containers[2] = simple_scan();
     drive_smooth(10, 0, 105, true);
-    collect_lifter(true);
+    lifter_collect(true);
 
     // scan 4. coloured container
     drive_smooth(10, 0, 40, false);
     // wait_center_press();
     scans_containers[3] = simple_scan();
     drive_smooth(10, 0, 130, true);
-    collect_lifter(false);
+    lifter_collect(false);
 
     display_set_text(2, scans_containers[0] == 'b' ? "blue" : "green");
     display_set_text(3, scans_containers[1] == 'b' ? "blue" : "green");
@@ -202,31 +210,26 @@ void run()
     // drive_deg(10, 40, 0, 200, false);
     // drive_deg(40, 10, 0, 150, true);
 
-    // place big ship
     wait_stand();
-    drive_smooth(-10, 0, 700, true);
-    wait(0.1);
-    turn_90(true);
+    drive_smooth(-10, 0, 800, true);
+    wait_stand();
+    drive_smooth(10, -50, 640, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
-    wait(0.2);
-    drive_smooth(20, 0, 300, true);
-    drive_smooth(-10, 0, 300, true);
+    drive_smooth(20, 0, 150, true);
+    drive_smooth(-20, 0, 200, true);
 
     // place small ship
-    wait(0.1);
-    turn_90(false);
-    wait(0.1);
-    drive_smooth(-10, 0, 400, true);
-    wait(0.1);
-    turn_90(false);
-    wait(0.1);
+    wait_stand();
+    drive_smooth(-10, -50, 1250, true);
+    wait_stand();
     act_move_speed(lifter, 80, LIFTER_INIT, false);
-    drive_smooth(-30, 0, 150, false);
-    drive_time(-30, 0, 0.5, true);
+    wait(0.2);
+    drive_smooth(-30, 0, 200, false);
+    drive_time(-30, 0, 0.3, true);
     wait_stand();
-    drive_smooth(10, 0, 300, true);
+    drive_smooth(10, 0, 310, true);
     wait_stand();
-    drive_smooth(-10, 50, 630, true);
+    drive_smooth(-10, 50, 640, true);
 
     place_containers_on_ships();
 

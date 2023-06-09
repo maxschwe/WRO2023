@@ -74,6 +74,7 @@ void error_beep()
 
 Timer start_timer()
 {
+    beep();
     SYSTIM start_time;
     get_tim(&start_time);
     return (Timer) { start_time };

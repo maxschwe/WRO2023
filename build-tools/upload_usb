@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+PATH_SDCARDS="/media/max"
+NAME_SDCARD="EV3_WRO"
+
+cd ..
+make app=WRO2023
+if [ $? -eq 0 ]; then
+    echo "Created app successfully"
+else
+    echo "Creating app failed"
+    exit 1
+fi
+
+echo "Starting copying to SD card..."
+cp ../OBJ/app $PATH_SDCARDS/$NAME_SDCARD/ev3rt/apps/RUN
+if [ $? -eq 0 ]; then
+    echo "Copying completed"
+else
+    echo "Copying failed!!!!!!!!!!!!!!!!!!!!!"
+    exit 1
+fi

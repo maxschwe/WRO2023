@@ -8,9 +8,9 @@
 #include "lib/robot/helpers.h"
 
 typedef struct {
-    Timer stall_timer;
+    int stall_detection_count;
     bool is_currently_stalled;
-    float stall_detection_timeout;
+    int stall_detection_count_max;
 } StallDetection;
 
 typedef struct {

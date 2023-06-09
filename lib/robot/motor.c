@@ -46,24 +46,20 @@ int m_get_speed(Motor m)
 
 void m_reset_stall(Motor m)
 {
-    m.stall_detection->is_currently_stalled = false;
+    m.stall_detection->is_currently_stalled = 0;
 }
 
 bool m_check_stall(Motor m)
 {
     bool is_currently_stalled = m_get_speed(m) == 0;
-    float time = 0.0;
-    display_set_spot(4, "sp", m_get_speed(m));
     if (is_currently_stalled) {
         if (!(m.stall_detection->is_currently_stalled)) {
             m.stall_detection->is_currently_stalled = true;
-            m.stall_detection->stall_timer = start_timer();
-            beep();
-            
-        } else if ((time = get_time(m.stall_detection->stall_timer)) > m.stall_detection->stall_detection_timeout) {
+            m.stall_detection->stall_detection_count = 0;
+        } else if (m.stall_detection->stall_detection_count > m.stall_detection->stall_detection_count_max) {
             return true;
         }
-        display_set_spot(6, "t", time);
+        m.stall_detection->stall_detection_count++;
     } else {
         m.stall_detection->is_currently_stalled = false;
     }

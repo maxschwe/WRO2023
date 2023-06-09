@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+RETRYS=10
+DELAY=1
+
 cd ..
 
 make app=WRO2023
@@ -10,9 +13,7 @@ else
     exit 1
 fi
 
-TRYS=10
-
-for i in $(seq 1 $TRYS); do
+for i in $(seq 1 $RETRYS); do
     make upload
     if [ $? -eq 0 ]; then
         echo "Upload success"
@@ -20,5 +21,5 @@ for i in $(seq 1 $TRYS); do
     else
         echo "Upload failed"
     fi
-    sleep 1
+    sleep $DELAY
 done

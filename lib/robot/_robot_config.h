@@ -13,10 +13,10 @@
 #define C_LARGE_MOTOR false
 #define D_LARGE_MOTOR true
 
-#define A_STALL_DETECTION_TIMEOUT 2.0 // seconds
-#define B_STALL_DETECTION_TIMEOUT 2.0 // seconds
-#define C_STALL_DETECTION_TIMEOUT 2.0 // seconds
-#define D_STALL_DETECTION_TIMEOUT 2.0 // seconds
+#define A_STALL_DETECTION_TIMEOUT 2000000
+#define B_STALL_DETECTION_TIMEOUT 40000
+#define C_STALL_DETECTION_TIMEOUT 40000
+#define D_STALL_DETECTION_TIMEOUT 5000000
 
 // -------------------------------
 // ---------- actuators ----------
@@ -29,7 +29,6 @@
 #define LIFTER_GRABBED 60
 #define LIFTER_BACK_BOAT_GRABBED 115
 #define LIFTER_UP 190
-
 // dropper (port a)
 #define DROPPER_MAX_POS_SPEED 20
 #define DROPPER_MAX_NEG_SPEED 80
@@ -42,25 +41,38 @@
 // ---------------------------
 // ---------- drive ----------
 // ---------------------------
-#define DRIVE_ACC_FACTOR 5 // 1 Speed change per x degree
-#define DRIVE_DEACC_FACTOR 8 // 1 Speed change per x degree
+#define DRIVE_ACC_FACTOR 6 // 1 Speed change per x degree
+#define DRIVE_DEACC_FACTOR 9 // 1 Speed change per x degree
 #define DRIVE_START_SPEED 10
 #define DRIVE_MAX_SPEED 100
+#define DRIVE_MAX_JERK 1.0
 #define STEERING_CORRECTION_FACTOR 50.0
 
 // turn degrees
 #define TURN_90_DEG 312
 #define TURN_180_DEG 630
+#define TURN_START_SPEED 10
+#define TURN_MAX_SPEED 80
+#define TURN_END_SPEED 10
+#define TURN_ACC_FACTOR 5.0 // 1 Speed change per x degree
+#define TURN_DEACC_FACTOR 8.0 // 1 Speed change per x degree
+
 #define TURNSING_90_DEG 630
 #define TURNSING_180_DEG 1260
+#define TURNSING_START_SPEED 10
+#define TURNSING_MAX_SPEED 100
+#define TURNSING_END_SPEED 10
+#define TURNSING_ACC_FACTOR 5.0 // 1 Speed change per x degree
+#define TURNSING_DEACC_FACTOR 8.0 // 1 Speed change per x degree
 
 // --------------------------------
 // ---------- linefollow ----------
 // --------------------------------
-#define LINEFOLLOW_ACC 4 // 1 Speed change per x degree
-#define LINEFOLLOW_DEACC 5 // 1 Speed change per x degree
+#define LINEFOLLOW_ACC 4.0 // 1 Speed change per x degree
+#define LINEFOLLOW_DEACC 5.0 // 1 Speed change per x degree
 #define LINEFOLLOW_START_SPEED 15 // 1 Speed change per x degree
 #define LINEFOLLOW_MAX_SPEED 100
+#define LINEFOLLOW_MAX_JERK 1.0
 
 #define LINEFOLLOW_INTERSECTION_VALUE 30
 #define LINEFOLLOW_INTERSECTION_INITIAL_DEG 100

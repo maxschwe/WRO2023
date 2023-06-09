@@ -10,6 +10,7 @@ void place_containers_on_ships()
     m_reset(b);
 
     // drop off white container
+    wait(0.2);
     int target_pos = get_free_pos_ship(true);
     drive_to_ship_position(target_pos);
     drop_off(true, target_pos);

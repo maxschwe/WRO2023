@@ -7,6 +7,8 @@ int smooth_start_speed = 0;
 int smooth_max_speed = 0;
 float smooth_current_acc_factor = 0.0;
 float smooth_current_deacc_factor = 0.0;
+float smooth_acc_a_factor = 0.0;
+float smooth_acc_b_factor = 0.0;
 
 // steering controller
 int start_deg_b = 0;
@@ -38,6 +40,9 @@ void init_smooth_speed_controller(int start_speed, int end_speed, int max_speed_
     smooth_start_speed = start_speed;
     smooth_current_acc_factor = acc_factor;
     smooth_current_deacc_factor = deacc_factor;
+    float factor = 1.0 * (smooth_max_speed - smooth_start_speed) / (smooth_deg_acc_end * smooth_deg_acc_end);
+    smooth_acc_a_factor = -2 * factor / smooth_deg_acc_end;
+    smooth_acc_b_factor = 3 * factor;
 }
 
 int get_smooth_speed(int deg)
@@ -48,7 +53,9 @@ int get_smooth_speed(int deg)
 
     // accelerating phase
     if (abs(deg) < abs(smooth_deg_acc_end)) {
-        cur_speed = deg / smooth_current_acc_factor + smooth_start_speed;
+        int deg_squared = deg * deg;
+        cur_speed = smooth_acc_a_factor * deg_squared * deg + smooth_acc_b_factor * deg_squared + smooth_start_speed;
+        // printf("Speed %i\n", cur_speed);
         // max speed phase
     } else if (abs(deg) < abs(smooth_deg_deacc_start)) {
         cur_speed = smooth_max_speed;

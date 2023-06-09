@@ -1,9 +1,9 @@
 #include "lib/robot/globals.h"
 
-StallDetection stall_detection_a = { .is_currently_stalled = false, .stall_detection_timeout = A_STALL_DETECTION_TIMEOUT };
-StallDetection stall_detection_b = { .is_currently_stalled = false, .stall_detection_timeout = B_STALL_DETECTION_TIMEOUT };
-StallDetection stall_detection_c = { .is_currently_stalled = false, .stall_detection_timeout = C_STALL_DETECTION_TIMEOUT };
-StallDetection stall_detection_d = { .is_currently_stalled = false, .stall_detection_timeout = D_STALL_DETECTION_TIMEOUT };
+StallDetection stall_detection_a = { .is_currently_stalled = false, .stall_detection_count_max = A_STALL_DETECTION_TIMEOUT };
+StallDetection stall_detection_b = { .is_currently_stalled = false, .stall_detection_count_max = B_STALL_DETECTION_TIMEOUT };
+StallDetection stall_detection_c = { .is_currently_stalled = false, .stall_detection_count_max = C_STALL_DETECTION_TIMEOUT };
+StallDetection stall_detection_d = { .is_currently_stalled = false, .stall_detection_count_max = D_STALL_DETECTION_TIMEOUT };
 
 Motor a = { .port = EV3_PORT_A, .is_large_motor = A_LARGE_MOTOR, .counterclockwise = A_COUNTERCLOCKWISE, .stall_detection = &stall_detection_a };
 Motor b = { .port = EV3_PORT_B, .is_large_motor = B_LARGE_MOTOR, .counterclockwise = B_COUNTERCLOCKWISE, .stall_detection = &stall_detection_b };

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
-ACC_FACTOR = 5
-DEACC_FACTOR = 10
+ACC_FACTOR = 2
+DEACC_FACTOR = 2
 
 START_SPEED = 20
 END_SPEED = 80
@@ -28,13 +28,20 @@ def calc_deg_deacc(max_speed, end_speed):
 def get_speed(start_speed, max_speed, deg_acc_end, deg_deacc_start, cur_deg):
     if abs(cur_deg) < abs(deg_acc_end):
         print("Beschleunigung")
-        return cur_deg / ACC_FACTOR + start_speed
+        speed = -(2 * (max_speed - start_speed) * cur_deg**3) / deg_acc_end ** 3 + \
+            (3 * (max_speed - start_speed) * cur_deg**2) / \
+            deg_acc_end ** 2 + start_speed
+        return speed
     elif abs(cur_deg) < abs(deg_deacc_start):
         print("ohne")
         return max_speed
     else:
         print("Entschleunigen")
-        return -(cur_deg - deg_deacc_start) / DEACC_FACTOR + max_speed
+        x = cur_deg - deg_deacc_start
+        speed = (2 * (max_speed - 80) * x**3) / deg_deacc_start ** 3 - \
+            (3 * (max_speed - 80) * x**2) / \
+            deg_deacc_start ** 2 + max_speed
+        return speed
 
 
 def gen_curve(start_speed, end_speed, max_speed_limit, deg):

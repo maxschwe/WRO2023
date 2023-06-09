@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+gcc -I. tests/test_speed_controller.c lib/utils/drive_control.c -o builds/test_speed_controller
+
+if [ $? -eq 0 ]; then
+    echo "--- Created app successfully"
+else
+    echo "--- Creating app failed"
+    exit 1
+fi
+
+./builds/test_speed_controller
+
+echo "--- Finished running test_speed_controller"
