@@ -41,8 +41,8 @@
 // ---------------------------
 // ---------- drive ----------
 // ---------------------------
-#define DRIVE_ACC_FACTOR 6 // 1 Speed change per x degree
-#define DRIVE_DEACC_FACTOR 9 // 1 Speed change per x degree
+#define DRIVE_ACC_FACTOR 5 // 1 Speed change per x degree
+#define DRIVE_DEACC_FACTOR 8 // 1 Speed change per x degree
 #define DRIVE_START_SPEED 10
 #define DRIVE_MAX_SPEED 100
 #define DRIVE_MAX_JERK 1.0

@@ -50,13 +50,15 @@ void place_containers_on_ships()
 
         target_pos = get_free_pos_ship(is_big_ship);
         drive_to_ship_position(target_pos);
+
+        // if it is the last block dont move dropper up
         drop_off(i != 3, target_pos);
     }
     wait(0.2);
     act_move_speed(dropper, 100, DROPPER_NORMAL, true);
 
-    // drive in finish
-    if (target_pos > 2) {
+    // drive in finish if not already inside
+    if (m_get_deg(b) > SHIP_POS_FINISH) {
         drive_to_ship_position(7);
     }
 }

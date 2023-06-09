@@ -9,6 +9,8 @@ float smooth_current_acc_factor = 0.0;
 float smooth_current_deacc_factor = 0.0;
 float smooth_acc_a_factor = 0.0;
 float smooth_acc_b_factor = 0.0;
+float smooth_deacc_a_factor = 0.0;
+float smooth_deacc_b_factor = 0.0;
 
 // steering controller
 int start_deg_b = 0;
@@ -35,33 +37,49 @@ void init_smooth_speed_controller(int start_speed, int end_speed, int max_speed_
         smooth_max_speed = MAX(smooth_max_speed, -max_speed_limit);
     }
 
-    smooth_deg_acc_end = acc_factor * (smooth_max_speed - start_speed);
-    smooth_deg_deacc_start = deg - deacc_factor * (smooth_max_speed - end_speed);
     smooth_start_speed = start_speed;
     smooth_current_acc_factor = acc_factor;
     smooth_current_deacc_factor = deacc_factor;
-    float factor = 1.0 * (smooth_max_speed - smooth_start_speed) / (smooth_deg_acc_end * smooth_deg_acc_end);
-    smooth_acc_a_factor = -2 * factor / smooth_deg_acc_end;
-    smooth_acc_b_factor = 3 * factor;
+
+    // degs for acceleration
+    smooth_deg_acc_end = acc_factor * (smooth_max_speed - start_speed);
+    // degs for deacceleration
+    int smooth_deg_deacc = deacc_factor * (smooth_max_speed - end_speed);
+    smooth_deg_deacc_start = deg - smooth_deg_deacc;
+
+    // acc x^3 factors
+    float smooth_acc_factor = 1.0 * (smooth_max_speed - smooth_start_speed) / (smooth_deg_acc_end * smooth_deg_acc_end);
+    smooth_acc_a_factor = -2 * smooth_acc_factor / smooth_deg_acc_end;
+    smooth_acc_b_factor = 3 * smooth_acc_factor;
+
+    // deacc x^3 factors
+    float smooth_deacc_factor = 1.0 * (end_speed - smooth_max_speed) / (smooth_deg_deacc * smooth_deg_deacc);
+    smooth_deacc_a_factor = -2 * smooth_deacc_factor / smooth_deg_deacc;
+    smooth_deacc_b_factor = 3 * smooth_deacc_factor;
 }
 
 int get_smooth_speed(int deg)
 {
     int cur_speed;
 
-    // TODO: make s curves
-
-    // accelerating phase
     if (abs(deg) < abs(smooth_deg_acc_end)) {
+        // accelerating phase
         int deg_squared = deg * deg;
         cur_speed = smooth_acc_a_factor * deg_squared * deg + smooth_acc_b_factor * deg_squared + smooth_start_speed;
-        // printf("Speed %i\n", cur_speed);
-        // max speed phase
+
+        // old: constant acceleration
+        // cur_speed = deg / smooth_current_acc_factor + smooth_start_speed;
     } else if (abs(deg) < abs(smooth_deg_deacc_start)) {
+        // max speed phase
         cur_speed = smooth_max_speed;
-        // deaccelerating phase
     } else {
-        cur_speed = -(deg - smooth_deg_deacc_start) / smooth_current_deacc_factor + smooth_max_speed;
+        // deaccelerating phase
+        int deg_relative_to_deacc_start = deg - smooth_deg_deacc_start;
+        int deg_relative_squared = deg_relative_to_deacc_start * deg_relative_to_deacc_start;
+        cur_speed = smooth_deacc_a_factor * deg_relative_squared * deg_relative_to_deacc_start + smooth_deacc_b_factor * deg_relative_squared + smooth_max_speed;
+
+        // old: constant deacceleration
+        // cur_speed = -(deg - smooth_deg_deacc_start) / smooth_current_deacc_factor + smooth_max_speed;
     }
     return cur_speed;
 }

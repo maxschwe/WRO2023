@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define DRIVE_END_SPEED DRIVE_START_SPEED
-#define DEG 300
+#define DEG 1000
 
 #define TEMP_OUTPUT "data/temp/drive_smooth_output.txt"
 
