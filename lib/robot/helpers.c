@@ -72,6 +72,11 @@ void error_beep()
     ev3_speaker_play_tone(NOTE_C6, 500);
 }
 
+void error_beep2()
+{
+    ev3_speaker_play_tone(NOTE_C4, 500);
+}
+
 Timer start_timer()
 {
     beep();

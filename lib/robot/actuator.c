@@ -30,7 +30,7 @@ void act_move_speed(Actuator act, int speed, int new_position, bool block)
         while (abs(m_get_deg(*act.motor) - initial_motor) < rel_deg) {
             if (m_check_stall(*act.motor)) {
                 m_off(*act.motor, true);
-                error_beep();
+                error_beep2();
                 break;
             }
         }

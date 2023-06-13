@@ -9,14 +9,32 @@ float_array scanned_values;
 float_array rolled_average_values;
 float_array maxima_ids;
 
-char simple_scan()
+char simple_scan(float *value)
 {
     float rel_average = 0.0;
     for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
         rel_average += col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR);
     }
-    rel_average /= SIMPLE_SCAN_COUNT;
+    rel_average = rel_average / (1.0 * SIMPLE_SCAN_COUNT);
+    // display_set_spot(6, "scan", rel_average);
+    *value = rel_average;
     return (rel_average > COLOR_DECIDE_VALUE) ? COLOR_IF_HIGHER : COLOR_IF_LOWER;
+}
+
+char simple_scan_with_white(float *value) {
+    float rel_average_blue = 0.0;
+    for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
+        rel_average_blue += col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR);
+    }
+    rel_average_blue = rel_average_blue / (1.0 * SIMPLE_SCAN_COUNT);
+    float rel_average_red = 0.0;
+    for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
+        rel_average_red += col_get_rel_rgb(s4, 'r');
+    }
+    rel_average_red = rel_average_red / (1.0 * SIMPLE_SCAN_COUNT);
+    // display_set_spot(6, "scan", rel_average);
+    *value = rel_average_red;
+    return (rel_average_red > COLOR_WHITE_DECIDE_VALUE) ? 'w' : ((rel_average_blue > COLOR_DECIDE_VALUE) ? COLOR_IF_HIGHER : COLOR_IF_LOWER);
 }
 
 void init_complex_scan()

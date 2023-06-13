@@ -19,7 +19,8 @@
     "scan.h": "c",
     "stdlib.h": "c",
     "cstring": "c",
-    "typeinfo": "c"
+    "typeinfo": "c",
+    "globals.h": "c"
   },
   "C_Cpp.default.includePath": [
     "/home/max/Dokumente/ev3/ev3rt-hrp3/sdk/common",

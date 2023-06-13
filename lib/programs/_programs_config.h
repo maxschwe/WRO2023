@@ -13,14 +13,14 @@
 #define BIG_SHIP_LAST_POSITION_TO_CHECK 5
 
 // Ship Positions: if new position added also increase ADDITIONAL_POS_COUNT
-#define SHIP_POS1 160
-#define SHIP_POS2 260
-#define SHIP_POS3 460
-#define SHIP_POS4 560
-#define SHIP_POS5 660
-#define SHIP_POS6 760
-#define SHIP_POS_FINISH 280
-#define SHIP_POS_DRIVE_BACK 370
+#define SHIP_POS1 150
+#define SHIP_POS2 250
+#define SHIP_POS3 450
+#define SHIP_POS4 550
+#define SHIP_POS5 659
+#define SHIP_POS6 750
+#define SHIP_POS_FINISH 260
+#define SHIP_POS_DRIVE_BACK 330
 
 // scans
 #define SAVE_SCANS_BLOCKS true

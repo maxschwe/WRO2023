@@ -41,7 +41,7 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     bool is_b_main = steering > 0;
 
     deg = abs(deg);
-    init_smooth_speed_controller(start_speed, end_speed, max_speed_limit, drive_acc_factor, drive_deacc_factor, deg);
+    init_smooth_speed_controller(start_speed, end_speed, abs(max_speed_limit), drive_acc_factor, drive_deacc_factor, deg);
     init_steering_controller(steering, deg, start_deg_b, start_deg_c, is_b_main);
     m_reset_stall(b);
     m_reset_stall(c);
@@ -51,9 +51,9 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
 
     while (abs(current_deg_b - start_deg_b) < deg && abs(current_deg_c - start_deg_c) < deg) {
         speed = get_smooth_speed(is_b_main ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
-        get_steering_old(current_deg_b, current_deg_c, &speed, &current_steering);
+        get_steering(current_deg_b, current_deg_c, &speed, &current_steering);
 
-        on(speed, steering);
+        on(speed, current_steering);
 
         // check if stall : needs to be saved in seperate vars so there is no lazy evaluation
         bool b_stalled = m_check_stall(b);
@@ -106,7 +106,7 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
 
 void drive_deg(int speed, int steering, int deg, bool brake)
 {
-    drive_smooth_custom(speed, speed, speed, steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false);
+    drive_smooth_custom(speed, speed, abs(speed), steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false);
 }
 
 void drive_col(int speed, int steering, ColorSensor sensor, int compare_value, bool check_lower, bool brake)
@@ -124,13 +124,14 @@ void drive_col_custom(int speed, int steering, ColorSensor sensor, int compare_v
         if (scan) {
             complex_scan();
         }
-        // check if stall: needs to be saved in seperate vars so there is no lazy evaluation
-        bool b_stalled = m_check_stall(b);
-        bool c_stalled = m_check_stall(c);
-        if (b_stalled && c_stalled) {
-            error_beep();
-            break;
-        }
+        // // check if stall: needs to be saved in seperate vars so there is no lazy evaluation
+        // STALL_DETECTION_TIMEOUT must be increased to work for this
+        // bool b_stalled = m_check_stall(b);
+        // bool c_stalled = m_check_stall(c);
+        // if (b_stalled && c_stalled) {
+        //     error_beep();
+        //     break;
+        // }
     }
     if (brake) {
         off();
@@ -184,6 +185,7 @@ void turnsing_90(bool turn_left, bool drive_forward)
     if (!drive_forward) {
         start_speed = -start_speed;
         end_speed = -end_speed;
+        steering = -steering;
     }
     drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_90_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
 }
@@ -197,6 +199,7 @@ void turnsing_180(bool turn_left, bool drive_forward)
     if (!drive_forward) {
         start_speed = -start_speed;
         end_speed = -end_speed;
+        steering = -steering;
     }
     drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_180_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
 }

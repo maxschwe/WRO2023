@@ -22,5 +22,6 @@ void wait_center_press();
 void wait(float seconds);
 void beep();
 void error_beep();
+void error_beep2();
 Timer start_timer();
 float get_time(Timer timer);
