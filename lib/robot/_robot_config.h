@@ -44,7 +44,7 @@
 
 #define DROPPER_INIT 0
 #define DROPPER_NORMAL 10
-#define DROPPER_DROPPED 120
+#define DROPPER_DROPPED 125
 #define DROPPER_BODEN 140
 
 // ---------------------------
@@ -57,6 +57,7 @@
 #define STEERING_CORRECTION_FACTOR 50.0
 #define DRIVE_TO_LINEFOLLOW_SPEED 100
 #define DRIVE_TO_LINEFOLLOW_ACC_DEG 200
+#define STEERING_CORRECTION 0
 
 // turn degrees
 #define TURN_90_DEG 315
@@ -67,7 +68,7 @@
 #define TURN_ACC_FACTOR 6.0 // 1 Speed change per x degree
 #define TURN_DEACC_FACTOR 9.0 // 1 Speed change per x degree
 
-#define TURNSING_90_DEG 630
+#define TURNSING_90_DEG 628
 #define TURNSING_180_DEG 1250
 #define TURNSING_START_SPEED 8
 #define TURNSING_MAX_SPEED 60
@@ -92,19 +93,19 @@
 #define KP_25 0.3
 #define KP_50 0.25
 #define KP_75 0.25
-#define KP_100 0.30
+#define KP_100 0.35
 
 #define KD_10 20
 #define KD_25 20
 #define KD_50 20
 #define KD_75 20
-#define KD_100 15
+#define KD_100 18
 
 // --------------------------------------
 // ---------- steering control ----------
 // --------------------------------------
-#define STEERING_KP 1.3
-#define STEERING_KD 5.0
+#define STEERING_KP 1.2
+#define STEERING_KD 6.0
 
 // ----------------------------------
 // ---------- color sensor ----------

@@ -12,8 +12,8 @@ void on(int speed, int steering)
         speed_b = speed * (1 + steering / 50.0);
         speed_c = speed;
     }
-    m_on(b, speed_b);
     m_on(c, speed_c);
+    m_on(b, speed_b);
     current_speed = speed;
 }
 
@@ -41,6 +41,9 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
     bool is_b_main = steering > 0;
 
     deg = abs(deg);
+    if (steering == 0) {
+        steering = STEERING_CORRECTION;
+    }
     init_smooth_speed_controller(start_speed, end_speed, abs(max_speed_limit), drive_acc_factor, drive_deacc_factor, deg);
     init_steering_controller(steering, deg, start_deg_b, start_deg_c, is_b_main);
     m_reset_stall(b);

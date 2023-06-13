@@ -81,20 +81,20 @@ void inline collect_white_container() {
 void inline collect_and_scan_coloured_containers() {
     float value1, value2, value3, value4;
     char text[20];
-    drive_smooth_custom(10, 40, 40, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
 
-    drive_col(50, 0, s1, COL_GREY_REF, false, false);
+    drive_col(30, 0, s1, COL_GREY_REF, false, false);
 
     // collect with simple scan
     // collect 1. coloured container
-    drive_smooth(20, 0, 180, false);
+    drive_smooth(20, 0, 190, false);
 
     scans_containers[0] = simple_scan(&value1);
     drive_smooth(10, 0, 105, true);
     lifter_collect(true);
 
     // collect 2. coloured container
-    drive_smooth(20, 0, 40, false);
+    drive_smooth(20, 0, 35, false);
     // wait_center_press();
     scans_containers[1] = simple_scan(&value2);
     drive_smooth(20, 0, 105, true);
@@ -189,16 +189,16 @@ void inline collect_small_ship() {
 
     // drive to open sea and drop read container
     linefollow_deg(30, 200, false);
-    drive_smooth(15, 10, 410, true);
+    drive_smooth(15, 10, 405, true);
     act_move_speed(lifter, 60, LIFTER_FORWARD_BOAT_GRABBED, false);
-    drive_smooth(10, 10, 60, true);
+    drive_smooth(10, 10, 55, true);
     wait_stand();
     turn_line(false, true);
     wait_stand();
 }
 
 void inline drive_to_open_sea_and_drop_red_container() {
-    linefollow_smooth(100, 200, false);
+    linefollow_smooth(100, 100, false);
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
     turn_90(false);
@@ -229,11 +229,10 @@ void inline place_ships() {
     // place small ship
     act_move_speed(lifter, 80, LIFTER_INIT, false);
     drive_smooth(-30, 0, 100, false);
-    drive_time(-10, 0, 0.5, true);
+    drive_time(-10, 0, 0.4, true);
     wait_stand();
     drive_smooth(10, 0, 300, true);
     wait_stand();
-    wait(0.1);
     turnsing_90(true, false);
 }
 
