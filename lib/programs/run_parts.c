@@ -188,9 +188,9 @@ void inline collect_small_ship() {
 
     // drive to open sea and drop read container
     linefollow_deg(30, 200, false);
-    drive_smooth(15, 10, 405, true);
+    drive_smooth(10, 10, 405, true);
     act_move_speed(lifter, 60, LIFTER_FORWARD_BOAT_GRABBED, false);
-    drive_smooth(10, 10, 55, true);
+    drive_deg(10, 10, 75, true);
     wait_stand();
     turn_line(false, true);
     wait_stand();
@@ -201,7 +201,7 @@ void inline drive_to_open_sea_and_drop_red_container() {
     linefollow_intersection(100, false);
     linefollow_intersection(100, true);
     turn_90(false);
-    linefollow_smooth(60, 730, true);
+    linefollow_smooth(40, 780, true);
 
     // drive again against red container
     // drive_deg(-10, -60, 0, 200, false);
@@ -216,11 +216,12 @@ void inline place_ships() {
     drive_smooth(-10, 0, 800, true);
     // place big ship
 
-    drive_smooth_custom(10, 10, TURNSING_MAX_SPEED, -50, 645, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false, true);
+    drive_smooth_custom(10, 10, TURNSING_MAX_SPEED, -50, 645, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false, false);
 
     // drive_smooth(10, -50, 640, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
-    drive_smooth(20, 0, 150, true);
+    drive_smooth(20, 0, 50, false);
+    drive_time(20, 0, 0.5, true);
     drive_smooth(-20, 0, 150, true);
 
     turnsing_180(false, false);

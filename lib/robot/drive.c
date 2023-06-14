@@ -63,13 +63,15 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
         on(speed, current_steering);
 
         // check if stall : needs to be saved in seperate vars so there is no lazy evaluation
-        bool b_stalled = m_check_stall(b);
-        bool c_stalled = m_check_stall(c);
-        if (b_stalled && c_stalled) {
-            error_beep();
-            break;
+        if (new_steering) { 
+            bool b_stalled = m_check_stall(b);
+            bool c_stalled = m_check_stall(c);
+            if (b_stalled && c_stalled) {
+                error_beep();
+                break;
+            }
         }
-
+        
         // scan if wanted and only when currently not stalled
         if (scan && !b.stall_detection->is_currently_stalled && !c.stall_detection->is_currently_stalled) {
             complex_scan();
@@ -162,11 +164,11 @@ void turn_line(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
     ColorSensor sensor = turn_left ? s2 : s3;
-    drive_smooth_custom(10, 30, 40, steering, 100, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
-    drive_col(30, steering, sensor, COL_WHITE_REF, false, false);
-    drive_smooth_custom(30, 30, 40, steering, 30, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
-    drive_col(30, steering, sensor, COL_BLACK_REF, true, false);
-    drive_smooth_custom(30, 10, 50, steering, 95, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false, false);
+    drive_smooth_custom(10, 25, 40, steering, 100, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
+    drive_col(25, steering, sensor, COL_WHITE_REF, false, false);
+    drive_smooth_custom(25, 25, 40, steering, 30, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
+    drive_col(25, steering, sensor, COL_BLACK_REF, true, false);
+    drive_smooth_custom(25, 10, 50, steering, 100, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false, false);
 }
 
 void turn_90(bool turn_left)
@@ -215,5 +217,5 @@ void drive_line(int speed, bool brake) {
     drive_col(speed, 0, s2, COL_WHITE_REF, false, false);
     drive_deg(speed, 0, 30, false);
     drive_col(speed, 0, s2, COL_BLACK_REF, true, true);
-    drive_smooth(10, 0, 120, brake);
+    drive_smooth(10, 0, 105, brake);
 }

@@ -51,7 +51,7 @@ void m_reset_stall(Motor m)
 
 bool m_check_stall(Motor m)
 {
-    bool is_currently_stalled = m_get_speed(m) == 0;
+    bool is_currently_stalled = m_get_speed(m) < 6;
     if (is_currently_stalled) {
         if (!(m.stall_detection->is_currently_stalled)) {
             m.stall_detection->is_currently_stalled = true;
