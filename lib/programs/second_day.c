@@ -5,6 +5,9 @@ void second_day() {
     m_on(d, -1);
 
     // do some short stuff
+    drive_line(30, true);
+    turn_line(false, true);
+
 
     act_init(lifter);
     act_init(dropper);

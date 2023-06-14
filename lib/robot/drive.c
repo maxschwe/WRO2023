@@ -31,7 +31,7 @@ void wait_stand()
     wait(0.1);
 }
 
-void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, float drive_acc_factor, float drive_deacc_factor, bool brake, bool scan)
+void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, float drive_acc_factor, float drive_deacc_factor, bool brake, bool scan, bool new_steering)
 {
     int start_deg_b = m_get_deg(b);
     int start_deg_c = m_get_deg(c);
@@ -54,7 +54,11 @@ void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, in
 
     while (abs(current_deg_b - start_deg_b) < deg && abs(current_deg_c - start_deg_c) < deg) {
         speed = get_smooth_speed(is_b_main ? current_deg_b - start_deg_b : current_deg_c - start_deg_c);
-        get_steering(current_deg_b, current_deg_c, &speed, &current_steering);
+        if (new_steering) {
+            get_steering(current_deg_b, current_deg_c, &speed, &current_steering);
+        } else {
+            get_steering_old(current_deg_b, current_deg_c, &speed, &current_steering);
+        }
 
         on(speed, current_steering);
 
@@ -104,12 +108,12 @@ void drive_smooth(int end_speed, int steering, int deg, bool brake)
     } else {
         start_speed = current_speed;
     }
-    drive_smooth_custom(start_speed, end_speed, DRIVE_MAX_SPEED, steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false);
+    drive_smooth_custom(start_speed, end_speed, DRIVE_MAX_SPEED, steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false, true);
 }
 
 void drive_deg(int speed, int steering, int deg, bool brake)
 {
-    drive_smooth_custom(speed, speed, abs(speed), steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false);
+    drive_smooth_custom(speed, speed, abs(speed), steering, deg, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, brake, false, true);
 }
 
 void drive_col(int speed, int steering, ColorSensor sensor, int compare_value, bool check_lower, bool brake)
@@ -158,25 +162,25 @@ void turn_line(bool turn_left, bool brake)
 {
     int steering = turn_left ? -100 : 100;
     ColorSensor sensor = turn_left ? s2 : s3;
-    drive_smooth(30, steering, 100, false);
+    drive_smooth_custom(10, 30, 40, steering, 100, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
     drive_col(30, steering, sensor, COL_WHITE_REF, false, false);
-    drive_smooth(30, steering, 30, false);
+    drive_smooth_custom(30, 30, 40, steering, 30, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, false, false, false);
     drive_col(30, steering, sensor, COL_BLACK_REF, true, false);
-    drive_smooth(10, steering, 75, true);
+    drive_smooth_custom(30, 10, 50, steering, 95, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false, false);
 }
 
 void turn_90(bool turn_left)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
-    drive_smooth_custom(TURN_START_SPEED, TURN_END_SPEED, TURN_MAX_SPEED, steering, TURN_90_DEG, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false);
+    drive_smooth_custom(TURN_START_SPEED, TURN_END_SPEED, TURN_MAX_SPEED, steering, TURN_90_DEG, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false, false);
 }
 
 void turn_180(bool turn_left)
 {
     wait_stand();
     int steering = turn_left ? -100 : 100;
-    drive_smooth_custom(TURN_START_SPEED, TURN_END_SPEED, TURN_MAX_SPEED, steering, TURN_180_DEG, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false);
+    drive_smooth_custom(TURN_START_SPEED, TURN_END_SPEED, TURN_MAX_SPEED, steering, TURN_180_DEG, TURN_ACC_FACTOR, TURN_DEACC_FACTOR, true, false, false);
 }
 
 void turnsing_90(bool turn_left, bool drive_forward)
@@ -190,7 +194,7 @@ void turnsing_90(bool turn_left, bool drive_forward)
         end_speed = -end_speed;
         steering = -steering;
     }
-    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_90_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
+    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_90_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false, false);
 }
 
 void turnsing_180(bool turn_left, bool drive_forward)
@@ -204,5 +208,12 @@ void turnsing_180(bool turn_left, bool drive_forward)
         end_speed = -end_speed;
         steering = -steering;
     }
-    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_180_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
+    drive_smooth_custom(start_speed, end_speed, TURNSING_MAX_SPEED, steering, TURNSING_180_DEG, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false, false);
+}
+
+void drive_line(int speed, bool brake) {
+    drive_col(speed, 0, s2, COL_WHITE_REF, false, false);
+    drive_deg(speed, 0, 30, false);
+    drive_col(speed, 0, s2, COL_BLACK_REF, true, true);
+    drive_smooth(10, 0, 120, brake);
 }

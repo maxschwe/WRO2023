@@ -67,7 +67,7 @@ int get_smooth_speed(int deg)
 
     if (abs(deg) < abs(smooth_deg_acc_end)) {
         // accelerating phase
-        int deg_squared = deg * deg;
+        // int deg_squared = deg * deg;
         // cur_speed = smooth_acc_a_factor * deg_squared * deg + smooth_acc_b_factor * deg_squared + smooth_start_speed;
 
         // old: constant acceleration
@@ -77,8 +77,8 @@ int get_smooth_speed(int deg)
         cur_speed = smooth_max_speed;
     } else {
         // deaccelerating phase
-        int deg_relative_to_deacc_start = deg - smooth_deg_deacc_start;
-        int deg_relative_squared = deg_relative_to_deacc_start * deg_relative_to_deacc_start;
+        // int deg_relative_to_deacc_start = deg - smooth_deg_deacc_start;
+        // int deg_relative_squared = deg_relative_to_deacc_start * deg_relative_to_deacc_start;
         // cur_speed = smooth_deacc_a_factor * deg_relative_squared * deg_relative_to_deacc_start + smooth_deacc_b_factor * deg_relative_squared + smooth_max_speed;
 
         // old: constant deacceleration

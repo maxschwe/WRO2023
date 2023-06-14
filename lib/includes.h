@@ -12,6 +12,7 @@
 #include "lib/programs/shorthands.h"
 #include "lib/programs/test.h"
 #include "lib/programs/drive_system.h"
+#include "lib/programs/second_day_test.h"
 
 #include "lib/robot/_robot_config.h"
 #include "lib/robot/actuator.h"

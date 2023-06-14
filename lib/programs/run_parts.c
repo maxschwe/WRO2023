@@ -1,20 +1,19 @@
 #include "lib/programs/run_parts.h"
 
 void inline start_backward_and_scan() {
-    drive_smooth_custom(-10, -25, 70, 0, 600, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_smooth_custom(-10, -25, 70, 0, 600, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false, true);
     drive_col_custom(-25, 0, s1, COL_WHITE_REF, false, false, false);
-    drive_smooth_custom(-25, -30, 35, 0, 30, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_smooth_custom(-25, -30, 35, 0, 30, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false, true);
     drive_col_custom(-30, 0, s1, COL_BLACK_REF, true, false, false);
-    drive_smooth_custom(-30, -10, 25, 0, 85, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, false);
+    drive_smooth_custom(-30, -10, 25, 0, 90, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, false, true);
     float value1, value2;
     char text[20];
+    wait(0.2);
     scans_blocks[1] = simple_scan(&value2);
     drive_smooth(20, 0, 30, false);
-    drive_col(20, 0, s1, COL_BLACK_REF, true, false);
-    drive_smooth(30, 0, 45, false);
+    drive_col(10, 0, s1, COL_BLACK_REF, true, false);
+    drive_smooth(10, 0, 55, false);
     scans_blocks[0] = simple_scan(&value1);
-    // wait_center_press();
-
     m_on(a, -2);
     m_on(d, -1);
 
@@ -81,37 +80,37 @@ void inline collect_white_container() {
 void inline collect_and_scan_coloured_containers() {
     float value1, value2, value3, value4;
     char text[20];
-    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false, true);
 
     drive_col(30, 0, s1, COL_GREY_REF, false, false);
 
     // collect with simple scan
     // collect 1. coloured container
-    drive_smooth(20, 0, 190, false);
-
+    drive_smooth(20, 0, 180, false);
+    // wait_center_press();
     scans_containers[0] = simple_scan(&value1);
-    drive_smooth(10, 0, 105, true);
+    drive_smooth(10, 0, 110, true);
     lifter_collect(true);
 
     // collect 2. coloured container
     drive_smooth(20, 0, 35, false);
     // wait_center_press();
     scans_containers[1] = simple_scan(&value2);
-    drive_smooth(20, 0, 105, true);
-    lifter_collect(true);
-
-    // collect 3. coloured container
-    drive_smooth(20, 0, 40, false);
-    // wait_center_press();
-    scans_containers[2] = simple_scan(&value3);
     drive_smooth(10, 0, 105, true);
     lifter_collect(true);
 
+    // collect 3. coloured container
+    drive_smooth(20, 0, 35, false);
+    // wait_center_press();
+    scans_containers[2] = simple_scan(&value3);
+    drive_smooth(10, 0, 110, true);
+    lifter_collect(true);
+
     // scan 4. coloured container
-    drive_smooth(20, 0, 40, false);
+    drive_smooth(20, 0, 35, false);
     // wait_center_press();
     scans_containers[3] = simple_scan(&value4);
-    drive_smooth(10, 0, 130, true);
+    drive_smooth(10, 0, 125, true);
     lifter_collect(false);
 
     sprintf(text, "%.2f;%c", value1, scans_containers[0]);
@@ -158,8 +157,9 @@ void inline collect_small_ship() {
     beep();
     linefollow_deg(40, 200, false);
     linefollow_smooth(10, 100, true);
+    wait(0.1);
 
-    // Trex arme
+    // // Trex arme
     // turn_180(true);
 
     // // collect small ship
@@ -176,7 +176,6 @@ void inline collect_small_ship() {
     // wait(0.1);
 
     // normale Arme
-    wait(0.1);
     turn_180(true);
 
     // collect small ship
@@ -217,7 +216,7 @@ void inline place_ships() {
     drive_smooth(-10, 0, 800, true);
     // place big ship
 
-    drive_smooth_custom(10, 10, TURNSING_MAX_SPEED, -50, 645, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false);
+    drive_smooth_custom(10, 10, TURNSING_MAX_SPEED, -50, 645, TURNSING_ACC_FACTOR, TURNSING_DEACC_FACTOR, true, false, true);
 
     // drive_smooth(10, -50, 640, true);
     act_move_speed(lifter, 80, LIFTER_BACK_BOAT_GRABBED, false);
@@ -228,7 +227,7 @@ void inline place_ships() {
     
     // place small ship
     act_move_speed(lifter, 80, LIFTER_INIT, false);
-    drive_smooth(-30, 0, 100, false);
+    drive_smooth(-30, 0, 50, false);
     drive_time(-10, 0, 0.4, true);
     wait_stand();
     drive_smooth(10, 0, 300, true);
@@ -261,8 +260,8 @@ void inline place_containers_on_ships()
         bool is_big_ship = false;
 
         // move lifters up and grabber down on 3. drop off
-        if (i == 2) {
-            act_move(lifter, LIFTER_UP, false);
+        if (i == 3) {
+            act_move_speed(lifter, 100, LIFTER_UP, false);
         }
 
         if (scans_containers[i] == 'b' && blocks_col_counts_copy[0] > 0) {
@@ -424,15 +423,8 @@ void inline collect_blocks_start() {
     drive_smooth(10, 0, 200, true);
     drive_smooth(-10, -50, 15, true);
 
-    drive_smooth(-10, 0, 600, true);
+    drive_smooth(-10, 0, 570, true);
     drive_to("k4", 'n', "s6", 'x');
-
-    linefollow_smooth(35, 100, false);
-    linefollow_deg(30, 300, false);
-    beep();
-    linefollow_col_1(15, COL_LIGHT_BLUE_REF, false, false);
-    linefollow_smooth(10, 26, true);
-    beep();
 }
 
 void inline collect_containers_on_block_position() {
@@ -440,10 +432,10 @@ void inline collect_containers_on_block_position() {
     turn_90(false);
     drive_deg(10, 0, 150, true);
     act_move(lifter, LIFTER_TREX_CONTAINER, true);
-    drive_smooth(-10, 0, 250, true);
+    drive_deg(-10, 0, 250, true);
     beep();
-    drive_smooth(10, -50, 250, true);
-    drive_smooth(10, 50, 250, true);
+    drive_deg(10, -50, 250, true);
+    drive_deg(10, 50, 250, true);
     act_move(lifter, LIFTER_INIT, true);
     drive_smooth(-10, 0, 130, true);
     turn_90(true);
@@ -570,7 +562,7 @@ void inline collect_containers(bool standing_at_white) {
     wait(0.1);
     
 
-    int pos1, pos2, pos3, pos4, pos5, pos6, pos_middle;
+    int pos1, pos2, pos3, pos4, pos5, pos6;
     pos1 = -90;
     pos2 = 90;
     pos3 = 855;
@@ -605,7 +597,7 @@ void inline collect_and_scan_coloured_containers_in_order() {
     bool picked_up[4] = {false, false, false, false};
     int index = -1;
 
-    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false);
+    drive_smooth_custom(10, 30, 30, 0, 50, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false, true);
 
     drive_col(30, 0, s1, COL_GREY_REF, false, false);
 

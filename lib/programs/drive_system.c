@@ -138,5 +138,5 @@ void drive_position_custom(int target_deg, int max_speed) {
     if (delta_deg < 0) {
         speed = -speed;
     }
-    drive_smooth_custom(speed, speed, max_speed, 0, abs(delta_deg), DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR ,true, false);
+    drive_smooth_custom(speed, speed, max_speed, 0, abs(delta_deg), DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR ,true, false, true);
 }

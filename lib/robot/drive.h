@@ -16,12 +16,13 @@ void on(int speed, int steering);
 void off();
 void wait_stand();
 
-void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, float drive_acc_factor, float drive_deacc_factor, bool brake, bool scan);
+void drive_smooth_custom(int start_speed, int end_speed, int max_speed_limit, int steering, int deg, float drive_acc_factor, float drive_deacc_factor, bool brake, bool scan, bool new_steering);
 void drive_smooth(int end_speed, int steering, int deg, bool brake);
 void drive_deg(int speed, int steering, int deg, bool brake);
 void drive_col_custom(int speed, int steering, ColorSensor sensor, int compare_value, bool check_lower, bool brake, bool scan);
 void drive_col(int speed, int steering, ColorSensor sensor, int compare_value, bool check_lower, bool brake);
 void drive_time(int speed, int steering, float seconds, bool brake);
+void drive_line(int speed, bool brake);
 
 void turn_line(bool turn_left, bool brake);
 void turn_90(bool turn_left);

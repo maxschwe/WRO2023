@@ -10,7 +10,7 @@
 #define ADDITIONAL_POS_COUNT 2
 
 // change to 6 if you also want last position on big ship to be placed
-#define BIG_SHIP_LAST_POSITION_TO_CHECK 6
+#define BIG_SHIP_LAST_POSITION_TO_CHECK 5
 
 // Ship Positions: if new position added also increase ADDITIONAL_POS_COUNT
 #define SHIP_POS1 150

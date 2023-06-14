@@ -13,10 +13,10 @@
 #define C_LARGE_MOTOR false
 #define D_LARGE_MOTOR true
 
-#define A_STALL_DETECTION_TIMEOUT 1800000
-#define B_STALL_DETECTION_TIMEOUT 5000
-#define C_STALL_DETECTION_TIMEOUT 5000
-#define D_STALL_DETECTION_TIMEOUT 2000000
+#define A_STALL_DETECTION_TIMEOUT 2500000
+#define B_STALL_DETECTION_TIMEOUT 30000
+#define C_STALL_DETECTION_TIMEOUT 30000
+#define D_STALL_DETECTION_TIMEOUT 2500000
 
 // -------------------------------
 // ---------- actuators ----------
@@ -30,13 +30,17 @@
 #define LIFTER_BACK_BOAT_GRABBED 115
 #define LIFTER_RED_CONTAINER 40
 #define LIFTER_DOWN_CONTAINER 80
-#define LIFTER_UP 205
 
 // normal
-#define LIFTER_FORWARD_BOAT_GRABBED 200
+#define LIFTER_UP 205
+// gripper lifter
+// #define LIFTER_UP 180
+
+// normal
+#define LIFTER_FORWARD_BOAT_GRABBED 205
 // trex vorne
 // #define LIFTER_FORWARD_BOAT_GRABBED 160
-#define LIFTER_TREX_CONTAINER 150
+#define LIFTER_TREX_CONTAINER 155
 
 // dropper (port a)
 #define DROPPER_MAX_POS_SPEED 16
@@ -60,7 +64,7 @@
 #define STEERING_CORRECTION 0
 
 // turn degrees
-#define TURN_90_DEG 315
+#define TURN_90_DEG 312
 #define TURN_180_DEG 630
 #define TURN_START_SPEED 10
 #define TURN_MAX_SPEED 70
@@ -99,13 +103,13 @@
 #define KD_25 20
 #define KD_50 20
 #define KD_75 20
-#define KD_100 18
+#define KD_100 10
 
 // --------------------------------------
 // ---------- steering control ----------
 // --------------------------------------
 #define STEERING_KP 1.2
-#define STEERING_KD 6.0
+#define STEERING_KD 5.0
 
 // ----------------------------------
 // ---------- color sensor ----------
@@ -116,9 +120,9 @@
 #define COL_LIGHT_BLUE_REF 22
 
 #define COL_REL_RGB_THRESHOLD 4// threshold for relative value to pass (if lower -> result is 0)
-#define SIMPLE_SCAN_COUNT 20
+#define SIMPLE_SCAN_COUNT 10
 #define SCAN_RGB_RELATIVE_COLOR 'b'
-#define COLOR_DECIDE_VALUE 0.45
+#define COLOR_DECIDE_VALUE 0.40
 #define COLOR_WHITE_DECIDE_VALUE 0.15
 #define COLOR_IF_HIGHER 'b'
 #define COLOR_IF_LOWER 'g'
@@ -128,7 +132,7 @@
 // -----------------------------------------
 #define MOVING_AVERAGE_COUNT 50
 #define MAXIMUM_THRESHOLD 0.0000001
-#define COLOR_THRESHOLD 0.45
+#define COLOR_THRESHOLD 0.42
 
 // ----------------------------------
 // ---------- debug prints ----------
