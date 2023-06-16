@@ -16,7 +16,7 @@
 #define A_STALL_DETECTION_TIMEOUT 2500000
 #define B_STALL_DETECTION_TIMEOUT 3500
 #define C_STALL_DETECTION_TIMEOUT 3500
-#define D_STALL_DETECTION_TIMEOUT 2500000
+#define D_STALL_DETECTION_TIMEOUT 4000000
 
 // -------------------------------
 // ---------- actuators ----------
@@ -25,7 +25,7 @@
 #define LIFTER_MAX_POS_SPEED 40
 #define LIFTER_MAX_NEG_SPEED 80
 
-#define LIFTER_INIT -8
+#define LIFTER_INIT -2
 #define LIFTER_GRABBED 60
 #define LIFTER_BACK_BOAT_GRABBED 115
 #define LIFTER_RED_CONTAINER 40
@@ -64,7 +64,7 @@
 #define STEERING_CORRECTION 0
 
 // turn degrees
-#define TURN_90_DEG 312
+#define TURN_90_DEG 316
 #define TURN_180_DEG 630
 #define TURN_START_SPEED 10
 #define TURN_MAX_SPEED 70
@@ -121,9 +121,9 @@
 
 #define COL_REL_RGB_THRESHOLD 4// threshold for relative value to pass (if lower -> result is 0)
 #define SIMPLE_SCAN_COUNT 10
-#define SCAN_RGB_RELATIVE_COLOR 'b'
-#define COLOR_DECIDE_VALUE 0.46
-#define COLOR_WHITE_DECIDE_VALUE 0.15
+#define SCAN_RGB_RELATIVE_COLOR 'r'
+#define COLOR_DECIDE_VALUE 0.32
+#define COLOR_WHITE_DECIDE_VALUE 0.4
 #define COLOR_IF_HIGHER 'b'
 #define COLOR_IF_LOWER 'g'
 

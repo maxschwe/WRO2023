@@ -13,7 +13,7 @@ else
 fi
 
 echo "Starting copying to SD card..."
-cp ../OBJ/app $PATH_SDCARDS/$NAME_SDCARD/ev3rt/apps/RUN
+cp ../OBJ/app $PATH_SDCARDS/$NAME_SDCARD/ev3rt/apps/WRO
 if [ $? -eq 0 ]; then
     echo "Copying completed"
 else

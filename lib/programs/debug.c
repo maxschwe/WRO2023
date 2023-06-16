@@ -23,12 +23,13 @@ void print_values()
         display_set_spot(5, "2", col_get_ref(s2));
         display_set_spot(6, "3", col_get_ref(s3));
         display_set_spot(7, "4", col_get_ref(s4));
-        rgb_t rgb_val = col_get_rgb(s4);
         float rel_average = 0.0;
         for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
-            rel_average += col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR);
+            rgb_t val = col_get_rgb(s4);
+            rel_average += 1.0 * abs(val.r - val.b) / (val.r + val.b + val.g + 1);
         }
         rel_average = rel_average / (1.0 * SIMPLE_SCAN_COUNT);
+        rgb_t rgb_val = col_get_rgb(s4);
         display_set_spot(8, "R", rgb_val.r);
         display_set_spot(9, "G", rgb_val.g);
         display_set_spot(10, "B", rgb_val.b);

@@ -13,7 +13,8 @@ char simple_scan(float *value)
 {
     float rel_average = 0.0;
     for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
-        rel_average += col_get_rel_rgb(s4, SCAN_RGB_RELATIVE_COLOR);
+        rgb_t val = col_get_rgb(s4);
+        rel_average += 1.0 * abs(val.r - val.b) / (val.r + val.b + 1);
     }
     rel_average = rel_average / (1.0 * SIMPLE_SCAN_COUNT);
     // display_set_spot(6, "scan", rel_average);
@@ -29,7 +30,7 @@ char simple_scan_with_white(float *value) {
     rel_average_blue = rel_average_blue / (1.0 * SIMPLE_SCAN_COUNT);
     float rel_average_red = 0.0;
     for (int i = 0; i < SIMPLE_SCAN_COUNT; ++i) {
-        rel_average_red += col_get_rel_rgb(s4, 'r');
+        rel_average_red += abs(col_get_rel_rgb(s4, 'r') - col_get_rel_rgb(s4, 'b'));
     }
     rel_average_red = rel_average_red / (1.0 * SIMPLE_SCAN_COUNT);
     // display_set_spot(6, "scan", rel_average);

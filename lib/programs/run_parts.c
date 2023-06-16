@@ -5,7 +5,7 @@ void inline start_backward_and_scan() {
     drive_col_custom(-25, 0, s1, COL_WHITE_REF, false, false, false);
     drive_smooth_custom(-25, -30, 35, 0, 30, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, false, false, true);
     drive_col_custom(-30, 0, s1, COL_BLACK_REF, true, false, false);
-    drive_smooth_custom(-30, -10, 25, 0, 90, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, false, true);
+    drive_smooth_custom(-30, -10, 25, 0, 80, DRIVE_ACC_FACTOR, DRIVE_DEACC_FACTOR, true, false, true);
     float value1, value2;
     char text[20];
     wait(0.2);
@@ -89,7 +89,7 @@ void inline collect_and_scan_coloured_containers() {
     drive_smooth(20, 0, 180, false);
     // wait_center_press();
     scans_containers[0] = simple_scan(&value1);
-    drive_smooth(10, 0, 110, true);
+    drive_smooth(10, 0, 105, true);
     lifter_collect(true);
 
     // collect 2. coloured container
@@ -188,9 +188,9 @@ void inline collect_small_ship() {
 
     // drive to open sea and drop read container
     linefollow_deg(30, 200, false);
-    drive_smooth(10, 10, 405, true);
+    drive_smooth(10, 8, 405, true);
     act_move_speed(lifter, 60, LIFTER_FORWARD_BOAT_GRABBED, false);
-    drive_deg(10, 10, 75, true);
+    drive_deg(10, 8, 65, true);
     wait_stand();
     turn_line(false, true);
     wait_stand();
