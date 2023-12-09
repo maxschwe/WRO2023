@@ -16,7 +16,7 @@
 #define A_STALL_DETECTION_TIMEOUT 2500000
 #define B_STALL_DETECTION_TIMEOUT 3500
 #define C_STALL_DETECTION_TIMEOUT 3500
-#define D_STALL_DETECTION_TIMEOUT 4000000
+#define D_STALL_DETECTION_TIMEOUT 4500000
 
 // -------------------------------
 // ---------- actuators ----------
@@ -25,11 +25,13 @@
 #define LIFTER_MAX_POS_SPEED 40
 #define LIFTER_MAX_NEG_SPEED 80
 
-#define LIFTER_INIT -2
+#define LIFTER_INIT 0
 #define LIFTER_GRABBED 60
 #define LIFTER_BACK_BOAT_GRABBED 115
-#define LIFTER_RED_CONTAINER 40
-#define LIFTER_DOWN_CONTAINER 80
+#define LIFTER_RED_CONTAINER 75
+#define LIFTER_DOWN_CONTAINER 90
+
+#define NEW_POS 40
 
 // normal
 #define LIFTER_UP 205
@@ -69,8 +71,8 @@
 #define TURN_START_SPEED 10
 #define TURN_MAX_SPEED 70
 #define TURN_END_SPEED 10
-#define TURN_ACC_FACTOR 6.0 // 1 Speed change per x degree
-#define TURN_DEACC_FACTOR 9.0 // 1 Speed change per x degree
+#define TURN_ACC_FACTOR 7.0 // 1 Speed change per x degree
+#define TURN_DEACC_FACTOR 10.0 // 1 Speed change per x degree
 
 #define TURNSING_90_DEG 628
 #define TURNSING_180_DEG 1250

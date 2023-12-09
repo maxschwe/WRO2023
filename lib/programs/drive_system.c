@@ -30,9 +30,9 @@ void drive_to_custom(char start[COORD_SIZE], char start_dir, char dest[COORD_SIZ
             start_dir = 's';
         }
         if (start_loc_pos == 2 || start_loc_pos == 7) {
-            linefollow_col_1(100, COL_WHITE_REF, false, false);
-            linefollow_deg(100, 30, false);
-            linefollow_col_1(60, COL_BLACK_REF, true, false);
+            linefollow_col_1(10, COL_WHITE_REF, false, false);
+            linefollow_deg(10, 30, false);
+            linefollow_col_1(10, COL_BLACK_REF, true, false);
             linefollow_deg(10, 100, true);
         } else {
             linefollow_intersection(DRIVE_TO_LINEFOLLOW_SPEED, true);
