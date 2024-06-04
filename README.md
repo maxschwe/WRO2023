@@ -1,4 +1,4 @@
-# WRO2023 - Team CUP
+# WRO2023 Senior High - Team CUP
 
 Program for World Robot Olympiad 2023 (WRO)
 - overall 5th place in German Final
